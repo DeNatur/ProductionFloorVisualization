@@ -3,7 +3,6 @@ using Microsoft.Azure.SpatialAnchors.Unity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -21,21 +20,23 @@ public class AzureSessionCoordinator : MonoBehaviour
 
     [HideInInspector]
     // Anchor ID for anchor stored in Azure (provided by Azure) 
-    public string currentAzureAnchorID = "";
-    public string removeAnchor = "Inactive";
+    public GameObject mainGameObject;
+
 
     private SpatialAnchorManager cloudManager;
-    private CloudSpatialAnchor currentCloudAnchor;
     private AnchorLocateCriteria anchorLocateCriteria;
     private CloudSpatialAnchorWatcher currentWatcher;
-
+    private AzureAnchorsReporitory anchorsRepository;
+    private AddAnchorUseCase addAnchorUseCase;
 
     private readonly Queue<Action> dispatchQueue = new Queue<Action>();
+
 
     #region Unity Lifecycle
     void Start()
     {
-        // Get a reference to the SpatialAnchorManager component (must be on the same gameobject)
+        anchorsRepository = GetComponent<AzureAnchorsReporitory>();
+
         cloudManager = GetComponent<SpatialAnchorManager>();
 
         // Register for Azure Spatial Anchor events
@@ -48,7 +49,6 @@ public class AzureSessionCoordinator : MonoBehaviour
                 {
 
                     await startAzureSession();
-                    getAzureAnchorIdFromDisk();
                     findAzureAnchor();
                 }
             )
@@ -106,33 +106,35 @@ public class AzureSessionCoordinator : MonoBehaviour
         Debug.Log("Azure session started successfully");
     }
 
-    public void findAzureAnchor(string id = "")
+
+
+    #endregion
+
+    #region public methods
+
+    public void findAzureAnchor()
     {
         Debug.Log("\nAnchorModuleScript.FindAzureAnchor()");
-
-        if (id != "")
-        {
-            currentAzureAnchorID = id;
-        }
 
         // Notify AnchorFeedbackScript
         // OnFindASAAnchor?.Invoke();
 
         // Set up list of anchor IDs to locate
-        List<string> anchorsToFind = new List<string>();
+        List<string> anchorsToFind = anchorsRepository.getAnchorsIdsToFind();
 
-        if (currentAzureAnchorID != "")
+        foreach (var id in anchorsToFind)
         {
-            anchorsToFind.Add(currentAzureAnchorID);
+            Debug.Log($"\nAnchorToFind: {id}");
         }
-        else
+
+        if (anchorsToFind.Count == 0)
         {
             Debug.Log("Current Azure anchor ID is empty");
             return;
         }
 
         anchorLocateCriteria.Identifiers = anchorsToFind.ToArray();
-        Debug.Log($"Anchor locate criteria configured to look for Azure anchor with ID '{currentAzureAnchorID}'");
+        Debug.Log($"Anchor locate criteria configured to look for Azure anchor with ID '{anchorsToFind.ToArray()}'");
 
         // Start watching for Anchors
         if ((cloudManager != null) && (cloudManager.Session != null))
@@ -148,24 +150,6 @@ public class AzureSessionCoordinator : MonoBehaviour
         }
     }
 
-    public void getAzureAnchorIdFromDisk()
-    {
-        Debug.Log("\nAnchorModuleScript.LoadAzureAnchorIDFromDisk()");
-
-        string filename = "SavedAzureAnchorID.txt";
-        string path = Application.persistentDataPath;
-
-#if WINDOWS_UWP
-        StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-        path = storageFolder.Path.Replace('\\', '/') + "/";
-#endif
-
-        string filePath = Path.Combine(path, filename);
-        currentAzureAnchorID = File.ReadAllText(filePath);
-
-        Debug.Log($"Current Azure anchor ID successfully updated with saved Azure anchor ID '{currentAzureAnchorID}' from path '{path}'");
-    }
-
     #endregion
 
     #region Event Handlers
@@ -173,49 +157,39 @@ public class AzureSessionCoordinator : MonoBehaviour
     {
         QueueOnUpdate(new Action(() => Debug.Log($"Anchor recognized as a possible Azure anchor")));
 
-        if (args.Status == LocateAnchorStatus.Located || args.Status == LocateAnchorStatus.AlreadyTracked)
+        if (args.Status == LocateAnchorStatus.Located)
         {
-            currentCloudAnchor = args.Anchor;
 
             QueueOnUpdate(() =>
             {
                 Debug.Log($"Azure anchor located successfully");
 
-                // Notify AnchorFeedbackScript
-                //OnASAAnchorLocated?.Invoke();
-
-                // HoloLens: The position will be set based on the unityARUserAnchor that was located.
-
-                // Create a local anchor at the location of the object in question
-                gameObject.CreateNativeAnchor();
-
-                // Notify AnchorFeedbackScript
-                // OnCreateLocalAnchor?.Invoke();
-
-                // On HoloLens, if we do not have a cloudAnchor already, we will have already positioned the
-                // object based on the passed in worldPos/worldRot and attached a new world anchor,
-                // so we are ready to commit the anchor to the cloud if requested.
-                // If we do have a cloudAnchor, we will use it's pointer to setup the world anchor,
-                // which will position the object automatically.
-                if (currentCloudAnchor != null)
+                if (args.Anchor != null)
                 {
                     Debug.Log("Local anchor position successfully set to Azure anchor position");
 
-                    //gameObject.GetComponent<UnityEngine.XR.WSA.WorldAnchor>().SetNativeSpatialAnchorPtr(currentCloudAnchor.LocalAnchor);
+                    GameObject newAnchor = Instantiate(mainGameObject);
+
+                    newAnchor.CreateNativeAnchor();
+                    newAnchor.name = args.Identifier;
 
                     Pose anchorPose = Pose.identity;
-                    anchorPose = currentCloudAnchor.GetPose();
+                    anchorPose = args.Anchor.GetPose();
+                    newAnchor.SetActive(true);
 
-                    Debug.Log($"Setting object to anchor pose with position '{anchorPose.position}' and rotation '{anchorPose.rotation}'");
-                    transform.position = anchorPose.position;
-                    transform.rotation = anchorPose.rotation;
+                    Debug.Log($"Setting object to anchor pose with position '{anchorPose.position}' and rotation '{anchorPose.rotation}' and name '{newAnchor.name}'");
+                    newAnchor.transform.position = anchorPose.position;
+                    newAnchor.transform.rotation = anchorPose.rotation;
 
-                    removeAnchor = "Inactive";
-                    // Create a native anchor at the location of the object in question
-                    gameObject.CreateNativeAnchor();
+                    newAnchor.CreateNativeAnchor();
 
-                    // Notify AnchorFeedbackScript
-                    //OnCreateLocalAnchor?.Invoke();
+                    anchorsRepository.addAnchor(
+                        new AzureAnchorsReporitory.AnchorGameObject
+                        {
+                            anchor = args.Anchor,
+                            gameObject = newAnchor,
+                        }
+                    );
                 }
             });
         }
@@ -224,5 +198,7 @@ public class AzureSessionCoordinator : MonoBehaviour
             QueueOnUpdate(new Action(() => Debug.Log($"Attempt to locate Anchor with ID '{args.Identifier}' failed, locate anchor status was not 'Located' but '{args.Status}'")));
         }
     }
+
+
     #endregion
 }
