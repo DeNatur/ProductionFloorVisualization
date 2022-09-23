@@ -1,5 +1,6 @@
 using Microsoft.Azure.SpatialAnchors;
 using Microsoft.Azure.SpatialAnchors.Unity;
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,8 +19,6 @@ public class AzureSessionCoordinator : MonoBehaviour
     [Tooltip("The unique identifier used to identify the shared file (containing the Azure anchor ID) on the web server.")]
     private string publicSharingPin = "1982734901747";
 
-    [HideInInspector]
-    // Anchor ID for anchor stored in Azure (provided by Azure) 
     public GameObject mainGameObject;
 
 
@@ -169,6 +168,10 @@ public class AzureSessionCoordinator : MonoBehaviour
                     Debug.Log("Local anchor position successfully set to Azure anchor position");
 
                     GameObject newAnchor = Instantiate(mainGameObject);
+
+                    TapToPlace tapToPlaceScript = newAnchor.GetComponent<TapToPlace>();
+                    tapToPlaceScript.enabled = false;
+                    tapToPlaceScript.AutoStart = false;
 
                     newAnchor.CreateNativeAnchor();
                     newAnchor.name = args.Identifier;

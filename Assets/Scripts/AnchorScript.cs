@@ -6,18 +6,15 @@ public class AnchorScript : MonoBehaviour
 
     private AzureSessionCoordinator sessionCoordinator;
     private AddAnchorUseCase addAnchorUseCase;
+    private RemoveAnchorUseCase removeAnchorUseCase;
     // Start is called before the first frame update
 
 
     private void Awake()
     {
         sessionCoordinator = FindObjectOfType<AzureSessionCoordinator>();
-        if (sessionCoordinator != null)
-        {
-            Debug.Log($"\nFound session coordinato {sessionCoordinator}");
-
-        }
         addAnchorUseCase = FindObjectOfType<AddAnchorUseCase>();
+        removeAnchorUseCase = FindObjectOfType<RemoveAnchorUseCase>();
     }
     public void toggleVisibilityOfbuttons()
     {
@@ -31,6 +28,6 @@ public class AnchorScript : MonoBehaviour
 
     public void removeAnchor()
     {
-        //sessionCoordinator.removeAzureAnchor(gameObject.name);
+        removeAnchorUseCase.removeAzureAnchor(gameObject);
     }
 }
