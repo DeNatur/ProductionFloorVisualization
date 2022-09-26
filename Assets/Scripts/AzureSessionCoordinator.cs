@@ -19,8 +19,7 @@ public class AzureSessionCoordinator : MonoBehaviour
     [Tooltip("The unique identifier used to identify the shared file (containing the Azure anchor ID) on the web server.")]
     private string publicSharingPin = "1982734901747";
 
-    public GameObject mainGameObject;
-
+    public ObjectsCreator objectsCreator;
 
     private SpatialAnchorManager cloudManager;
     private AnchorLocateCriteria anchorLocateCriteria;
@@ -165,9 +164,10 @@ public class AzureSessionCoordinator : MonoBehaviour
 
                 if (args.Anchor != null)
                 {
-                    Debug.Log("Local anchor position successfully set to Azure anchor position");
 
-                    GameObject newAnchor = Instantiate(mainGameObject);
+                    Debug.Log("Local anchor position successfully set to Azure anchor position");
+                    int index = int.Parse(args.Anchor.AppProperties["ANCHOR_TYPE"]);
+                    GameObject newAnchor = Instantiate(objectsCreator.allMachines[index]);
 
                     TapToPlace tapToPlaceScript = newAnchor.GetComponent<TapToPlace>();
                     tapToPlaceScript.enabled = false;
@@ -179,6 +179,7 @@ public class AzureSessionCoordinator : MonoBehaviour
                     Pose anchorPose = Pose.identity;
                     anchorPose = args.Anchor.GetPose();
                     newAnchor.SetActive(true);
+                    newAnchor.GetComponent<AnchorScript>().setAnchorCreatedState();
 
                     Debug.Log($"Setting object to anchor pose with position '{anchorPose.position}' and rotation '{anchorPose.rotation}' and name '{newAnchor.name}'");
                     newAnchor.transform.position = anchorPose.position;

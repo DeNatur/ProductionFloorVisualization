@@ -1,33 +1,79 @@
+using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using UnityEngine;
 
 public class AnchorScript : MonoBehaviour
 {
-    public GameObject buttons;
+    public GameObject addAnchorButton;
+    public GameObject removeAnchorButton;
+    public GameObject tapToPlaceButton;
+    public GameObject deleteButton;
+    public int index;
 
-    private AzureSessionCoordinator sessionCoordinator;
     private AddAnchorUseCase addAnchorUseCase;
     private RemoveAnchorUseCase removeAnchorUseCase;
     // Start is called before the first frame update
 
-
+    private bool isAnchorCreated = false;
     private void Awake()
     {
-        sessionCoordinator = FindObjectOfType<AzureSessionCoordinator>();
         addAnchorUseCase = FindObjectOfType<AddAnchorUseCase>();
         removeAnchorUseCase = FindObjectOfType<RemoveAnchorUseCase>();
+        setAnchorNotCreatedState();
     }
-    public void toggleVisibilityOfbuttons()
+    public void setAnchorCreatedState()
     {
-        buttons.SetActive(!buttons.activeSelf);
+        addAnchorButton.SetActive(false);
+        tapToPlaceButton.SetActive(false);
+        deleteButton.SetActive(false);
+        removeAnchorButton.SetActive(true);
+        isAnchorCreated = true;
     }
 
-    public void addAnchor()
+    public void setAnchorNotCreatedState()
     {
-        addAnchorUseCase.createAzureAnchor(gameObject);
+        addAnchorButton.SetActive(true);
+        tapToPlaceButton.SetActive(true);
+        deleteButton.SetActive(true);
+        removeAnchorButton.SetActive(false);
+        isAnchorCreated = false;
+    }
+
+    public async void addAnchor()
+    {
+        bool result = await addAnchorUseCase.createAzureAnchor(gameObject, index);
+        if (result)
+        {
+            setAnchorCreatedState();
+        }
     }
 
     public void removeAnchor()
     {
         removeAnchorUseCase.removeAzureAnchor(gameObject);
+        setAnchorNotCreatedState();
+    }
+
+    public void deleteObject()
+    {
+        if (!isAnchorCreated)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public void enableBoundsControl()
+    {
+        if (!isAnchorCreated)
+        {
+            gameObject.GetComponent<BoundsControl>().enabled = true;
+        }
+    }
+
+    public void disableBoundsControl()
+    {
+        if (!isAnchorCreated)
+        {
+            gameObject.GetComponent<BoundsControl>().enabled = false;
+        }
     }
 }

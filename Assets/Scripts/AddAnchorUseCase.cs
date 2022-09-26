@@ -33,14 +33,14 @@ public class AddAnchorUseCase : MonoBehaviour
         }
     }
 
-    public async void createAzureAnchor(GameObject theObject)
+    public async Task<bool> createAzureAnchor(GameObject theObject, int index)
     {
         AzureAnchorsReporitory.AnchorGameObject? data = anchorsRepository.getAnchorDataById(theObject.name);
 
         if (data != null)
         {
             Debug.Log("\nAnchor already created");
-            return;
+            return true;
         }
 
 
@@ -58,12 +58,13 @@ public class AddAnchorUseCase : MonoBehaviour
 
         // Now we set the local cloud anchor's position to the native XR anchor's position
         localCloudAnchor.LocalAnchor = await theObject.FindNativeAnchor().GetPointer();
+        localCloudAnchor.AppProperties["ANCHOR_TYPE"] = index.ToString();
 
         // Check to see if we got the local XR anchor pointer
         if (localCloudAnchor.LocalAnchor == IntPtr.Zero)
         {
             Debug.Log("Didn't get the local anchor...");
-            return;
+            return false;
         }
         else
         {
@@ -81,7 +82,7 @@ public class AddAnchorUseCase : MonoBehaviour
             QueueOnUpdate(new Action(() => Debug.Log($"Move your device to capture more environment data: {createProgress:0%}")));
         }
 
-        bool success;
+        bool success = false;
 
         try
         {
@@ -117,6 +118,7 @@ public class AddAnchorUseCase : MonoBehaviour
         {
             Debug.Log(ex.ToString());
         }
+        return success;
     }
 
     private void QueueOnUpdate(Action updateAction)

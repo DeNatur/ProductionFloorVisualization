@@ -31,9 +31,7 @@ public class RemoveAnchorUseCase : MonoBehaviour
 
         anchorsRepository.removeAnchor(id);
 
-        Destroy(theObject);
-
-        Debug.Log("\nSuccessfully deleted anchor");
+        Debug.Log("\nSuccessfully removed anchor");
 
     }
 }
