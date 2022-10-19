@@ -3,16 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using static AnchorsRepository;
 
 
 #if WINDOWS_UWP
 using Windows.Storage;
 #endif
-public class AzureAnchorsReporitory : MonoBehaviour
+public class AzureAnchorsReporitory : AnchorsRepository
 {
 
     private Dictionary<CloudSpatialAnchor, GameObject> createdAnchors = new Dictionary<CloudSpatialAnchor, GameObject>();
-    char[] charSeparators = new char[] { ';' };
+    private char[] charSeparators = new char[] { ';' };
 
     public void addAnchor(AnchorGameObject anchorGameObject)
     {
@@ -23,7 +24,7 @@ public class AzureAnchorsReporitory : MonoBehaviour
 
     public void removeAnchor(String id)
     {
-        AnchorGameObject? data = getAnchorDataById(id);
+        AnchorGameObject? data = getAnchor(id);
         if (data != null)
         {
             createdAnchors.Remove(data?.anchor);
@@ -33,7 +34,7 @@ public class AzureAnchorsReporitory : MonoBehaviour
     }
 
 
-    public AnchorGameObject? getAnchorDataById(String id)
+    public AnchorGameObject? getAnchor(String id)
     {
         foreach (KeyValuePair<CloudSpatialAnchor, GameObject> entry in createdAnchors)
         {
@@ -49,36 +50,7 @@ public class AzureAnchorsReporitory : MonoBehaviour
         return null;
     }
 
-    private void refreshDataOnDisk()
-    {
-        Debug.Log("\nRefreshDataToDisk()");
-
-        string filename = "SavedAzureAnchorID.txt";
-        string path = Application.persistentDataPath;
-
-#if WINDOWS_UWP
-        StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-        path = storageFolder.Path.Replace('\\', '/') + "/";
-#endif
-
-        string filePath = Path.Combine(path, filename);
-        string idsToSave = getIdsString();
-        File.WriteAllText(filePath, idsToSave);
-
-        Debug.Log($"Current Azure anchor IDs '{idsToSave}' successfully saved to path '{filePath}'");
-    }
-
-    public string getIdsString()
-    {
-        string idsToSave = "";
-        foreach (KeyValuePair<CloudSpatialAnchor, GameObject> entry in createdAnchors)
-        {
-            idsToSave = entry.Key.Identifier + ";" + idsToSave;
-        }
-        return idsToSave;
-    }
-
-    public List<string> getAnchorsIdsToFind()
+    public List<string> getAnchorsIds()
     {
         Debug.Log("\nAnchorModuleScript.LoadAzureAnchorIDFromDisk()");
 
@@ -101,10 +73,32 @@ public class AzureAnchorsReporitory : MonoBehaviour
         return anchorsToFind;
     }
 
-    public struct AnchorGameObject
+    private void refreshDataOnDisk()
     {
-        public GameObject gameObject;
+        Debug.Log("\nRefreshDataToDisk()");
 
-        public CloudSpatialAnchor anchor;
+        string filename = "SavedAzureAnchorID.txt";
+        string path = Application.persistentDataPath;
+
+#if WINDOWS_UWP
+        StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+        path = storageFolder.Path.Replace('\\', '/') + "/";
+#endif
+
+        string filePath = Path.Combine(path, filename);
+        string idsToSave = getIdsString();
+        File.WriteAllText(filePath, idsToSave);
+
+        Debug.Log($"Current Azure anchor IDs '{idsToSave}' successfully saved to path '{filePath}'");
+    }
+
+    private string getIdsString()
+    {
+        string idsToSave = "";
+        foreach (KeyValuePair<CloudSpatialAnchor, GameObject> entry in createdAnchors)
+        {
+            idsToSave = entry.Key.Identifier + ";" + idsToSave;
+        }
+        return idsToSave;
     }
 }

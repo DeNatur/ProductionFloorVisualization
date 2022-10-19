@@ -1,21 +1,21 @@
 using Microsoft.Azure.SpatialAnchors.Unity;
 using UnityEngine;
 
-public class RemoveAnchorUseCase : MonoBehaviour
+public class RemoveAnchorUseCase
 {
-    private AzureAnchorsReporitory anchorsRepository;
+    private AnchorsRepository anchorsRepository;
     private SpatialAnchorManager cloudManager;
 
-    private void Awake()
+    public RemoveAnchorUseCase(AnchorsRepository anchorsRepository, SpatialAnchorManager spatialAnchorManager)
     {
-        anchorsRepository = GetComponent<AzureAnchorsReporitory>();
-        cloudManager = GetComponent<SpatialAnchorManager>();
+        this.anchorsRepository = anchorsRepository;
+        this.cloudManager = spatialAnchorManager;
     }
 
     public async void removeAzureAnchor(GameObject theObject)
     {
         string id = theObject.name;
-        AzureAnchorsReporitory.AnchorGameObject? data = anchorsRepository.getAnchorDataById(id);
+        AnchorsRepository.AnchorGameObject? data = anchorsRepository.getAnchor(id);
         if (data == null)
         {
             Debug.Log("\nNo Anchor");

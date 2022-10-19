@@ -1,41 +1,30 @@
 using Microsoft.Azure.SpatialAnchors;
 using Microsoft.Azure.SpatialAnchors.Unity;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class AddAnchorUseCase : MonoBehaviour
+public class AddAnchorUseCase
 {
 
-    private AzureSessionCoordinator sessionCoordinator;
-    private AzureAnchorsReporitory anchorsRepository;
-    private SpatialAnchorManager cloudManager;
+    readonly AnchorsRepository _anchorsRepository;
+    readonly SpatialAnchorManager _cloudManager;
+    readonly SceneAwarnessValidator _sceneAwarnessValidator;
 
-    private readonly Queue<Action> dispatchQueue = new Queue<Action>();
-
-    private void Awake()
+    public AddAnchorUseCase(
+        AnchorsRepository anchorsRepository,
+        SpatialAnchorManager cloudManager,
+        SceneAwarnessValidator sceneAwarnessValidator
+    )
     {
-        sessionCoordinator = GetComponent<AzureSessionCoordinator>();
-        anchorsRepository = GetComponent<AzureAnchorsReporitory>();
-        cloudManager = GetComponent<SpatialAnchorManager>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        lock (dispatchQueue)
-        {
-            if (dispatchQueue.Count > 0)
-            {
-                dispatchQueue.Dequeue()();
-            }
-        }
+        _anchorsRepository = anchorsRepository;
+        _cloudManager = cloudManager;
+        _sceneAwarnessValidator = sceneAwarnessValidator;
     }
 
     public async Task<bool> createAzureAnchor(GameObject theObject, int index)
     {
-        AzureAnchorsReporitory.AnchorGameObject? data = anchorsRepository.getAnchorDataById(theObject.name);
+        AnchorsRepository.AnchorGameObject? data = _anchorsRepository.getAnchor(theObject.name);
 
         if (data != null)
         {
@@ -75,12 +64,7 @@ public class AddAnchorUseCase : MonoBehaviour
         localCloudAnchor.Expiration = DateTimeOffset.Now.AddDays(7);
 
         // Save anchor to cloud
-        while (!cloudManager.IsReadyForCreate)
-        {
-            await Task.Delay(330);
-            float createProgress = cloudManager.SessionStatus.RecommendedForCreateProgress;
-            QueueOnUpdate(new Action(() => Debug.Log($"Move your device to capture more environment data: {createProgress:0%}")));
-        }
+        await _sceneAwarnessValidator.validateSceneReadiness();
 
         bool success = false;
 
@@ -89,7 +73,7 @@ public class AddAnchorUseCase : MonoBehaviour
             Debug.Log("Creating Azure anchor... please wait...");
 
             // Actually save
-            await cloudManager.CreateAnchorAsync(localCloudAnchor);
+            await _cloudManager.CreateAnchorAsync(localCloudAnchor);
 
             // Success?
             success = localCloudAnchor != null;
@@ -101,8 +85,8 @@ public class AddAnchorUseCase : MonoBehaviour
 
                 // Update the current Azure anchor ID
                 Debug.Log($"Current Azure anchor ID updated to '{localCloudAnchor.Identifier}'");
-                anchorsRepository.addAnchor(
-                    new AzureAnchorsReporitory.AnchorGameObject
+                _anchorsRepository.addAnchor(
+                    new AnchorsRepository.AnchorGameObject
                     {
                         anchor = localCloudAnchor,
                         gameObject = theObject,
@@ -120,13 +104,4 @@ public class AddAnchorUseCase : MonoBehaviour
         }
         return success;
     }
-
-    private void QueueOnUpdate(Action updateAction)
-    {
-        lock (dispatchQueue)
-        {
-            dispatchQueue.Enqueue(updateAction);
-        }
-    }
-
 }

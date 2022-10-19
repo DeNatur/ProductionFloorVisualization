@@ -1,5 +1,6 @@
 using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using UnityEngine;
+using Zenject;
 
 public class AnchorScript : MonoBehaviour
 {
@@ -10,16 +11,17 @@ public class AnchorScript : MonoBehaviour
     public int index;
 
     private AddAnchorUseCase addAnchorUseCase;
+
     private RemoveAnchorUseCase removeAnchorUseCase;
-    // Start is called before the first frame update
+
+    [Inject]
+    public void Construct(AddAnchorUseCase addAnchorUseCase, RemoveAnchorUseCase removeAnchorUseCase)
+    {
+        this.addAnchorUseCase = addAnchorUseCase;
+        this.removeAnchorUseCase = removeAnchorUseCase;
+    }
 
     private bool isAnchorCreated = false;
-    private void Awake()
-    {
-        addAnchorUseCase = FindObjectOfType<AddAnchorUseCase>();
-        removeAnchorUseCase = FindObjectOfType<RemoveAnchorUseCase>();
-        setAnchorNotCreatedState();
-    }
     public void setAnchorCreatedState()
     {
         addAnchorButton.SetActive(false);
@@ -40,6 +42,10 @@ public class AnchorScript : MonoBehaviour
 
     public async void addAnchor()
     {
+        if (addAnchorUseCase == null)
+        {
+            Debug.Log("NULLL");
+        }
         bool result = await addAnchorUseCase.createAzureAnchor(gameObject, index);
         if (result)
         {
@@ -75,5 +81,14 @@ public class AnchorScript : MonoBehaviour
         {
             gameObject.GetComponent<BoundsControl>().enabled = false;
         }
+    }
+
+    private void Awake()
+    {
+        setAnchorNotCreatedState();
+    }
+
+    public class Factory : PlaceholderFactory<UnityEngine.Object, AnchorScript>
+    {
     }
 }
