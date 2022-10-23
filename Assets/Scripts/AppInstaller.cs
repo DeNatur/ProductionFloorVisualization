@@ -34,9 +34,16 @@ public class AppInstaller : MonoInstaller
             .FromInstance(objectsCreator)
             .AsSingle();
 
-        Container.Bind<SceneAwarnessValidator>()
+        Container.Bind<AwarnessValidator>()
             .FromInstance(sceneAwarnessValidator)
             .AsSingle();
+
+        Container.Bind<SaveAnchor>()
+            .To<AzureCloudManager>()
+            .AsSingle();
+
+        Container.Bind<GameObjectEditor>()
+            .To<GameObjectEditorImpl>();
 
         Container.BindFactory<UnityEngine.Object, AnchorScript, AnchorScript.Factory>()
             .FromFactory<AnchorObjectFactory>();

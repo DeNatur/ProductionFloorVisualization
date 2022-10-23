@@ -5,7 +5,12 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
-public class SceneAwarnessValidator : MonoBehaviour
+
+public interface AwarnessValidator
+{
+    public Task validateSceneReadiness();
+}
+public class SceneAwarnessValidator : MonoBehaviour, AwarnessValidator
 {
     private SpatialAnchorManager _cloudManager;
 

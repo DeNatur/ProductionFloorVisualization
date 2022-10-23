@@ -1,3 +1,4 @@
+using Microsoft.Azure.SpatialAnchors;
 using Microsoft.Azure.SpatialAnchors.Unity;
 using UnityEngine;
 
@@ -25,9 +26,12 @@ public class RemoveAnchorUseCase
 
         Debug.Log("\nAnchorModuleScript.RemoveAzureAnchor()");
 
+        CloudSpatialAnchor localCloudAnchor = new CloudSpatialAnchor();
+        localCloudAnchor.LocalAnchor = await theObject.FindNativeAnchor().GetPointer();
+
         theObject.DeleteNativeAnchor();
 
-        await cloudManager.DeleteAnchorAsync(data?.anchor);
+        await cloudManager.DeleteAnchorAsync(localCloudAnchor);
 
         anchorsRepository.removeAnchor(id);
 

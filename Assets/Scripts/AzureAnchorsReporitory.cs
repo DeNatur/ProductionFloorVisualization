@@ -1,4 +1,3 @@
-using Microsoft.Azure.SpatialAnchors;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,12 +11,12 @@ using Windows.Storage;
 public class AzureAnchorsReporitory : AnchorsRepository
 {
 
-    private Dictionary<CloudSpatialAnchor, GameObject> createdAnchors = new Dictionary<CloudSpatialAnchor, GameObject>();
+    private Dictionary<string, GameObject> createdAnchors = new Dictionary<string, GameObject>();
     private char[] charSeparators = new char[] { ';' };
 
     public void addAnchor(AnchorGameObject anchorGameObject)
     {
-        createdAnchors.Add(anchorGameObject.anchor, anchorGameObject.gameObject);
+        createdAnchors.Add(anchorGameObject.identifier, anchorGameObject.gameObject);
         refreshDataOnDisk();
         Debug.Log("\nAdded anchor to repository");
     }
@@ -27,7 +26,7 @@ public class AzureAnchorsReporitory : AnchorsRepository
         AnchorGameObject? data = getAnchor(id);
         if (data != null)
         {
-            createdAnchors.Remove(data?.anchor);
+            createdAnchors.Remove(data?.identifier);
             refreshDataOnDisk();
             Debug.Log("\nDeleted anchor from repository");
         }
@@ -36,13 +35,13 @@ public class AzureAnchorsReporitory : AnchorsRepository
 
     public AnchorGameObject? getAnchor(String id)
     {
-        foreach (KeyValuePair<CloudSpatialAnchor, GameObject> entry in createdAnchors)
+        foreach (KeyValuePair<string, GameObject> entry in createdAnchors)
         {
-            if (entry.Key.Identifier.Equals(id))
+            if (entry.Key.Equals(id))
             {
                 return new AnchorGameObject
                 {
-                    anchor = entry.Key,
+                    identifier = entry.Key,
                     gameObject = entry.Value,
                 };
             }
@@ -95,9 +94,9 @@ public class AzureAnchorsReporitory : AnchorsRepository
     private string getIdsString()
     {
         string idsToSave = "";
-        foreach (KeyValuePair<CloudSpatialAnchor, GameObject> entry in createdAnchors)
+        foreach (KeyValuePair<string, GameObject> entry in createdAnchors)
         {
-            idsToSave = entry.Key.Identifier + ";" + idsToSave;
+            idsToSave = entry.Key + ";" + idsToSave;
         }
         return idsToSave;
     }

@@ -132,7 +132,7 @@ public class AzureSessionCoordinator : MonoBehaviour
                     anchorsRepository.addAnchor(
                         new AnchorsRepository.AnchorGameObject
                         {
-                            anchor = args.Anchor,
+                            identifier = args.Anchor.Identifier,
                             gameObject = newAnchor,
                         }
                     );

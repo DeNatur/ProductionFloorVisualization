@@ -1,4 +1,3 @@
-using Microsoft.Azure.SpatialAnchors;
 using System.Collections.Generic;
 using UnityEngine;
 public interface AnchorsRepository
@@ -16,6 +15,6 @@ public interface AnchorsRepository
     {
         public GameObject gameObject;
 
-        public CloudSpatialAnchor anchor;
+        public string identifier;
     }
 }
