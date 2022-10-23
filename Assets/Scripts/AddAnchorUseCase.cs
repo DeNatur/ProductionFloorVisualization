@@ -74,7 +74,6 @@ public class AddAnchorUseCase
 
         if (data != null)
         {
-            Debug.Log("\nAnchor already created");
             return true;
         }
         return false;

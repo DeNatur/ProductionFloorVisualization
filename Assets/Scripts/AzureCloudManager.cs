@@ -4,8 +4,15 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
+
+public interface StartAzureSession
+{
+
+}
+
 public class AzureCloudManager : SaveAnchor
 {
+    static string ANCHOR_TYPE_PROP = "ANCHOR_TYPE";
 
     readonly SpatialAnchorManager _cloudManager;
 
@@ -18,7 +25,6 @@ public class AzureCloudManager : SaveAnchor
     {
         CloudSpatialAnchor localCloudAnchor = await getLocalAnchorWithObjectProperties(gameObject, propIndex);
 
-        await _cloudManager.CreateAnchorAsync(localCloudAnchor);
         try
         {
             await _cloudManager.CreateAnchorAsync(localCloudAnchor);
@@ -46,7 +52,7 @@ public class AzureCloudManager : SaveAnchor
     {
         CloudSpatialAnchor localCloudAnchor = new CloudSpatialAnchor();
         localCloudAnchor.LocalAnchor = await theObject.FindNativeAnchor().GetPointer();
-        localCloudAnchor.AppProperties["ANCHOR_TYPE"] = index.ToString();
+        localCloudAnchor.AppProperties[ANCHOR_TYPE_PROP] = index.ToString();
         return localCloudAnchor;
     }
 

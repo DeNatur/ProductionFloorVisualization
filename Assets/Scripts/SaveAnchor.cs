@@ -20,7 +20,6 @@ public interface SaveAnchor
             {
                 this.anchorIdentifier = anchorIdentifier;
             }
-
         }
 
         public class Failure : Result

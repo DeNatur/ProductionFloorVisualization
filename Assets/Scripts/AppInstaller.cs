@@ -43,7 +43,8 @@ public class AppInstaller : MonoInstaller
             .AsSingle();
 
         Container.Bind<GameObjectEditor>()
-            .To<GameObjectEditorImpl>();
+            .To<GameObjectEditorImpl>()
+            .AsSingle();
 
         Container.BindFactory<UnityEngine.Object, AnchorScript, AnchorScript.Factory>()
             .FromFactory<AnchorObjectFactory>();
