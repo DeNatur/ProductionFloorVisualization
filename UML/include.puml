@@ -21,7 +21,7 @@ AnchorScript --> "tapToPlaceButton" GameObject
 AnchorScript --> "deleteButton" GameObject
 AnchorScript +-- Factory
 "PlaceholderFactory`2" "<UnityEngine.Object,AnchorScript>" <|-- Factory
-interface SaveAnchor {
+interface AnchorCreator {
     + createNativeAnchor(gameObject:GameObject) : void
     + createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<Result>
 }
@@ -35,17 +35,17 @@ class Failure {
     + exception : Exception? <<get>>
     + Failure(exception:Exception?)
 }
-SaveAnchor +-- Result
+AnchorCreator +-- Result
 Result +-- Success
 Result <|-- Success
 Result +-- Failure
 Result <|-- Failure
 class AddAnchorUseCase {
-    + AddAnchorUseCase(anchorsRepository:AnchorsRepository, saveAnchor:SaveAnchor, sceneAwarnessValidator:AwarnessValidator, gameObjectEditor:GameObjectEditor)
+    + AddAnchorUseCase(anchorsRepository:AnchorsRepository, saveAnchor:AnchorCreator, sceneAwarnessValidator:AwarnessValidator, gameObjectEditor:GameObjectEditor)
     + <<async>> createAzureAnchor(theObject:GameObject, index:int) : Task<bool>
 }
 AddAnchorUseCase --> "_anchorsRepository" AnchorsRepository
-AddAnchorUseCase --> "_saveAnchor" SaveAnchor
+AddAnchorUseCase --> "_saveAnchor" AnchorCreator
 AddAnchorUseCase --> "_sceneAwarnessValidator" AwarnessValidator
 AddAnchorUseCase --> "_gameObjectEditor" GameObjectEditor
 class AzureAnchorsReporitory {
@@ -81,23 +81,48 @@ class RemoveAnchorUseCase {
 class DebugWindow {
 }
 MonoBehaviour <|-- DebugWindow
+interface AnchorLocator {
+    +  <<event>> CloudAnchorLocated : CloudAnchorLocated 
+    + startLocatingAzureAnchors(idsToFind:string[]) : void
+}
+class AzureAnchorLocator {
+    {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
+    + AzureAnchorLocator(cloudManager:SpatialAnchorManager)
+    +  <<event>> CloudAnchorLocated : CloudAnchorLocated 
+    + startLocatingAzureAnchors(idsToFind:string[]) : void
+}
+class CloudAnchorLocatedArgs {
+    + type : int <<get>>
+    + identifier : string <<get>>
+    + CloudAnchorLocatedArgs(pose:Pose, type:int, identifier:string)
+}
+AnchorLocator <|-- AzureAnchorLocator
+AzureAnchorLocator --> "_cloudManager" SpatialAnchorManager
+AnchorLocator +-- CloudAnchorLocatedArgs
+EventArgs <|-- CloudAnchorLocatedArgs
+CloudAnchorLocatedArgs --> "pose" Pose
 interface StartAzureSession {
+    invoke() : Task
 }
 class AzureCloudManager {
     {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
     + AzureCloudManager(cloudManager:SpatialAnchorManager)
-    + <<async>> createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<SaveAnchor.Result>
+    + <<async>> createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<AnchorCreator.Result>
     + createNativeAnchor(gameObject:GameObject) : void
+    + <<async>> invoke() : Task
 }
-SaveAnchor <|-- AzureCloudManager
+AnchorCreator <|-- AzureCloudManager
+StartAzureSession <|-- AzureCloudManager
 AzureCloudManager --> "_cloudManager" SpatialAnchorManager
 interface GameObjectEditor {
     setName(gameObject:GameObject, name:string) : void
     getName(gameObject:GameObject) : string
+    setPose(gameObject:GameObject, pose:Pose) : void
 }
 class GameObjectEditorImpl {
     + getName(gameObject:GameObject) : string
     + setName(gameObject:GameObject, name:string) : void
+    + setPose(gameObject:GameObject, pose:Pose) : void
 }
 GameObjectEditor <|-- GameObjectEditorImpl
 class ObjectsCreator {
@@ -120,9 +145,8 @@ class AnchorGameObject <<struct>> {
 AnchorsRepository +-- AnchorGameObject
 AnchorGameObject --> "gameObject" GameObject
 class AzureSessionCoordinator {
-    + Construct(anchorsRepository:AnchorsRepository, cloudManager:SpatialAnchorManager, objectsCreator:ObjectsCreator) : void
+    + Construct(anchorsRepository:AnchorsRepository, anchorLocator:AnchorLocator, objectsCreator:ObjectsCreator, startAzureSession:StartAzureSession, saveAnchor:AnchorCreator, gameObjectEditor:GameObjectEditor) : void
     Start() : void
-    Update() : void
     + findAzureAnchor() : void
 }
 MonoBehaviour <|-- AzureSessionCoordinator

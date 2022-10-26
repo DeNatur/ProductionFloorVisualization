@@ -1,0 +1,22 @@
+@startuml
+interface AnchorLocator {
+    +  <<event>> CloudAnchorLocated : CloudAnchorLocated 
+    + startLocatingAzureAnchors(idsToFind:string[]) : void
+}
+class AzureAnchorLocator {
+    {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
+    + AzureAnchorLocator(cloudManager:SpatialAnchorManager)
+    +  <<event>> CloudAnchorLocated : CloudAnchorLocated 
+    + startLocatingAzureAnchors(idsToFind:string[]) : void
+}
+class CloudAnchorLocatedArgs {
+    + type : int <<get>>
+    + identifier : string <<get>>
+    + CloudAnchorLocatedArgs(pose:Pose, type:int, identifier:string)
+}
+AnchorLocator <|-- AzureAnchorLocator
+AzureAnchorLocator --> "_cloudManager" SpatialAnchorManager
+AnchorLocator +-- CloudAnchorLocatedArgs
+EventArgs <|-- CloudAnchorLocatedArgs
+CloudAnchorLocatedArgs --> "pose" Pose
+@enduml
