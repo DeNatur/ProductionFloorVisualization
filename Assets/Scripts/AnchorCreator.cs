@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public interface SaveAnchor
+public interface AnchorCreator
 {
     public void createNativeAnchor(GameObject gameObject);
 

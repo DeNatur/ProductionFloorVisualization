@@ -1,3 +1,4 @@
+using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEngine;
 using Zenject;
 
@@ -41,6 +42,12 @@ public class ObjectsCreator : MonoBehaviour
     public GameObject createNewMachineWithGO(GameObject obj)
     {
         AnchorScript newMachine = _anchorObjectFactory.Create(obj);
+
+        newMachine.setAnchorCreatedState();
+        TapToPlace tapToPlaceScript = newMachine.GetComponent<TapToPlace>();
+        tapToPlaceScript.enabled = false;
+        tapToPlaceScript.AutoStart = false;
+
         return newMachine.gameObject;
     }
 }

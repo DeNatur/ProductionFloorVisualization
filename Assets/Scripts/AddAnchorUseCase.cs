@@ -5,13 +5,13 @@ public class AddAnchorUseCase
 {
 
     readonly AnchorsRepository _anchorsRepository;
-    readonly SaveAnchor _saveAnchor;
+    readonly AnchorCreator _saveAnchor;
     readonly AwarnessValidator _sceneAwarnessValidator;
     readonly GameObjectEditor _gameObjectEditor;
 
     public AddAnchorUseCase(
         AnchorsRepository anchorsRepository,
-        SaveAnchor saveAnchor,
+        AnchorCreator saveAnchor,
         AwarnessValidator sceneAwarnessValidator,
         GameObjectEditor gameObjectEditor
     )
@@ -41,23 +41,23 @@ public class AddAnchorUseCase
 
         await _sceneAwarnessValidator.validateSceneReadiness();
 
-        SaveAnchor.Result result = await _saveAnchor.createCloudAnchor(theObject, index);
-        if (result is SaveAnchor.Result.Success)
+        AnchorCreator.Result result = await _saveAnchor.createCloudAnchor(theObject, index);
+        if (result is AnchorCreator.Result.Success)
         {
-            saveNewAnchor(theObject, result as SaveAnchor.Result.Success);
+            saveNewAnchor(theObject, result as AnchorCreator.Result.Success);
             return true;
         }
         else
         {
-            if ((result as SaveAnchor.Result.Failure).exception != null)
+            if ((result as AnchorCreator.Result.Failure).exception != null)
             {
-                Debug.Log((result as SaveAnchor.Result.Failure).exception);
+                Debug.Log((result as AnchorCreator.Result.Failure).exception);
             }
             return false;
         }
     }
 
-    private void saveNewAnchor(GameObject theObject, SaveAnchor.Result.Success result)
+    private void saveNewAnchor(GameObject theObject, AnchorCreator.Result.Success result)
     {
         _gameObjectEditor.setName(theObject, result.anchorIdentifier);
         AnchorsRepository.AnchorGameObject anchorToSave = new AnchorsRepository.AnchorGameObject

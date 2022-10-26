@@ -38,7 +38,11 @@ public class AppInstaller : MonoInstaller
             .FromInstance(sceneAwarnessValidator)
             .AsSingle();
 
-        Container.Bind<SaveAnchor>()
+        Container.Bind<AnchorCreator>()
+            .To<AzureCloudManager>()
+            .AsSingle();
+
+        Container.Bind<StartAzureSession>()
             .To<AzureCloudManager>()
             .AsSingle();
 

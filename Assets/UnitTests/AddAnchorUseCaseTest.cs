@@ -7,7 +7,7 @@ public class AddAnchorUseCaseTest
 {
 
     AnchorsRepository anchorsRepository = Substitute.For<AnchorsRepository>();
-    SaveAnchor saveAnchor = Substitute.For<SaveAnchor>();
+    AnchorCreator saveAnchor = Substitute.For<AnchorCreator>();
     AwarnessValidator validator = Substitute.For<AwarnessValidator>();
     GameObjectEditor gameObjectEditor = Substitute.For<GameObjectEditor>();
     AddAnchorUseCase subject;
@@ -80,7 +80,7 @@ public class AddAnchorUseCaseTest
         {
 
             private const string newIdentifier = "new";
-            private SaveAnchor.Result anchorResult = new SaveAnchor.Result.Success(newIdentifier);
+            private AnchorCreator.Result anchorResult = new AnchorCreator.Result.Success(newIdentifier);
             private Task<bool> resultTask;
 
             [SetUp]
@@ -168,7 +168,7 @@ public class AddAnchorUseCaseTest
         {
 
             private const string newIdentifier = "new";
-            private SaveAnchor.Result anchorResult = new SaveAnchor.Result.Failure();
+            private AnchorCreator.Result anchorResult = new AnchorCreator.Result.Failure();
             private Task<bool> resultTask;
 
             [SetUp]
@@ -219,7 +219,6 @@ public class AddAnchorUseCaseTest
                         );
                 }).GetAwaiter().GetResult();
             }
-
         }
 
     }

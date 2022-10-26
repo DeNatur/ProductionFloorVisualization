@@ -1,10 +1,6 @@
-using Microsoft.Azure.SpatialAnchors;
-using Microsoft.Azure.SpatialAnchors.Unity;
-using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
@@ -16,160 +12,87 @@ using Windows.Storage;
 
 public class AzureSessionCoordinator : MonoBehaviour
 {
-    private ObjectsCreator objectsCreator;
 
-    private SpatialAnchorManager cloudManager;
-    private AnchorsRepository anchorsRepository;
-
-    private readonly Queue<Action> dispatchQueue = new Queue<Action>();
-    private AnchorLocateCriteria anchorLocateCriteria = new AnchorLocateCriteria();
+    private ObjectsCreator _objectsCreator;
+    private AnchorsRepository _anchorsRepository;
+    private AnchorLocator _anchorLocator;
+    private StartAzureSession _startAzureSession;
+    private AnchorCreator _saveAnchor;
+    private GameObjectEditor _gameObjectEditor;
 
     [Inject]
     public void Construct(
         AnchorsRepository anchorsRepository,
-        SpatialAnchorManager cloudManager,
-        ObjectsCreator objectsCreator
+        AnchorLocator anchorLocator,
+        ObjectsCreator objectsCreator,
+        StartAzureSession startAzureSession,
+        AnchorCreator saveAnchor,
+        GameObjectEditor gameObjectEditor
     )
     {
-        this.anchorsRepository = anchorsRepository;
-        this.cloudManager = cloudManager;
-        this.objectsCreator = objectsCreator;
+        _anchorsRepository = anchorsRepository;
+        _objectsCreator = objectsCreator;
+        _anchorLocator = anchorLocator;
+        _startAzureSession = startAzureSession;
+        _saveAnchor = saveAnchor;
+        _gameObjectEditor = gameObjectEditor;
+
     }
 
-    #region Unity Lifecycle
     void Start()
     {
-        cloudManager.AnchorLocated += CloudManager_AnchorLocated;
+        _anchorLocator.CloudAnchorLocated += AnchorLocator_CloudAnchorLocated;
 
         StartCoroutine(
                 runAfterFrame(async () =>
                 {
-                    await startAzureSession();
+                    await _startAzureSession.invoke();
                     findAzureAnchor();
                 }
             )
         );
     }
 
-    void Update()
-    {
-        lock (dispatchQueue)
-        {
-            if (dispatchQueue.Count > 0)
-            {
-                dispatchQueue.Dequeue()();
-            }
-        }
-    }
-    #endregion
-
-    #region public methods
 
     public void findAzureAnchor()
     {
-        Debug.Log("\nAnchorModuleScript.FindAzureAnchor()");
 
-        List<string> anchorsToFind = anchorsRepository.getAnchorsIds();
+        List<string> anchorsToFind = _anchorsRepository.getAnchorsIds();
 
         if (anchorsToFind.Count == 0)
         {
             return;
         }
 
-        anchorLocateCriteria.Identifiers = anchorsToFind.ToArray();
-        Debug.Log($"Anchor locate criteria configured to look for Azure anchor with ID '{anchorsToFind.ToArray()}'");
-
-        if ((cloudManager != null) && (cloudManager.Session != null))
-        {
-            cloudManager.Session.CreateWatcher(anchorLocateCriteria);
-            Debug.Log("Looking for Azure anchor... please wait...");
-        }
-        else
-        {
-            Debug.Log("Attempt to create watcher failed, no session exists");
-        }
+        _anchorLocator.startLocatingAzureAnchors(anchorsToFind.ToArray());
     }
 
-    #endregion
-
-    private void CloudManager_AnchorLocated(object sender, AnchorLocatedEventArgs args)
+    private void AnchorLocator_CloudAnchorLocated(object sender, AnchorLocator.CloudAnchorLocatedArgs args)
     {
-        QueueOnUpdate(new Action(() => Debug.Log($"Anchor recognized as a possible Azure anchor")));
+        GameObject newAnchor = _objectsCreator.createNewMachineWithGO(
+            _objectsCreator.allMachines[args.type]
+        );
 
-        if (args.Status == LocateAnchorStatus.Located)
-        {
+        _saveAnchor.createNativeAnchor(newAnchor);
+        _gameObjectEditor.setName(newAnchor, args.identifier);
 
-            QueueOnUpdate(() =>
+        Debug.Log($"Setting object to anchor pose with position '{args.pose.position}' and rotation '{args.pose.rotation}' and name '{newAnchor.name}'");
+        _gameObjectEditor.setPose(newAnchor, args.pose);
+
+        _saveAnchor.createNativeAnchor(newAnchor);
+
+        _anchorsRepository.addAnchor(
+            new AnchorsRepository.AnchorGameObject
             {
-                Debug.Log($"Azure anchor located successfully");
-
-                if (args.Anchor != null)
-                {
-
-                    Debug.Log("Local anchor position successfully set to Azure anchor position");
-                    int index = int.Parse(args.Anchor.AppProperties["ANCHOR_TYPE"]);
-
-                    GameObject newAnchor = objectsCreator.createNewMachineWithGO(objectsCreator.allMachines[index]);
-
-                    TapToPlace tapToPlaceScript = newAnchor.GetComponent<TapToPlace>();
-                    tapToPlaceScript.enabled = false;
-                    tapToPlaceScript.AutoStart = false;
-
-                    newAnchor.CreateNativeAnchor();
-                    newAnchor.name = args.Identifier;
-
-                    Pose anchorPose = Pose.identity;
-                    anchorPose = args.Anchor.GetPose();
-                    newAnchor.SetActive(true);
-                    newAnchor.GetComponent<AnchorScript>().setAnchorCreatedState();
-
-                    Debug.Log($"Setting object to anchor pose with position '{anchorPose.position}' and rotation '{anchorPose.rotation}' and name '{newAnchor.name}'");
-                    newAnchor.transform.position = anchorPose.position;
-                    newAnchor.transform.rotation = anchorPose.rotation;
-
-                    newAnchor.CreateNativeAnchor();
-
-                    anchorsRepository.addAnchor(
-                        new AnchorsRepository.AnchorGameObject
-                        {
-                            identifier = args.Anchor.Identifier,
-                            gameObject = newAnchor,
-                        }
-                    );
-                }
-            });
-        }
-        else
-        {
-            QueueOnUpdate(new Action(() => Debug.Log($"Attempt to locate Anchor with ID '{args.Identifier}' failed, locate anchor status was not 'Located' but '{args.Status}'")));
-        }
+                identifier = args.identifier,
+                gameObject = newAnchor,
+            }
+        );
     }
 
     private IEnumerator runAfterFrame(Action actionToInvoke)
     {
         yield return new WaitForEndOfFrame();
         actionToInvoke();
-    }
-
-    private void QueueOnUpdate(Action updateAction)
-    {
-        lock (dispatchQueue)
-        {
-            dispatchQueue.Enqueue(updateAction);
-        }
-    }
-
-    private async Task startAzureSession()
-    {
-        Debug.Log("Starting Azure session... please wait...");
-
-        if (cloudManager.Session == null)
-        {
-            await cloudManager.CreateSessionAsync();
-        }
-
-        await cloudManager.StartSessionAsync();
-
-        Debug.Log("Azure session started successfully");
     }
 }

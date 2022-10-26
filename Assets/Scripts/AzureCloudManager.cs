@@ -7,10 +7,10 @@ using UnityEngine;
 
 public interface StartAzureSession
 {
-
+    Task invoke();
 }
 
-public class AzureCloudManager : SaveAnchor
+public class AzureCloudManager : AnchorCreator, StartAzureSession
 {
     static string ANCHOR_TYPE_PROP = "ANCHOR_TYPE";
 
@@ -21,7 +21,7 @@ public class AzureCloudManager : SaveAnchor
         _cloudManager = cloudManager;
     }
 
-    public async Task<SaveAnchor.Result> createCloudAnchor(GameObject gameObject, int propIndex)
+    public async Task<AnchorCreator.Result> createCloudAnchor(GameObject gameObject, int propIndex)
     {
         CloudSpatialAnchor localCloudAnchor = await getLocalAnchorWithObjectProperties(gameObject, propIndex);
 
@@ -30,16 +30,16 @@ public class AzureCloudManager : SaveAnchor
             await _cloudManager.CreateAnchorAsync(localCloudAnchor);
             if (localCloudAnchor != null)
             {
-                return new SaveAnchor.Result.Success(localCloudAnchor.Identifier);
+                return new AnchorCreator.Result.Success(localCloudAnchor.Identifier);
             }
             else
             {
-                return new SaveAnchor.Result.Failure();
+                return new AnchorCreator.Result.Failure();
             }
         }
         catch (Exception ex)
         {
-            return new SaveAnchor.Result.Failure(ex);
+            return new AnchorCreator.Result.Failure(ex);
         }
     }
 
@@ -56,4 +56,17 @@ public class AzureCloudManager : SaveAnchor
         return localCloudAnchor;
     }
 
+    public async Task invoke()
+    {
+        Debug.Log("Starting Azure session... please wait...");
+
+        if (_cloudManager.Session == null)
+        {
+            await _cloudManager.CreateSessionAsync();
+        }
+
+        await _cloudManager.StartSessionAsync();
+
+        Debug.Log("Azure session started successfully");
+    }
 }
