@@ -1,0 +1,12 @@
+@startuml
+interface AwarnessValidator {
+    + validateSceneReadiness() : Task
+}
+class SceneAwarnessValidator {
+    + Construct(cloudManager:SpatialAnchorManager) : void
+    + <<async>> validateSceneReadiness() : Task
+    Update() : void
+}
+MonoBehaviour <|-- SceneAwarnessValidator
+AwarnessValidator <|-- SceneAwarnessValidator
+@enduml

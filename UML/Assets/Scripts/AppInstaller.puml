@@ -1,0 +1,11 @@
+@startuml
+class AppInstaller {
+    + <<override>> InstallBindings() : void
+}
+MonoInstaller <|-- AppInstaller
+AppInstaller --> "sessionCoordinator" AzureSessionCoordinator
+AppInstaller --> "addAnchorUseCase" AddAnchorUseCase
+AppInstaller --> "cloudManager" SpatialAnchorManager
+AppInstaller --> "objectsCreator" ObjectsCreator
+AppInstaller --> "sceneAwarnessValidator" SceneAwarnessValidator
+@enduml

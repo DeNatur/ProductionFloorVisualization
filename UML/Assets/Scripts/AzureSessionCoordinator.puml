@@ -1,0 +1,9 @@
+@startuml
+class AzureSessionCoordinator {
+    + Construct(anchorsRepository:AnchorsRepository, cloudManager:SpatialAnchorManager, objectsCreator:ObjectsCreator) : void
+    Start() : void
+    Update() : void
+    + findAzureAnchor() : void
+}
+MonoBehaviour <|-- AzureSessionCoordinator
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class AzureAnchorsReporitory {
+    + addAnchor(anchorGameObject:AnchorGameObject) : void
+    + removeAnchor(id:String) : void
+    + getAnchor(id:String) : AnchorGameObject?
+    + getAnchorsIds() : List<string>
+}
+AnchorsRepository <|-- AzureAnchorsReporitory
+@enduml

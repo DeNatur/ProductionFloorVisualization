@@ -1,0 +1,11 @@
+@startuml
+interface GameObjectEditor {
+    setName(gameObject:GameObject, name:string) : void
+    getName(gameObject:GameObject) : string
+}
+class GameObjectEditorImpl {
+    + getName(gameObject:GameObject) : string
+    + setName(gameObject:GameObject, name:string) : void
+}
+GameObjectEditor <|-- GameObjectEditorImpl
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+interface StartAzureSession {
+}
+class AzureCloudManager {
+    {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
+    + AzureCloudManager(cloudManager:SpatialAnchorManager)
+    + <<async>> createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<SaveAnchor.Result>
+    + createNativeAnchor(gameObject:GameObject) : void
+}
+SaveAnchor <|-- AzureCloudManager
+AzureCloudManager --> "_cloudManager" SpatialAnchorManager
+@enduml

@@ -1,0 +1,5 @@
+@startuml
+class DebugWindow {
+}
+MonoBehaviour <|-- DebugWindow
+@enduml
