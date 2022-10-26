@@ -1,0 +1,10 @@
+@startuml
+class AnchorObjectFactory {
+    + AnchorObjectFactory(container:DiContainer)
+    + Create(prefab:Object) : AnchorScript
+}
+class "IFactory`2"<T1,T2> {
+}
+"IFactory`2" "<UnityEngine.Object,AnchorScript>" <|-- AnchorObjectFactory
+AnchorObjectFactory --> "_container" DiContainer
+@enduml

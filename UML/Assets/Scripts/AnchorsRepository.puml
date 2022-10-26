@@ -1,0 +1,13 @@
+@startuml
+interface AnchorsRepository {
+    + addAnchor(anchor:AnchorGameObject) : void
+    + removeAnchor(id:string) : void
+    + getAnchor(id:string) : AnchorGameObject?
+    + getAnchorsIds() : List<string>
+}
+class AnchorGameObject <<struct>> {
+    + identifier : string
+}
+AnchorsRepository +-- AnchorGameObject
+AnchorGameObject --> "gameObject" GameObject
+@enduml

@@ -1,0 +1,6 @@
+@startuml
+class RemoveAnchorUseCase {
+    + RemoveAnchorUseCase(anchorsRepository:AnchorsRepository, spatialAnchorManager:SpatialAnchorManager)
+    + <<async>> removeAzureAnchor(theObject:GameObject) : void
+}
+@enduml

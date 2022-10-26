@@ -1,0 +1,137 @@
+@startuml
+class AnchorScript {
+    + index : int
+    + Construct(addAnchorUseCase:AddAnchorUseCase, removeAnchorUseCase:RemoveAnchorUseCase) : void
+    + setAnchorCreatedState() : void
+    + setAnchorNotCreatedState() : void
+    + <<async>> addAnchor() : void
+    + removeAnchor() : void
+    + deleteObject() : void
+    + enableBoundsControl() : void
+    + disableBoundsControl() : void
+}
+class Factory {
+}
+class "PlaceholderFactory`2"<T1,T2> {
+}
+MonoBehaviour <|-- AnchorScript
+AnchorScript --> "addAnchorButton" GameObject
+AnchorScript --> "removeAnchorButton" GameObject
+AnchorScript --> "tapToPlaceButton" GameObject
+AnchorScript --> "deleteButton" GameObject
+AnchorScript +-- Factory
+"PlaceholderFactory`2" "<UnityEngine.Object,AnchorScript>" <|-- Factory
+interface SaveAnchor {
+    + createNativeAnchor(gameObject:GameObject) : void
+    + createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<Result>
+}
+class Result {
+}
+class Success {
+    + anchorIdentifier : string <<get>>
+    + Success(anchorIdentifier:string)
+}
+class Failure {
+    + exception : Exception? <<get>>
+    + Failure(exception:Exception?)
+}
+SaveAnchor +-- Result
+Result +-- Success
+Result <|-- Success
+Result +-- Failure
+Result <|-- Failure
+class AddAnchorUseCase {
+    + AddAnchorUseCase(anchorsRepository:AnchorsRepository, saveAnchor:SaveAnchor, sceneAwarnessValidator:AwarnessValidator, gameObjectEditor:GameObjectEditor)
+    + <<async>> createAzureAnchor(theObject:GameObject, index:int) : Task<bool>
+}
+AddAnchorUseCase --> "_anchorsRepository" AnchorsRepository
+AddAnchorUseCase --> "_saveAnchor" SaveAnchor
+AddAnchorUseCase --> "_sceneAwarnessValidator" AwarnessValidator
+AddAnchorUseCase --> "_gameObjectEditor" GameObjectEditor
+class AzureAnchorsReporitory {
+    + addAnchor(anchorGameObject:AnchorGameObject) : void
+    + removeAnchor(id:String) : void
+    + getAnchor(id:String) : AnchorGameObject?
+    + getAnchorsIds() : List<string>
+}
+AnchorsRepository <|-- AzureAnchorsReporitory
+interface AwarnessValidator {
+    + validateSceneReadiness() : Task
+}
+class SceneAwarnessValidator {
+    + Construct(cloudManager:SpatialAnchorManager) : void
+    + <<async>> validateSceneReadiness() : Task
+    Update() : void
+}
+MonoBehaviour <|-- SceneAwarnessValidator
+AwarnessValidator <|-- SceneAwarnessValidator
+class AppInstaller {
+    + <<override>> InstallBindings() : void
+}
+MonoInstaller <|-- AppInstaller
+AppInstaller --> "sessionCoordinator" AzureSessionCoordinator
+AppInstaller --> "addAnchorUseCase" AddAnchorUseCase
+AppInstaller --> "cloudManager" SpatialAnchorManager
+AppInstaller --> "objectsCreator" ObjectsCreator
+AppInstaller --> "sceneAwarnessValidator" SceneAwarnessValidator
+class RemoveAnchorUseCase {
+    + RemoveAnchorUseCase(anchorsRepository:AnchorsRepository, spatialAnchorManager:SpatialAnchorManager)
+    + <<async>> removeAzureAnchor(theObject:GameObject) : void
+}
+class DebugWindow {
+}
+MonoBehaviour <|-- DebugWindow
+interface StartAzureSession {
+}
+class AzureCloudManager {
+    {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
+    + AzureCloudManager(cloudManager:SpatialAnchorManager)
+    + <<async>> createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<SaveAnchor.Result>
+    + createNativeAnchor(gameObject:GameObject) : void
+}
+SaveAnchor <|-- AzureCloudManager
+AzureCloudManager --> "_cloudManager" SpatialAnchorManager
+interface GameObjectEditor {
+    setName(gameObject:GameObject, name:string) : void
+    getName(gameObject:GameObject) : string
+}
+class GameObjectEditorImpl {
+    + getName(gameObject:GameObject) : string
+    + setName(gameObject:GameObject, name:string) : void
+}
+GameObjectEditor <|-- GameObjectEditorImpl
+class ObjectsCreator {
+    + Construct(anchorObjectFactory:AnchorScript.Factory) : void
+    + enableBoundsControl() : void
+    + disableBoundsControl() : void
+    + createNewMachine(obj:GameObject) : void
+    + createNewMachineWithGO(obj:GameObject) : GameObject
+}
+MonoBehaviour <|-- ObjectsCreator
+interface AnchorsRepository {
+    + addAnchor(anchor:AnchorGameObject) : void
+    + removeAnchor(id:string) : void
+    + getAnchor(id:string) : AnchorGameObject?
+    + getAnchorsIds() : List<string>
+}
+class AnchorGameObject <<struct>> {
+    + identifier : string
+}
+AnchorsRepository +-- AnchorGameObject
+AnchorGameObject --> "gameObject" GameObject
+class AzureSessionCoordinator {
+    + Construct(anchorsRepository:AnchorsRepository, cloudManager:SpatialAnchorManager, objectsCreator:ObjectsCreator) : void
+    Start() : void
+    Update() : void
+    + findAzureAnchor() : void
+}
+MonoBehaviour <|-- AzureSessionCoordinator
+class AnchorObjectFactory {
+    + AnchorObjectFactory(container:DiContainer)
+    + Create(prefab:Object) : AnchorScript
+}
+class "IFactory`2"<T1,T2> {
+}
+"IFactory`2" "<UnityEngine.Object,AnchorScript>" <|-- AnchorObjectFactory
+AnchorObjectFactory --> "_container" DiContainer
+@enduml

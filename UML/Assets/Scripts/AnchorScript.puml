@@ -1,0 +1,24 @@
+@startuml
+class AnchorScript {
+    + index : int
+    + Construct(addAnchorUseCase:AddAnchorUseCase, removeAnchorUseCase:RemoveAnchorUseCase) : void
+    + setAnchorCreatedState() : void
+    + setAnchorNotCreatedState() : void
+    + <<async>> addAnchor() : void
+    + removeAnchor() : void
+    + deleteObject() : void
+    + enableBoundsControl() : void
+    + disableBoundsControl() : void
+}
+class Factory {
+}
+class "PlaceholderFactory`2"<T1,T2> {
+}
+MonoBehaviour <|-- AnchorScript
+AnchorScript --> "addAnchorButton" GameObject
+AnchorScript --> "removeAnchorButton" GameObject
+AnchorScript --> "tapToPlaceButton" GameObject
+AnchorScript --> "deleteButton" GameObject
+AnchorScript +-- Factory
+"PlaceholderFactory`2" "<UnityEngine.Object,AnchorScript>" <|-- Factory
+@enduml

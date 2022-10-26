@@ -1,0 +1,10 @@
+@startuml
+class ObjectsCreator {
+    + Construct(anchorObjectFactory:AnchorScript.Factory) : void
+    + enableBoundsControl() : void
+    + disableBoundsControl() : void
+    + createNewMachine(obj:GameObject) : void
+    + createNewMachineWithGO(obj:GameObject) : GameObject
+}
+MonoBehaviour <|-- ObjectsCreator
+@enduml
