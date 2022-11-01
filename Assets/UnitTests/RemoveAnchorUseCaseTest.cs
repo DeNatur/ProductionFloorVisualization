@@ -32,7 +32,7 @@ public class RemoveAnchorUseCaseTest
         private Task resultTask;
 
         [SetUp]
-        public void setUp()
+        public new void setUp()
         {
             anchorsRepository.getAnchor(mockedIdentifier).ReturnsNull();
             resultTask = Task.Run(async () => await subject.removeAzureAnchor(mockedGO));
@@ -77,7 +77,7 @@ public class RemoveAnchorUseCaseTest
         private Task resultTask;
 
         [SetUp]
-        public void setUp()
+        public new void setUp()
         {
             anchorsRepository.getAnchor(mockedIdentifier).Returns(mockedAnchorGO);
             resultTask = Task.Run(async () => await subject.removeAzureAnchor(mockedGO));
