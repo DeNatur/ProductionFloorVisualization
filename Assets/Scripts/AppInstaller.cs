@@ -7,7 +7,7 @@ public class AppInstaller : MonoInstaller
     public AzureSessionCoordinator sessionCoordinator;
     public AddAnchorUseCase addAnchorUseCase;
     public SpatialAnchorManager cloudManager;
-    public ObjectsCreator objectsCreator;
+    public ObjectsCreatorImpl objectsCreator;
     public SceneAwarnessValidator sceneAwarnessValidator;
 
     public override void InstallBindings()
@@ -30,7 +30,7 @@ public class AppInstaller : MonoInstaller
             .FromInstance(cloudManager)
             .AsSingle();
 
-        Container.Bind<ObjectsCreator>()
+        Container.Bind<ObjectCreator>()
             .FromInstance(objectsCreator)
             .AsSingle();
 
@@ -40,14 +40,18 @@ public class AppInstaller : MonoInstaller
 
         Container.Bind<AnchorCreator>()
             .To<AzureCloudManager>()
-            .AsSingle();
+            .AsCached();
 
         Container.Bind<StartAzureSession>()
             .To<AzureCloudManager>()
-            .AsSingle();
+            .AsCached();
 
         Container.Bind<GameObjectEditor>()
             .To<GameObjectEditorImpl>()
+            .AsSingle();
+
+        Container.Bind<AnchorLocator>()
+            .To<AzureAnchorLocator>()
             .AsSingle();
 
         Container.BindFactory<UnityEngine.Object, AnchorScript, AnchorScript.Factory>()

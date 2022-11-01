@@ -5,26 +5,23 @@ using UnityEngine;
 using Zenject;
 
 
-#if WINDOWS_UWP
-using Windows.Storage;
-#endif
-
-
 public class AzureSessionCoordinator : MonoBehaviour
 {
 
-    private ObjectsCreator _objectsCreator;
+    private ObjectCreator _objectsCreator;
     private AnchorsRepository _anchorsRepository;
     private AnchorLocator _anchorLocator;
     private StartAzureSession _startAzureSession;
     private AnchorCreator _saveAnchor;
     private GameObjectEditor _gameObjectEditor;
 
+    public bool isStarted = false;
+
     [Inject]
     public void Construct(
         AnchorsRepository anchorsRepository,
         AnchorLocator anchorLocator,
-        ObjectsCreator objectsCreator,
+        ObjectCreator objectsCreator,
         StartAzureSession startAzureSession,
         AnchorCreator saveAnchor,
         GameObjectEditor gameObjectEditor
@@ -36,34 +33,30 @@ public class AzureSessionCoordinator : MonoBehaviour
         _startAzureSession = startAzureSession;
         _saveAnchor = saveAnchor;
         _gameObjectEditor = gameObjectEditor;
-
     }
 
-    void Start()
+    public void Start()
     {
         _anchorLocator.CloudAnchorLocated += AnchorLocator_CloudAnchorLocated;
-
         StartCoroutine(
                 runAfterFrame(async () =>
                 {
                     await _startAzureSession.invoke();
                     findAzureAnchor();
+                    isStarted = true;
                 }
             )
         );
     }
 
 
-    public void findAzureAnchor()
+    private void findAzureAnchor()
     {
-
         List<string> anchorsToFind = _anchorsRepository.getAnchorsIds();
-
         if (anchorsToFind.Count == 0)
         {
             return;
         }
-
         _anchorLocator.startLocatingAzureAnchors(anchorsToFind.ToArray());
     }
 
@@ -73,7 +66,6 @@ public class AzureSessionCoordinator : MonoBehaviour
             _objectsCreator.allMachines[args.type]
         );
 
-        _saveAnchor.createNativeAnchor(newAnchor);
         _gameObjectEditor.setName(newAnchor, args.identifier);
 
         Debug.Log($"Setting object to anchor pose with position '{args.pose.position}' and rotation '{args.pose.rotation}' and name '{newAnchor.name}'");
@@ -92,7 +84,7 @@ public class AzureSessionCoordinator : MonoBehaviour
 
     private IEnumerator runAfterFrame(Action actionToInvoke)
     {
-        yield return new WaitForEndOfFrame();
+        yield return null;
         actionToInvoke();
     }
 }

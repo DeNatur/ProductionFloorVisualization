@@ -18988,8 +18988,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1572266757}
-  - component: {fileID: 1572266759}
   - component: {fileID: 1572266758}
+  - component: {fileID: 1572266759}
   m_Layer: 0
   m_Name: AzureSessionCoordinator
   m_TagString: Untagged
