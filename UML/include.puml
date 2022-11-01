@@ -90,8 +90,8 @@ AppInstaller --> "cloudManager" SpatialAnchorManager
 AppInstaller --> "objectsCreator" ObjectsCreatorImpl
 AppInstaller --> "sceneAwarnessValidator" SceneAwarnessValidator
 class RemoveAnchorUseCase {
-    + RemoveAnchorUseCase(anchorsRepository:AnchorsRepository, spatialAnchorManager:SpatialAnchorManager)
-    + <<async>> removeAzureAnchor(theObject:GameObject) : void
+    + RemoveAnchorUseCase(anchorsRepository:AnchorsRepository, anchorRemover:AnchorRemover, gameObjectEditor:GameObjectEditor)
+    + <<async>> removeAzureAnchor(theObject:GameObject) : Task
 }
 class DebugWindow {
 }
@@ -119,15 +119,22 @@ CloudAnchorLocatedArgs --> "pose" Pose
 interface StartAzureSession {
     invoke() : Task
 }
+interface AnchorRemover {
+    + deleteNativeAnchor(anchorGameObject:GameObject) : void
+    + deleteCloudAnchor(anchorGameObject:GameObject) : Task
+}
 class AzureCloudManager {
     {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
     + AzureCloudManager(cloudManager:SpatialAnchorManager)
     + <<async>> createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<AnchorCreator.Result>
     + createNativeAnchor(gameObject:GameObject) : void
     + <<async>> invoke() : Task
+    + deleteNativeAnchor(anchorGameObject:GameObject) : void
+    + <<async>> deleteCloudAnchor(anchorGameObject:GameObject) : Task
 }
 AnchorCreator <|-- AzureCloudManager
 StartAzureSession <|-- AzureCloudManager
+AnchorRemover <|-- AzureCloudManager
 AzureCloudManager --> "_cloudManager" SpatialAnchorManager
 interface GameObjectEditor {
     setName(gameObject:GameObject, name:string) : void
