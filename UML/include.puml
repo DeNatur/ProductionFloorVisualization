@@ -65,6 +65,21 @@ class SceneAwarnessValidator {
 }
 MonoBehaviour <|-- SceneAwarnessValidator
 AwarnessValidator <|-- SceneAwarnessValidator
+interface ObjectCreator {
+    + {abstract} enableBoundsControl() : void
+    + {abstract} disableBoundsControl() : void
+    + {abstract} createNewMachine(obj:GameObject) : void
+    + {abstract} createNewMachineWithGO(obj:GameObject) : GameObject
+}
+class ObjectsCreatorImpl {
+    + Construct(anchorObjectFactory:AnchorScript.Factory) : void
+    + enableBoundsControl() : void
+    + disableBoundsControl() : void
+    + createNewMachine(obj:GameObject) : void
+    + createNewMachineWithGO(obj:GameObject) : GameObject
+}
+MonoBehaviour <|-- ObjectsCreatorImpl
+ObjectCreator <|-- ObjectsCreatorImpl
 class AppInstaller {
     + <<override>> InstallBindings() : void
 }
@@ -72,7 +87,7 @@ MonoInstaller <|-- AppInstaller
 AppInstaller --> "sessionCoordinator" AzureSessionCoordinator
 AppInstaller --> "addAnchorUseCase" AddAnchorUseCase
 AppInstaller --> "cloudManager" SpatialAnchorManager
-AppInstaller --> "objectsCreator" ObjectsCreator
+AppInstaller --> "objectsCreator" ObjectsCreatorImpl
 AppInstaller --> "sceneAwarnessValidator" SceneAwarnessValidator
 class RemoveAnchorUseCase {
     + RemoveAnchorUseCase(anchorsRepository:AnchorsRepository, spatialAnchorManager:SpatialAnchorManager)
@@ -125,14 +140,6 @@ class GameObjectEditorImpl {
     + setPose(gameObject:GameObject, pose:Pose) : void
 }
 GameObjectEditor <|-- GameObjectEditorImpl
-class ObjectsCreator {
-    + Construct(anchorObjectFactory:AnchorScript.Factory) : void
-    + enableBoundsControl() : void
-    + disableBoundsControl() : void
-    + createNewMachine(obj:GameObject) : void
-    + createNewMachineWithGO(obj:GameObject) : GameObject
-}
-MonoBehaviour <|-- ObjectsCreator
 interface AnchorsRepository {
     + addAnchor(anchor:AnchorGameObject) : void
     + removeAnchor(id:string) : void
@@ -145,9 +152,9 @@ class AnchorGameObject <<struct>> {
 AnchorsRepository +-- AnchorGameObject
 AnchorGameObject --> "gameObject" GameObject
 class AzureSessionCoordinator {
-    + Construct(anchorsRepository:AnchorsRepository, anchorLocator:AnchorLocator, objectsCreator:ObjectsCreator, startAzureSession:StartAzureSession, saveAnchor:AnchorCreator, gameObjectEditor:GameObjectEditor) : void
-    Start() : void
-    + findAzureAnchor() : void
+    + isStarted : bool = false
+    + Construct(anchorsRepository:AnchorsRepository, anchorLocator:AnchorLocator, objectsCreator:ObjectCreator, startAzureSession:StartAzureSession, saveAnchor:AnchorCreator, gameObjectEditor:GameObjectEditor) : void
+    + Start() : void
 }
 MonoBehaviour <|-- AzureSessionCoordinator
 class AnchorObjectFactory {

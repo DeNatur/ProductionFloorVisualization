@@ -6,6 +6,6 @@ MonoInstaller <|-- AppInstaller
 AppInstaller --> "sessionCoordinator" AzureSessionCoordinator
 AppInstaller --> "addAnchorUseCase" AddAnchorUseCase
 AppInstaller --> "cloudManager" SpatialAnchorManager
-AppInstaller --> "objectsCreator" ObjectsCreator
+AppInstaller --> "objectsCreator" ObjectsCreatorImpl
 AppInstaller --> "sceneAwarnessValidator" SceneAwarnessValidator
 @enduml

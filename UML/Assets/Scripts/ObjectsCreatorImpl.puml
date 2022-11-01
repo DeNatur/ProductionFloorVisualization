@@ -1,0 +1,17 @@
+@startuml
+interface ObjectCreator {
+    + {abstract} enableBoundsControl() : void
+    + {abstract} disableBoundsControl() : void
+    + {abstract} createNewMachine(obj:GameObject) : void
+    + {abstract} createNewMachineWithGO(obj:GameObject) : GameObject
+}
+class ObjectsCreatorImpl {
+    + Construct(anchorObjectFactory:AnchorScript.Factory) : void
+    + enableBoundsControl() : void
+    + disableBoundsControl() : void
+    + createNewMachine(obj:GameObject) : void
+    + createNewMachineWithGO(obj:GameObject) : GameObject
+}
+MonoBehaviour <|-- ObjectsCreatorImpl
+ObjectCreator <|-- ObjectsCreatorImpl
+@enduml
