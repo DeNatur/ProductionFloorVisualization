@@ -1,41 +1,38 @@
-using Microsoft.Azure.SpatialAnchors;
-using Microsoft.Azure.SpatialAnchors.Unity;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class RemoveAnchorUseCase
 {
-    private AnchorsRepository anchorsRepository;
-    private SpatialAnchorManager cloudManager;
+    private readonly AnchorsRepository _anchorsRepository;
+    private readonly AnchorRemover _anchorRemover;
+    private readonly GameObjectEditor _gameObjectEditor;
 
-    public RemoveAnchorUseCase(AnchorsRepository anchorsRepository, SpatialAnchorManager spatialAnchorManager)
+
+    public RemoveAnchorUseCase(
+        AnchorsRepository anchorsRepository,
+        AnchorRemover anchorRemover,
+        GameObjectEditor gameObjectEditor
+        )
     {
-        this.anchorsRepository = anchorsRepository;
-        this.cloudManager = spatialAnchorManager;
+        _anchorsRepository = anchorsRepository;
+        _anchorRemover = anchorRemover;
+        _gameObjectEditor = gameObjectEditor;
     }
 
-    public async void removeAzureAnchor(GameObject theObject)
+    public async Task removeAzureAnchor(GameObject theObject)
     {
-        string id = theObject.name;
-        AnchorsRepository.AnchorGameObject? data = anchorsRepository.getAnchor(id);
+        string id = _gameObjectEditor.getName(theObject);
+        AnchorsRepository.AnchorGameObject? data = _anchorsRepository.getAnchor(id);
         if (data == null)
         {
             Debug.Log("\nNo Anchor");
             return;
         }
 
-
-        Debug.Log("\nAnchorModuleScript.RemoveAzureAnchor()");
-
-        CloudSpatialAnchor localCloudAnchor = new CloudSpatialAnchor();
-        localCloudAnchor.LocalAnchor = await theObject.FindNativeAnchor().GetPointer();
-
-        theObject.DeleteNativeAnchor();
-
-        await cloudManager.DeleteAnchorAsync(localCloudAnchor);
-
-        anchorsRepository.removeAnchor(id);
-
+        Debug.Log("\nRemoveAnchorUseCase.RemoveAzureAnchor()");
+        _anchorRemover.deleteNativeAnchor(theObject);
+        await _anchorRemover.deleteCloudAnchor(theObject);
+        _anchorsRepository.removeAnchor(id);
         Debug.Log("\nSuccessfully removed anchor");
-
     }
 }

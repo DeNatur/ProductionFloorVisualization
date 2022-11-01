@@ -10,7 +10,15 @@ public interface StartAzureSession
     Task invoke();
 }
 
-public class AzureCloudManager : AnchorCreator, StartAzureSession
+public interface AnchorRemover
+{
+
+    public void deleteNativeAnchor(GameObject anchorGameObject);
+
+    public Task deleteCloudAnchor(GameObject anchorGameObject);
+}
+
+public class AzureCloudManager : AnchorCreator, StartAzureSession, AnchorRemover
 {
     static string ANCHOR_TYPE_PROP = "ANCHOR_TYPE";
 
@@ -50,23 +58,37 @@ public class AzureCloudManager : AnchorCreator, StartAzureSession
 
     private static async Task<CloudSpatialAnchor> getLocalAnchorWithObjectProperties(GameObject theObject, int index)
     {
-        CloudSpatialAnchor localCloudAnchor = new CloudSpatialAnchor();
-        localCloudAnchor.LocalAnchor = await theObject.FindNativeAnchor().GetPointer();
+        CloudSpatialAnchor localCloudAnchor = await getLocalAnchorFromGamObject(theObject);
         localCloudAnchor.AppProperties[ANCHOR_TYPE_PROP] = index.ToString();
+        return localCloudAnchor;
+    }
+
+    private static async Task<CloudSpatialAnchor> getLocalAnchorFromGamObject(GameObject gameObject)
+    {
+        CloudSpatialAnchor localCloudAnchor = new CloudSpatialAnchor();
+        localCloudAnchor.LocalAnchor = await gameObject.FindNativeAnchor().GetPointer();
         return localCloudAnchor;
     }
 
     public async Task invoke()
     {
         Debug.Log("Starting Azure session... please wait...");
-
         if (_cloudManager.Session == null)
         {
             await _cloudManager.CreateSessionAsync();
         }
-
         await _cloudManager.StartSessionAsync();
-
         Debug.Log("Azure session started successfully");
+    }
+
+    public void deleteNativeAnchor(GameObject anchorGameObject)
+    {
+        anchorGameObject.DeleteNativeAnchor();
+    }
+
+    public async Task deleteCloudAnchor(GameObject anchorGameObject)
+    {
+        CloudSpatialAnchor localCloudAnchor = await getLocalAnchorFromGamObject(anchorGameObject);
+        await _cloudManager.DeleteAnchorAsync(localCloudAnchor);
     }
 }
