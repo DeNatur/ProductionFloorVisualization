@@ -2,10 +2,12 @@
 interface GameObjectEditor {
     setName(gameObject:GameObject, name:string) : void
     getName(gameObject:GameObject) : string
+    setPose(gameObject:GameObject, pose:Pose) : void
 }
 class GameObjectEditorImpl {
     + getName(gameObject:GameObject) : string
     + setName(gameObject:GameObject, name:string) : void
+    + setPose(gameObject:GameObject, pose:Pose) : void
 }
 GameObjectEditor <|-- GameObjectEditorImpl
 @enduml

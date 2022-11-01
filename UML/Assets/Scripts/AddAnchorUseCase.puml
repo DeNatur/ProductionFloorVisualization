@@ -1,10 +1,10 @@
 @startuml
 class AddAnchorUseCase {
-    + AddAnchorUseCase(anchorsRepository:AnchorsRepository, saveAnchor:SaveAnchor, sceneAwarnessValidator:AwarnessValidator, gameObjectEditor:GameObjectEditor)
+    + AddAnchorUseCase(anchorsRepository:AnchorsRepository, saveAnchor:AnchorCreator, sceneAwarnessValidator:AwarnessValidator, gameObjectEditor:GameObjectEditor)
     + <<async>> createAzureAnchor(theObject:GameObject, index:int) : Task<bool>
 }
 AddAnchorUseCase --> "_anchorsRepository" AnchorsRepository
-AddAnchorUseCase --> "_saveAnchor" SaveAnchor
+AddAnchorUseCase --> "_saveAnchor" AnchorCreator
 AddAnchorUseCase --> "_sceneAwarnessValidator" AwarnessValidator
 AddAnchorUseCase --> "_gameObjectEditor" GameObjectEditor
 @enduml
