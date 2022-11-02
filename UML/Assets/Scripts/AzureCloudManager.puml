@@ -16,7 +16,7 @@ class AzureCloudManager {
     + <<async>> deleteCloudAnchor(anchorGameObject:GameObject) : Task
 }
 AnchorCreator <|-- AzureCloudManager
-StartAzureSession <|-- AzureCloudManager
 AnchorRemover <|-- AzureCloudManager
+StartAzureSession <|-- AzureCloudManager
 AzureCloudManager --> "_cloudManager" SpatialAnchorManager
 @enduml
