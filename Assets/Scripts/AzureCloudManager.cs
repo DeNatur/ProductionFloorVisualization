@@ -18,7 +18,7 @@ public interface AnchorRemover
     public Task deleteCloudAnchor(GameObject anchorGameObject);
 }
 
-public class AzureCloudManager : AnchorCreator, StartAzureSession, AnchorRemover
+public class AzureCloudManager : AnchorCreator, AnchorRemover, StartAzureSession
 {
     static string ANCHOR_TYPE_PROP = "ANCHOR_TYPE";
 

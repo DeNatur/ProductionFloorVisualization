@@ -42,6 +42,10 @@ public class AppInstaller : MonoInstaller
             .To<AzureCloudManager>()
             .AsCached();
 
+        Container.Bind<AnchorRemover>()
+            .To<AzureCloudManager>()
+            .AsCached();
+
         Container.Bind<StartAzureSession>()
             .To<AzureCloudManager>()
             .AsCached();
