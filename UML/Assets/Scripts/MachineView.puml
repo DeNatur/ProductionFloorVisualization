@@ -1,0 +1,26 @@
+@startuml
+class MachineView {
+    + Start() : void
+    + Initialize(anchorPresenter:AnchorPresenter) : void
+}
+class MachineViewFactory {
+    + MachineViewFactory(container:DiContainer)
+    + Create(prefab:Object) : AnchorPresenter
+    + Create(prefab:Object, presenter:AnchorPresenter) : MachineView
+}
+class Factory {
+}
+class "IFactory`3"<T1,T2,T3> {
+}
+class "PlaceholderFactory`3"<T1,T2,T3> {
+}
+MonoBehaviour <|-- MachineView
+MachineView --> "addAnchorButton" Interactable
+MachineView --> "removeAnchorButton" Interactable
+MachineView --> "tapToPlaceButton" Interactable
+MachineView --> "deleteButton" Interactable
+"IFactory`3" "<UnityEngine.Object,AnchorPresenter,MachineView>" <|-- MachineViewFactory
+MachineViewFactory --> "_container" DiContainer
+MachineView +-- Factory
+"PlaceholderFactory`3" "<UnityEngine.Object,AnchorPresenter,MachineView>" <|-- Factory
+@enduml

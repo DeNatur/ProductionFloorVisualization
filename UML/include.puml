@@ -1,26 +1,4 @@
 @startuml
-class AnchorScript {
-    + index : int
-    + Construct(addAnchorUseCase:AddAnchorUseCase, removeAnchorUseCase:RemoveAnchorUseCase) : void
-    + setAnchorCreatedState() : void
-    + setAnchorNotCreatedState() : void
-    + <<async>> addAnchor() : void
-    + removeAnchor() : void
-    + deleteObject() : void
-    + enableBoundsControl() : void
-    + disableBoundsControl() : void
-}
-class Factory {
-}
-class "PlaceholderFactory`2"<T1,T2> {
-}
-MonoBehaviour <|-- AnchorScript
-AnchorScript --> "addAnchorButton" GameObject
-AnchorScript --> "removeAnchorButton" GameObject
-AnchorScript --> "tapToPlaceButton" GameObject
-AnchorScript --> "deleteButton" GameObject
-AnchorScript +-- Factory
-"PlaceholderFactory`2" "<UnityEngine.Object,AnchorScript>" <|-- Factory
 interface AnchorCreator {
     + createNativeAnchor(gameObject:GameObject) : void
     + createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<Result>
@@ -65,18 +43,30 @@ class SceneAwarnessValidator {
 }
 MonoBehaviour <|-- SceneAwarnessValidator
 AwarnessValidator <|-- SceneAwarnessValidator
-interface ObjectCreator {
+interface IBoundsControlEditor {
     + {abstract} enableBoundsControl() : void
     + {abstract} disableBoundsControl() : void
-    + {abstract} createNewMachine(obj:GameObject) : void
-    + {abstract} createNewMachineWithGO(obj:GameObject) : GameObject
 }
-class ObjectsCreatorImpl {
-    + Construct(anchorObjectFactory:AnchorScript.Factory) : void
+interface IBoundsControlProvider {
+}
+class BoundsControlRepository {
     + enableBoundsControl() : void
     + disableBoundsControl() : void
-    + createNewMachine(obj:GameObject) : void
-    + createNewMachineWithGO(obj:GameObject) : GameObject
+}
+class "IReadOnlyReactiveProperty`1"<T> {
+}
+IBoundsControlProvider --> "areBoundsEnabled<bool>" "IReadOnlyReactiveProperty`1"
+IBoundsControlEditor <|-- BoundsControlRepository
+IBoundsControlProvider <|-- BoundsControlRepository
+BoundsControlRepository --> "areBoundsEnabled<bool>" "IReadOnlyReactiveProperty`1"
+interface ObjectCreator {
+    + {abstract} createNewMachine(machineIndex:int) : void
+    + {abstract} createNewMachineWithGO(machineIndex:int) : GameObject
+}
+class ObjectsCreatorImpl {
+    + Construct(machineViewFactory:MachineView.Factory, anchorPresenterFactory:AnchorPresenter.Factory) : void
+    + createNewMachine(machineIndex:int) : void
+    + createNewMachineWithGO(machineIndex:int) : GameObject
 }
 MonoBehaviour <|-- ObjectsCreatorImpl
 ObjectCreator <|-- ObjectsCreatorImpl
@@ -116,6 +106,12 @@ AzureAnchorLocator --> "_cloudManager" SpatialAnchorManager
 AnchorLocator +-- CloudAnchorLocatedArgs
 EventArgs <|-- CloudAnchorLocatedArgs
 CloudAnchorLocatedArgs --> "pose" Pose
+class UserMenuView {
+    + Construct(presenter:UserMenuPresenter) : void
+}
+MonoBehaviour <|-- UserMenuView
+UserMenuView --> "enableBoundsButton" Interactable
+UserMenuView --> "disableBoundsButton" Interactable
 interface StartAzureSession {
     invoke() : Task
 }
@@ -147,6 +143,36 @@ class GameObjectEditorImpl {
     + setPose(gameObject:GameObject, pose:Pose) : void
 }
 GameObjectEditor <|-- GameObjectEditorImpl
+class UserMenuPresenter {
+    + UserMenuPresenter(objectCreator:ObjectCreator, boundsControlEditor:IBoundsControlEditor)
+    + enableBoundsControl() : void
+    + disableBoundControls() : void
+    + createNewMachine(index:int) : void
+}
+class MachineView {
+    + Start() : void
+    + Initialize(anchorPresenter:AnchorPresenter) : void
+}
+class MachineViewFactory {
+    + MachineViewFactory(container:DiContainer)
+    + Create(prefab:Object) : AnchorPresenter
+    + Create(prefab:Object, presenter:AnchorPresenter) : MachineView
+}
+class Factory {
+}
+class "IFactory`3"<T1,T2,T3> {
+}
+class "PlaceholderFactory`3"<T1,T2,T3> {
+}
+MonoBehaviour <|-- MachineView
+MachineView --> "addAnchorButton" Interactable
+MachineView --> "removeAnchorButton" Interactable
+MachineView --> "tapToPlaceButton" Interactable
+MachineView --> "deleteButton" Interactable
+"IFactory`3" "<UnityEngine.Object,AnchorPresenter,MachineView>" <|-- MachineViewFactory
+MachineViewFactory --> "_container" DiContainer
+MachineView +-- Factory
+"PlaceholderFactory`3" "<UnityEngine.Object,AnchorPresenter,MachineView>" <|-- Factory
 interface AnchorsRepository {
     + addAnchor(anchor:AnchorGameObject) : void
     + removeAnchor(id:string) : void
@@ -166,10 +192,44 @@ class AzureSessionCoordinator {
 MonoBehaviour <|-- AzureSessionCoordinator
 class AnchorObjectFactory {
     + AnchorObjectFactory(container:DiContainer)
-    + Create(prefab:Object) : AnchorScript
+    + Create(prefab:Object) : AnchorPresenter
 }
 class "IFactory`2"<T1,T2> {
 }
-"IFactory`2" "<UnityEngine.Object,AnchorScript>" <|-- AnchorObjectFactory
+"IFactory`2" "<UnityEngine.Object,AnchorPresenter>" <|-- AnchorObjectFactory
 AnchorObjectFactory --> "_container" DiContainer
+class AnchorPresenter {
+    + AnchorPresenter(index:int, addAnchorUseCase:AddAnchorUseCase, removeAnchorUseCase:RemoveAnchorUseCase, boundsControlProvider:IBoundsControlProvider)
+    +  <<event>> disableTapToPlace : Action 
+    +  <<event>> deleteCurrentMachine : Action 
+    + setAnchorCreatedState() : void
+    + setAnchorNotCreatedState() : void
+    + <<async>> setAnchor(gameObject:GameObject) : void
+    + <<async>> removeAnchor(gameObject:GameObject) : void
+    + delete() : void
+    + setTapToPlaceNotStarted() : void
+}
+class "IReadOnlyReactiveProperty`1"<T> {
+}
+class Factory {
+}
+class State {
+    + isAddAnchorVisible : bool = true
+    + isTapToPlaceVisible : bool = true
+    + isDeleteMachineVisible : bool = true
+    + isRemoveAnchorVisible : bool = false
+    + areBoundControlsVisible : bool = false
+    + State(state:State)
+}
+class "PlaceholderFactory`2"<T1,T2> {
+}
+AnchorPresenter --> "state<State>" "IReadOnlyReactiveProperty`1"
+AnchorPresenter +-- Factory
+"PlaceholderFactory`2" "<int,AnchorPresenter>" <|-- Factory
+AnchorPresenter +-- State
+class MachinesProvider {
+    Start() : void
+    Update() : void
+}
+MonoBehaviour <|-- MachinesProvider
 @enduml

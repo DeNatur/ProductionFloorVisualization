@@ -1,0 +1,7 @@
+@startuml
+class MachinesProvider {
+    Start() : void
+    Update() : void
+}
+MonoBehaviour <|-- MachinesProvider
+@enduml

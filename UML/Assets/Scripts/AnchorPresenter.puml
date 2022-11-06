@@ -1,0 +1,31 @@
+@startuml
+class AnchorPresenter {
+    + AnchorPresenter(index:int, addAnchorUseCase:AddAnchorUseCase, removeAnchorUseCase:RemoveAnchorUseCase, boundsControlProvider:IBoundsControlProvider)
+    +  <<event>> disableTapToPlace : Action 
+    +  <<event>> deleteCurrentMachine : Action 
+    + setAnchorCreatedState() : void
+    + setAnchorNotCreatedState() : void
+    + <<async>> setAnchor(gameObject:GameObject) : void
+    + <<async>> removeAnchor(gameObject:GameObject) : void
+    + delete() : void
+    + setTapToPlaceNotStarted() : void
+}
+class "IReadOnlyReactiveProperty`1"<T> {
+}
+class Factory {
+}
+class State {
+    + isAddAnchorVisible : bool = true
+    + isTapToPlaceVisible : bool = true
+    + isDeleteMachineVisible : bool = true
+    + isRemoveAnchorVisible : bool = false
+    + areBoundControlsVisible : bool = false
+    + State(state:State)
+}
+class "PlaceholderFactory`2"<T1,T2> {
+}
+AnchorPresenter --> "state<State>" "IReadOnlyReactiveProperty`1"
+AnchorPresenter +-- Factory
+"PlaceholderFactory`2" "<int,AnchorPresenter>" <|-- Factory
+AnchorPresenter +-- State
+@enduml

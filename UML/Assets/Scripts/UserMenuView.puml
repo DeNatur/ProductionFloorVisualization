@@ -1,0 +1,8 @@
+@startuml
+class UserMenuView {
+    + Construct(presenter:UserMenuPresenter) : void
+}
+MonoBehaviour <|-- UserMenuView
+UserMenuView --> "enableBoundsButton" Interactable
+UserMenuView --> "disableBoundsButton" Interactable
+@enduml

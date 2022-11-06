@@ -1,16 +1,12 @@
 @startuml
 interface ObjectCreator {
-    + {abstract} enableBoundsControl() : void
-    + {abstract} disableBoundsControl() : void
-    + {abstract} createNewMachine(obj:GameObject) : void
-    + {abstract} createNewMachineWithGO(obj:GameObject) : GameObject
+    + {abstract} createNewMachine(machineIndex:int) : void
+    + {abstract} createNewMachineWithGO(machineIndex:int) : GameObject
 }
 class ObjectsCreatorImpl {
-    + Construct(anchorObjectFactory:AnchorScript.Factory) : void
-    + enableBoundsControl() : void
-    + disableBoundsControl() : void
-    + createNewMachine(obj:GameObject) : void
-    + createNewMachineWithGO(obj:GameObject) : GameObject
+    + Construct(machineViewFactory:MachineView.Factory, anchorPresenterFactory:AnchorPresenter.Factory) : void
+    + createNewMachine(machineIndex:int) : void
+    + createNewMachineWithGO(machineIndex:int) : GameObject
 }
 MonoBehaviour <|-- ObjectsCreatorImpl
 ObjectCreator <|-- ObjectsCreatorImpl
