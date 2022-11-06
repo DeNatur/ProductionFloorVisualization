@@ -595,7 +595,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7216240703415602953}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: deleteObject
         m_Mode: 1
@@ -2857,7 +2857,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7216240703415602953}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: addAnchor
         m_Mode: 1
@@ -3626,13 +3626,13 @@ GameObject:
   - component: {fileID: 3527328813548704633}
   - component: {fileID: 624196635169424011}
   - component: {fileID: 7216240703415602952}
-  - component: {fileID: 7216240703415602953}
   - component: {fileID: 7216240703415602958}
   - component: {fileID: 7216240703415602959}
   - component: {fileID: 7216240703415602956}
   - component: {fileID: 1099158895505811750}
   - component: {fileID: 620888856239747684}
   - component: {fileID: 2036198233151228761}
+  - component: {fileID: 6058332669189847426}
   m_Layer: 0
   m_Name: ASPKolumna
   m_TagString: Untagged
@@ -3688,23 +3688,6 @@ MonoBehaviour:
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
---- !u!114 &7216240703415602953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4303266901861222851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42d4ad51f8b97a649b278fbd8087dac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addAnchorButton: {fileID: 3737770189636654637}
-  removeAnchorButton: {fileID: 8723578461874876255}
-  tapToPlaceButton: {fileID: 4648974689615954316}
-  deleteButton: {fileID: 167043559087712023}
-  index: 0
 --- !u!114 &7216240703415602958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3927,6 +3910,22 @@ MonoBehaviour:
   pivotDistance: 1.442
   toolTipText: ASP Kolumna robocza
   anchor: {fileID: 0}
+--- !u!114 &6058332669189847426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4303266901861222851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9979fea92d72f7f40a7608c1ef3559be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addAnchorButton: {fileID: 3737770189636654637}
+  removeAnchorButton: {fileID: 8723578461874876255}
+  tapToPlaceButton: {fileID: 4648974689615954316}
+  deleteButton: {fileID: 167043559087712023}
 --- !u!1 &4529344790688212870
 GameObject:
   m_ObjectHideFlags: 0
@@ -6980,7 +6979,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7216240703415602953}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: removeAnchor
         m_Mode: 1

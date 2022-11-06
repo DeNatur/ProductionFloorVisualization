@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class AnchorObjectFactory : IFactory<UnityEngine.Object, AnchorScript>
+public class AnchorObjectFactory : IFactory<UnityEngine.Object, AnchorPresenter>
 {
     readonly DiContainer _container;
 
@@ -10,8 +10,8 @@ public class AnchorObjectFactory : IFactory<UnityEngine.Object, AnchorScript>
         _container = container;
     }
 
-    public AnchorScript Create(Object prefab)
+    public AnchorPresenter Create(Object prefab)
     {
-        return _container.InstantiatePrefabForComponent<AnchorScript>(prefab);
+        return _container.InstantiatePrefabForComponent<AnchorPresenter>(prefab);
     }
 }

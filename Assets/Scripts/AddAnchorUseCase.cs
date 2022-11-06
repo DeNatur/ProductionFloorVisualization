@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class AddAnchorUseCase
 {
-
     readonly AnchorsRepository _anchorsRepository;
     readonly AnchorCreator _saveAnchor;
     readonly AwarnessValidator _sceneAwarnessValidator;

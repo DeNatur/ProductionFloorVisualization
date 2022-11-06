@@ -1391,7 +1391,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3967825430237173284}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: deleteObject
         m_Mode: 1
@@ -2988,7 +2988,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3967825430237173284}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: removeAnchor
         m_Mode: 1
@@ -4314,13 +4314,13 @@ GameObject:
   - component: {fileID: 3967825430237173287}
   - component: {fileID: 3967825430237173286}
   - component: {fileID: 3967825430237173285}
-  - component: {fileID: 3967825430237173284}
   - component: {fileID: 3967825430237173307}
   - component: {fileID: 3967825430237173306}
   - component: {fileID: 3967825430237173305}
   - component: {fileID: 3967825430237173304}
   - component: {fileID: 3967825430237173311}
   - component: {fileID: 3967825430237173310}
+  - component: {fileID: 3749938714859375582}
   m_Layer: 0
   m_Name: Hala
   m_TagString: Untagged
@@ -4376,23 +4376,6 @@ MonoBehaviour:
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
---- !u!114 &3967825430237173284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3967825430237173309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42d4ad51f8b97a649b278fbd8087dac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addAnchorButton: {fileID: 3967825430565648416}
-  removeAnchorButton: {fileID: 3967825429611047108}
-  tapToPlaceButton: {fileID: 3967825430412209725}
-  deleteButton: {fileID: 3967825429352576728}
-  index: 3
 --- !u!114 &3967825430237173307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4615,6 +4598,22 @@ MonoBehaviour:
   pivotDistance: 1.732
   toolTipText: Hala
   anchor: {fileID: 0}
+--- !u!114 &3749938714859375582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3967825430237173309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9979fea92d72f7f40a7608c1ef3559be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addAnchorButton: {fileID: 3967825430565648416}
+  removeAnchorButton: {fileID: 3967825429611047108}
+  tapToPlaceButton: {fileID: 3967825430412209725}
+  deleteButton: {fileID: 3967825429352576728}
 --- !u!1 &3967825430257863092
 GameObject:
   m_ObjectHideFlags: 0
@@ -5980,7 +5979,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3967825430237173284}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: addAnchor
         m_Mode: 1

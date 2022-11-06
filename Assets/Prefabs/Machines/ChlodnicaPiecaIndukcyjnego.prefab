@@ -1884,7 +1884,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4433522233910626814}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: removeAnchor
         m_Mode: 1
@@ -5137,7 +5137,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4433522233910626814}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: deleteObject
         m_Mode: 1
@@ -5856,13 +5856,13 @@ GameObject:
   - component: {fileID: 7589025564264322446}
   - component: {fileID: 5839941509411226748}
   - component: {fileID: 4433522233910626815}
-  - component: {fileID: 4433522233910626814}
   - component: {fileID: 4433522233910626809}
   - component: {fileID: 4433522233910626808}
   - component: {fileID: 4433522233910626811}
   - component: {fileID: 6260790069914955729}
   - component: {fileID: 5854648131549688979}
   - component: {fileID: 5035081377205620142}
+  - component: {fileID: 5041254107756169614}
   m_Layer: 0
   m_Name: ChlodnicaPiecaIndukcyjnego
   m_TagString: Untagged
@@ -5918,23 +5918,6 @@ MonoBehaviour:
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
---- !u!114 &4433522233910626814
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7069088073986150196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42d4ad51f8b97a649b278fbd8087dac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addAnchorButton: {fileID: 7673305264934686938}
-  removeAnchorButton: {fileID: 2356038124004157864}
-  tapToPlaceButton: {fileID: 1812221170407180155}
-  deleteButton: {fileID: 6625711424972251616}
-  index: 1
 --- !u!114 &4433522233910626809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6157,6 +6140,22 @@ MonoBehaviour:
   pivotDistance: 1.442
   toolTipText: "Ch\u0142odnica Pieca Indukcyjnego"
   anchor: {fileID: 0}
+--- !u!114 &5041254107756169614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7069088073986150196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9979fea92d72f7f40a7608c1ef3559be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addAnchorButton: {fileID: 7673305264934686938}
+  removeAnchorButton: {fileID: 2356038124004157864}
+  tapToPlaceButton: {fileID: 1812221170407180155}
+  deleteButton: {fileID: 6625711424972251616}
 --- !u!1 &7361435955262192303
 GameObject:
   m_ObjectHideFlags: 0
@@ -6661,7 +6660,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4433522233910626814}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: addAnchor
         m_Mode: 1

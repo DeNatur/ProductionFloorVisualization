@@ -116,7 +116,7 @@ public class AzureSessionCoordinatorTest
             {
                 objectsCreator.allMachines = new GameObject[] { prefabAnchor };
 
-                objectsCreator.createNewMachineWithGO(prefabAnchor).Returns(mockedAnchorGO);
+                objectsCreator.createNewMachineWithGO(0).Returns(mockedAnchorGO);
                 anchorLocator.CloudAnchorLocated +=
                     Raise.Event<CloudAnchorLocated>(mockedArgs);
             }

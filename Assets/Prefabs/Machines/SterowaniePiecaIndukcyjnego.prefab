@@ -838,7 +838,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1867569170164862922}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: deleteObject
         m_Mode: 1
@@ -2212,13 +2212,13 @@ GameObject:
   - component: {fileID: 5584470345407014661}
   - component: {fileID: 2001148443373750187}
   - component: {fileID: 6044521047977885352}
-  - component: {fileID: 1867569170164862922}
   - component: {fileID: 3826140155617109126}
   - component: {fileID: 7659744047032707516}
   - component: {fileID: 5609480729141568105}
   - component: {fileID: 4009712702568268532}
   - component: {fileID: 7867295881243486861}
   - component: {fileID: 5022290945724812001}
+  - component: {fileID: 6098663187788973955}
   m_Layer: 0
   m_Name: SterowaniePiecaIndukcyjnego
   m_TagString: Untagged
@@ -2274,23 +2274,6 @@ MonoBehaviour:
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
---- !u!114 &1867569170164862922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2506441553741290272}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42d4ad51f8b97a649b278fbd8087dac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addAnchorButton: {fileID: 3388619352928808986}
-  removeAnchorButton: {fileID: 3620777149864276060}
-  tapToPlaceButton: {fileID: 8361425668322438353}
-  deleteButton: {fileID: 1194727924492474217}
-  index: 11
 --- !u!114 &3826140155617109126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2513,6 +2496,22 @@ MonoBehaviour:
   pivotDistance: 1.732
   toolTipText: Sterowanie Pieca Indukcyjnego
   anchor: {fileID: 0}
+--- !u!114 &6098663187788973955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2506441553741290272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9979fea92d72f7f40a7608c1ef3559be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addAnchorButton: {fileID: 3388619352928808986}
+  removeAnchorButton: {fileID: 3620777149864276060}
+  tapToPlaceButton: {fileID: 8361425668322438353}
+  deleteButton: {fileID: 1194727924492474217}
 --- !u!1 &2533071332877633443
 GameObject:
   m_ObjectHideFlags: 0
@@ -3452,7 +3451,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1867569170164862922}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: addAnchor
         m_Mode: 1
@@ -4195,7 +4194,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1867569170164862922}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: removeAnchor
         m_Mode: 1

@@ -2070,13 +2070,13 @@ GameObject:
   - component: {fileID: 3935552559009773259}
   - component: {fileID: 5453371039319704470}
   - component: {fileID: 8243846508487993424}
-  - component: {fileID: 8715083916348116830}
   - component: {fileID: 1101626628144115141}
   - component: {fileID: 912626322209586874}
   - component: {fileID: 4822519789088133039}
   - component: {fileID: 6408955978275342027}
   - component: {fileID: 4085292795659017769}
   - component: {fileID: 8208778551965970929}
+  - component: {fileID: 1059289772855233025}
   m_Layer: 0
   m_Name: Zwick
   m_TagString: Untagged
@@ -2132,23 +2132,6 @@ MonoBehaviour:
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
---- !u!114 &8715083916348116830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3468092547491870143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42d4ad51f8b97a649b278fbd8087dac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addAnchorButton: {fileID: 5930640012638970852}
-  removeAnchorButton: {fileID: 6521016597765500266}
-  tapToPlaceButton: {fileID: 2374213008630262900}
-  deleteButton: {fileID: 4285564169499610519}
-  index: 13
 --- !u!114 &1101626628144115141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2371,6 +2354,22 @@ MonoBehaviour:
   pivotDistance: 1.732
   toolTipText: Zwick
   anchor: {fileID: 0}
+--- !u!114 &1059289772855233025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3468092547491870143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9979fea92d72f7f40a7608c1ef3559be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addAnchorButton: {fileID: 5930640012638970852}
+  removeAnchorButton: {fileID: 6521016597765500266}
+  tapToPlaceButton: {fileID: 2374213008630262900}
+  deleteButton: {fileID: 4285564169499610519}
 --- !u!1 &3580590163737047142
 GameObject:
   m_ObjectHideFlags: 0
@@ -2982,7 +2981,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8715083916348116830}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: deleteObject
         m_Mode: 1
@@ -4614,7 +4613,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8715083916348116830}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: addAnchor
         m_Mode: 1
@@ -5486,7 +5485,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8715083916348116830}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: removeAnchor
         m_Mode: 1

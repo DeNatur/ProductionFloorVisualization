@@ -1397,7 +1397,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8605409928451010783}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: deleteObject
         m_Mode: 1
@@ -3743,7 +3743,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8605409928451010783}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: removeAnchor
         m_Mode: 1
@@ -5761,7 +5761,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8605409928451010783}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: addAnchor
         m_Mode: 1
@@ -6670,13 +6670,13 @@ GameObject:
   - component: {fileID: 8685862558012586077}
   - component: {fileID: 3904367137328408927}
   - component: {fileID: 1046253145216564844}
-  - component: {fileID: 8605409928451010783}
   - component: {fileID: 3287461225817212048}
   - component: {fileID: 2503708321979780660}
   - component: {fileID: 8558652783488924432}
   - component: {fileID: 3892156030574130515}
   - component: {fileID: 669401398423408708}
   - component: {fileID: 6791173525266040750}
+  - component: {fileID: 605197831099922591}
   m_Layer: 0
   m_Name: "WalcarkaSko\u015Bna"
   m_TagString: Untagged
@@ -6732,23 +6732,6 @@ MonoBehaviour:
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
---- !u!114 &8605409928451010783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8600306003564540162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42d4ad51f8b97a649b278fbd8087dac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addAnchorButton: {fileID: 7094776155280827122}
-  removeAnchorButton: {fileID: 4139525280878009888}
-  tapToPlaceButton: {fileID: 2738830709039372724}
-  deleteButton: {fileID: 2326606495009356841}
-  index: 12
 --- !u!114 &3287461225817212048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6971,6 +6954,22 @@ MonoBehaviour:
   pivotDistance: 1.732
   toolTipText: "Walcarka Sko\u015Bna"
   anchor: {fileID: 0}
+--- !u!114 &605197831099922591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8600306003564540162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9979fea92d72f7f40a7608c1ef3559be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addAnchorButton: {fileID: 7094776155280827122}
+  removeAnchorButton: {fileID: 4139525280878009888}
+  tapToPlaceButton: {fileID: 2738830709039372724}
+  deleteButton: {fileID: 2326606495009356841}
 --- !u!1 &8687134115598696887
 GameObject:
   m_ObjectHideFlags: 0

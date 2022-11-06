@@ -1788,7 +1788,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1094240074718761467}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: addAnchor
         m_Mode: 1
@@ -2552,7 +2552,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1094240074718761467}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: deleteObject
         m_Mode: 1
@@ -5804,7 +5804,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1094240074718761467}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: removeAnchor
         m_Mode: 1
@@ -6125,13 +6125,13 @@ GameObject:
   - component: {fileID: 950992879392362980}
   - component: {fileID: 6178844662697535124}
   - component: {fileID: 4871525209723314040}
-  - component: {fileID: 1094240074718761467}
   - component: {fileID: 8216983978262349442}
   - component: {fileID: 9085925695103021943}
   - component: {fileID: 9092959661855122608}
   - component: {fileID: 723576803691666809}
   - component: {fileID: 1477175856557337734}
   - component: {fileID: 2845688200036352276}
+  - component: {fileID: 6904454014241252815}
   m_Layer: 0
   m_Name: InstronDuzy
   m_TagString: Untagged
@@ -6187,23 +6187,6 @@ MonoBehaviour:
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
---- !u!114 &1094240074718761467
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6676091572177275289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42d4ad51f8b97a649b278fbd8087dac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addAnchorButton: {fileID: 2617365170708373852}
-  removeAnchorButton: {fileID: 6674469769758066808}
-  tapToPlaceButton: {fileID: 4629741570987245404}
-  deleteButton: {fileID: 3876086012472538534}
-  index: 5
 --- !u!114 &8216983978262349442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6426,6 +6409,22 @@ MonoBehaviour:
   pivotDistance: 1.732
   toolTipText: "Instron Du\u017Cy"
   anchor: {fileID: 0}
+--- !u!114 &6904454014241252815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6676091572177275289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9979fea92d72f7f40a7608c1ef3559be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addAnchorButton: {fileID: 2617365170708373852}
+  removeAnchorButton: {fileID: 6674469769758066808}
+  tapToPlaceButton: {fileID: 4629741570987245404}
+  deleteButton: {fileID: 3876086012472538534}
 --- !u!1 &6710002989681937557
 GameObject:
   m_ObjectHideFlags: 0

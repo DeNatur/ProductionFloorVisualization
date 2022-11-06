@@ -2406,13 +2406,13 @@ GameObject:
   - component: {fileID: 6138025950911810846}
   - component: {fileID: 4951135210108832360}
   - component: {fileID: 7622706669820291534}
-  - component: {fileID: 4234703992628943330}
   - component: {fileID: 7648212156290355516}
   - component: {fileID: 4170306063177233684}
   - component: {fileID: 1820536588354515268}
   - component: {fileID: 8024225861680537730}
   - component: {fileID: 3891099550469047110}
   - component: {fileID: 7691640483880465185}
+  - component: {fileID: 2883582503333705701}
   m_Layer: 0
   m_Name: Hydraulika
   m_TagString: Untagged
@@ -2468,23 +2468,6 @@ MonoBehaviour:
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
---- !u!114 &4234703992628943330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4472661993800213161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42d4ad51f8b97a649b278fbd8087dac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addAnchorButton: {fileID: 8469288615426256858}
-  removeAnchorButton: {fileID: 5400078755021754425}
-  tapToPlaceButton: {fileID: 5898064952038951242}
-  deleteButton: {fileID: 7955064642681847540}
-  index: 4
 --- !u!114 &7648212156290355516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2707,6 +2690,22 @@ MonoBehaviour:
   pivotDistance: 1.732
   toolTipText: Hydraulika
   anchor: {fileID: 0}
+--- !u!114 &2883582503333705701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4472661993800213161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9979fea92d72f7f40a7608c1ef3559be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addAnchorButton: {fileID: 8469288615426256858}
+  removeAnchorButton: {fileID: 5400078755021754425}
+  tapToPlaceButton: {fileID: 5898064952038951242}
+  deleteButton: {fileID: 7955064642681847540}
 --- !u!1 &4477460958324834210
 GameObject:
   m_ObjectHideFlags: 0
@@ -4029,7 +4028,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4234703992628943330}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: removeAnchor
         m_Mode: 1
@@ -6205,7 +6204,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4234703992628943330}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: deleteObject
         m_Mode: 1
@@ -6922,7 +6921,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4234703992628943330}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: addAnchor
         m_Mode: 1

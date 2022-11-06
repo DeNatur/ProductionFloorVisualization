@@ -19042,6 +19042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1606512b96ac7aa449d90b8727cd3ed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isStarted: 0
 --- !u!1 &1574758790
 GameObject:
   m_ObjectHideFlags: 0
@@ -24264,6 +24265,7 @@ GameObject:
   - component: {fileID: 7647444484137780499}
   - component: {fileID: 7698469313412512136}
   - component: {fileID: 7472815816348708720}
+  - component: {fileID: 186410464895805886}
   m_Layer: 0
   m_Name: UserMenu
   m_TagString: Untagged
@@ -24271,6 +24273,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &186410464895805886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 186410464895805885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7108fbbbb23c8ad458a34e7321658d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  machinesButtons:
+  - {fileID: 2113760848}
+  - {fileID: 1228391028}
+  - {fileID: 354319582}
+  - {fileID: 2113850506}
+  - {fileID: 1191483825}
+  - {fileID: 80452187}
+  - {fileID: 616608392}
+  - {fileID: 1044493459}
+  - {fileID: 980596573}
+  - {fileID: 8540610342563515205}
+  - {fileID: 1814843981}
+  - {fileID: 105958702}
+  - {fileID: 24219558}
+  - {fileID: 1089210203}
+  enableBoundsButton: {fileID: 575762321209166140}
+  disableBoundsButton: {fileID: 1164951413636068815}
 --- !u!33 &192823450795827185
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -26852,7 +26883,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1989807653334132851}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.1324, y: 0.0316, z: -0.0082}
+  m_LocalPosition: {x: 0.1447, y: 0.0316, z: -0.0082}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children:
   - {fileID: 1989807652632068873}
@@ -28140,7 +28171,7 @@ Transform:
   m_GameObject: {fileID: 5492485122588660099}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0494, y: 0, z: 0}
-  m_LocalScale: {x: 1.83, y: 1, z: 1}
+  m_LocalScale: {x: 1.91, y: 1, z: 1}
   m_Children:
   - {fileID: 9056670632089798522}
   m_Father: {fileID: 3462181425640483360}

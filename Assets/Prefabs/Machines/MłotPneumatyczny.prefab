@@ -817,7 +817,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5093601362116260648}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: removeAnchor
         m_Mode: 1
@@ -1341,7 +1341,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5093601362116260648}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: deleteObject
         m_Mode: 1
@@ -3327,7 +3327,7 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5093601362116260648}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: AnchorScript, Assembly-CSharp
         m_MethodName: addAnchor
         m_Mode: 1
@@ -4147,13 +4147,13 @@ GameObject:
   - component: {fileID: 5770092982806044140}
   - component: {fileID: 1344006940608173073}
   - component: {fileID: 4981937459702734668}
-  - component: {fileID: 5093601362116260648}
   - component: {fileID: 8516875552453907909}
   - component: {fileID: 762415324427627835}
   - component: {fileID: 5885964421754181113}
   - component: {fileID: 8656000502023687122}
   - component: {fileID: 8256647830612284354}
   - component: {fileID: 2966737133082648152}
+  - component: {fileID: 455836453780917736}
   m_Layer: 0
   m_Name: "M\u0142otPneumatyczny"
   m_TagString: Untagged
@@ -4209,23 +4209,6 @@ MonoBehaviour:
   additionalOffset: {x: 0, y: 0, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
---- !u!114 &5093601362116260648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5525885178223409051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42d4ad51f8b97a649b278fbd8087dac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addAnchorButton: {fileID: 4027503063066767080}
-  removeAnchorButton: {fileID: 706665837491071564}
-  tapToPlaceButton: {fileID: 8240645109765678836}
-  deleteButton: {fileID: 933601495522242173}
-  index: 7
 --- !u!114 &8516875552453907909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4448,6 +4431,22 @@ MonoBehaviour:
   pivotDistance: 1.732
   toolTipText: "M\u0142ot Pneumatyczny"
   anchor: {fileID: 0}
+--- !u!114 &455836453780917736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5525885178223409051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9979fea92d72f7f40a7608c1ef3559be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addAnchorButton: {fileID: 4027503063066767080}
+  removeAnchorButton: {fileID: 706665837491071564}
+  tapToPlaceButton: {fileID: 8240645109765678836}
+  deleteButton: {fileID: 933601495522242173}
 --- !u!1 &5552481811789219980
 GameObject:
   m_ObjectHideFlags: 0

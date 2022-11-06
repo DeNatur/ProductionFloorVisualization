@@ -1,17 +1,13 @@
-using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UnityEngine;
 using Zenject;
 
 public interface ObjectCreator
 {
     public GameObject[] allMachines { get; set; }
-    public abstract void enableBoundsControl();
 
-    public abstract void disableBoundsControl();
+    public abstract void createNewMachine(int machineIndex);
 
-    public abstract void createNewMachine(GameObject obj);
-
-    public abstract GameObject createNewMachineWithGO(GameObject obj);
+    public abstract GameObject createNewMachineWithGO(int machineIndex);
 }
 
 public class ObjectsCreatorImpl : MonoBehaviour, ObjectCreator
@@ -19,49 +15,31 @@ public class ObjectsCreatorImpl : MonoBehaviour, ObjectCreator
     // Start is called before the first frame update
     public GameObject[] allMachines;
 
-    private AnchorScript.Factory _anchorObjectFactory;
+    private AnchorPresenter.Factory _anchorPresenterFactory;
+    private MachineView.Factory _machineViewFactory;
 
     GameObject[] ObjectCreator.allMachines { get => allMachines; set => allMachines = value; }
 
     [Inject]
-    public void Construct(AnchorScript.Factory anchorObjectFactory)
+    public void Construct(MachineView.Factory machineViewFactory, AnchorPresenter.Factory anchorPresenterFactory)
     {
-        _anchorObjectFactory = anchorObjectFactory;
+        _anchorPresenterFactory = anchorPresenterFactory;
+        _machineViewFactory = machineViewFactory;
     }
 
-
-    public void enableBoundsControl()
+    public void createNewMachine(int machineIndex)
     {
-        AnchorScript[] allObjectsWithAnchorScript = FindObjectsOfType<AnchorScript>();
-        foreach (AnchorScript anchorScript in allObjectsWithAnchorScript)
-        {
-            anchorScript.enableBoundsControl();
-        }
+        AnchorPresenter anchorPresenter = _anchorPresenterFactory.Create(machineIndex);
+        _machineViewFactory.Create(allMachines[machineIndex], anchorPresenter);
     }
 
-    public void disableBoundsControl()
+    public GameObject createNewMachineWithGO(int machineIndex)
     {
-        AnchorScript[] allObjectsWithAnchorScript = FindObjectsOfType<AnchorScript>();
-        foreach (AnchorScript anchorScript in allObjectsWithAnchorScript)
-        {
-            anchorScript.disableBoundsControl();
-        }
-    }
+        AnchorPresenter anchorPresenter = _anchorPresenterFactory.Create(machineIndex);
+        MachineView machineView = _machineViewFactory.Create(allMachines[machineIndex], anchorPresenter);
 
-    public void createNewMachine(GameObject obj)
-    {
-        _anchorObjectFactory.Create(obj);
-    }
+        anchorPresenter.setTapToPlaceNotStarted();
 
-    public GameObject createNewMachineWithGO(GameObject obj)
-    {
-        AnchorScript newMachine = _anchorObjectFactory.Create(obj);
-
-        newMachine.setAnchorCreatedState();
-        TapToPlace tapToPlaceScript = newMachine.GetComponent<TapToPlace>();
-        tapToPlaceScript.enabled = false;
-        tapToPlaceScript.AutoStart = false;
-
-        return newMachine.gameObject;
+        return machineView.gameObject;
     }
 }

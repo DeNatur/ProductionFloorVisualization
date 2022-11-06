@@ -58,8 +58,24 @@ public class AppInstaller : MonoInstaller
             .To<AzureAnchorLocator>()
             .AsSingle();
 
-        Container.BindFactory<UnityEngine.Object, AnchorScript, AnchorScript.Factory>()
-            .FromFactory<AnchorObjectFactory>();
+        Container.Bind<IBoundsControlEditor>()
+            .To<BoundsControlRepository>()
+            .AsCached();
+
+        Container.Bind<IBoundsControlProvider>()
+            .To<BoundsControlRepository>()
+            .AsCached();
+
+        Container.Bind<UserMenuPresenter>()
+            .AsSingle();
+
+        Container.Bind<UserMenuView>()
+            .AsSingle();
+
+        Container.BindFactory<int, AnchorPresenter, AnchorPresenter.Factory>();
+
+        Container.BindFactory<UnityEngine.Object, AnchorPresenter, MachineView, MachineView.Factory>()
+            .FromFactory<MachineViewFactory>();
 
     }
 }

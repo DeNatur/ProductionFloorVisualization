@@ -62,9 +62,7 @@ public class AzureSessionCoordinator : MonoBehaviour
 
     private void AnchorLocator_CloudAnchorLocated(object sender, AnchorLocator.CloudAnchorLocatedArgs args)
     {
-        GameObject newAnchor = _objectsCreator.createNewMachineWithGO(
-            _objectsCreator.allMachines[args.type]
-        );
+        GameObject newAnchor = _objectsCreator.createNewMachineWithGO(args.type);
 
         _gameObjectEditor.setName(newAnchor, args.identifier);
 
