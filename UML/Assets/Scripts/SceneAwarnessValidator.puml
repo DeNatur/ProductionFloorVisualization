@@ -1,5 +1,5 @@
 @startuml
-interface AwarnessValidator {
+interface IAwarnessValidator {
     + validateSceneReadiness() : Task
 }
 class SceneAwarnessValidator {
@@ -8,5 +8,5 @@ class SceneAwarnessValidator {
     Update() : void
 }
 MonoBehaviour <|-- SceneAwarnessValidator
-AwarnessValidator <|-- SceneAwarnessValidator
+IAwarnessValidator <|-- SceneAwarnessValidator
 @enduml

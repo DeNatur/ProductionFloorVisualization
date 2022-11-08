@@ -1,13 +1,13 @@
 @startuml
-interface ObjectCreator {
+interface IObjectsCreator {
     + {abstract} createNewMachine(machineIndex:int) : void
     + {abstract} createNewMachineWithGO(machineIndex:int) : GameObject
 }
 class ObjectsCreatorImpl {
-    + Construct(machineViewFactory:MachineView.Factory, anchorPresenterFactory:AnchorPresenter.Factory) : void
+    + Construct(machineViewFactory:MachineView.Factory, anchorPresenterFactory:MachinePresenter.Factory) : void
     + createNewMachine(machineIndex:int) : void
     + createNewMachineWithGO(machineIndex:int) : GameObject
 }
 MonoBehaviour <|-- ObjectsCreatorImpl
-ObjectCreator <|-- ObjectsCreatorImpl
+IObjectsCreator <|-- ObjectsCreatorImpl
 @enduml

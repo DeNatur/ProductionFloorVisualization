@@ -1,5 +1,5 @@
 @startuml
-interface AnchorLocator {
+interface IAnchorLocator {
     +  <<event>> CloudAnchorLocated : CloudAnchorLocated 
     + startLocatingAzureAnchors(idsToFind:string[]) : void
 }
@@ -14,9 +14,9 @@ class CloudAnchorLocatedArgs {
     + identifier : string <<get>>
     + CloudAnchorLocatedArgs(pose:Pose, type:int, identifier:string)
 }
-AnchorLocator <|-- AzureAnchorLocator
+IAnchorLocator <|-- AzureAnchorLocator
 AzureAnchorLocator --> "_cloudManager" SpatialAnchorManager
-AnchorLocator +-- CloudAnchorLocatedArgs
+IAnchorLocator +-- CloudAnchorLocatedArgs
 EventArgs <|-- CloudAnchorLocatedArgs
 CloudAnchorLocatedArgs --> "pose" Pose
 @enduml

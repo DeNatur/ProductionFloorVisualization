@@ -1,5 +1,5 @@
 @startuml
-interface AnchorCreator {
+interface IAnchorCreator {
     + createNativeAnchor(gameObject:GameObject) : void
     + createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<Result>
 }
@@ -13,7 +13,7 @@ class Failure {
     + exception : Exception? <<get>>
     + Failure(exception:Exception?)
 }
-AnchorCreator +-- Result
+IAnchorCreator +-- Result
 Result +-- Success
 Result <|-- Success
 Result +-- Failure

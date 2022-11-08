@@ -1,6 +1,6 @@
 @startuml
-class AnchorPresenter {
-    + AnchorPresenter(index:int, addAnchorUseCase:AddAnchorUseCase, removeAnchorUseCase:RemoveAnchorUseCase, boundsControlProvider:IBoundsControlProvider)
+class MachinePresenter {
+    + MachinePresenter(index:int, addAnchorUseCase:IAddAnchorUseCase, removeAnchorUseCase:IRemoveAnchorUseCase, boundsControlProvider:IBoundsControlProvider)
     +  <<event>> disableTapToPlace : Action 
     +  <<event>> deleteCurrentMachine : Action 
     + setAnchorCreatedState() : void
@@ -24,8 +24,8 @@ class State {
 }
 class "PlaceholderFactory`2"<T1,T2> {
 }
-AnchorPresenter --> "state<State>" "IReadOnlyReactiveProperty`1"
-AnchorPresenter +-- Factory
-"PlaceholderFactory`2" "<int,AnchorPresenter>" <|-- Factory
-AnchorPresenter +-- State
+MachinePresenter --> "state<State>" "IReadOnlyReactiveProperty`1"
+MachinePresenter +-- Factory
+"PlaceholderFactory`2" "<int,MachinePresenter>" <|-- Factory
+MachinePresenter +-- State
 @enduml

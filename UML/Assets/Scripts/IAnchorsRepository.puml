@@ -1,5 +1,5 @@
 @startuml
-interface AnchorsRepository {
+interface IAnchorsRepository {
     + addAnchor(anchor:AnchorGameObject) : void
     + removeAnchor(id:string) : void
     + getAnchor(id:string) : AnchorGameObject?
@@ -8,6 +8,6 @@ interface AnchorsRepository {
 class AnchorGameObject <<struct>> {
     + identifier : string
 }
-AnchorsRepository +-- AnchorGameObject
+IAnchorsRepository +-- AnchorGameObject
 AnchorGameObject --> "gameObject" GameObject
 @enduml

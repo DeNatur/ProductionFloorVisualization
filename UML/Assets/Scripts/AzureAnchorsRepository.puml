@@ -5,5 +5,5 @@ class AzureAnchorsReporitory {
     + getAnchor(id:String) : AnchorGameObject?
     + getAnchorsIds() : List<string>
 }
-AnchorsRepository <|-- AzureAnchorsReporitory
+IAnchorsRepository <|-- AzureAnchorsReporitory
 @enduml
