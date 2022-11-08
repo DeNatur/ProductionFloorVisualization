@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using UniRx;
+
 public class BoundsControlVisibilityRepositoryTest
 {
 
@@ -14,19 +15,24 @@ public class BoundsControlVisibilityRepositoryTest
         subject.isBoundsVisibilityEnabled.Subscribe(x => { currentResultValue = x; });
     }
 
-    [Test]
-    public void initialStateIsFalse()
+    [TestFixture]
+    public class InitialState : BoundsControlVisibilityRepositoryTest
     {
-        Assert.False(currentResultValue);
+        [Test]
+        public void initialStateIsFalse()
+        {
+            Assert.False(currentResultValue);
+        }
     }
 
+
     [TestFixture]
-    public class EnablesBoundsControl
+    public class EnablesBoundsControl : BoundsControlVisibilityRepositoryTest
     {
 
         [SetUp]
 
-        public void setUp()
+        public new void setUp()
         {
             subject.enableBoundsControlVisibility();
         }
@@ -36,24 +42,25 @@ public class BoundsControlVisibilityRepositoryTest
         {
             Assert.True(currentResultValue);
         }
+    }
 
+    [TestFixture]
+    public class DisablesBoundsControl : BoundsControlVisibilityRepositoryTest
+    {
 
-        [TestFixture]
-        public class DisablesBoundsControl
+        [SetUp]
+
+        public new void setUp()
         {
+            subject.enableBoundsControlVisibility();
+            Assert.True(currentResultValue);
+            subject.disableBoundsControlVisibility();
+        }
 
-            [SetUp]
-
-            public void setUp()
-            {
-                subject.disableBoundsControlVisibility();
-            }
-
-            [Test]
-            public void boundsAreNotVisible()
-            {
-                Assert.False(currentResultValue);
-            }
+        [Test]
+        public void boundsAreNotVisible()
+        {
+            Assert.False(currentResultValue);
         }
     }
 }

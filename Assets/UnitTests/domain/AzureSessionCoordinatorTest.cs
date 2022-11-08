@@ -80,25 +80,28 @@ public class AzureSessionCoordinatorTest
             subject.Start();
         }
 
-
-        [UnityTest]
-        public IEnumerator startsAzureSession()
+        [TestFixture]
+        public class LocatesAnchors : AnchorsToLocate
         {
-            while (!subject.isStarted)
+            [UnityTest]
+            public IEnumerator startsAzureSession()
             {
-                yield return null;
+                while (!subject.isStarted)
+                {
+                    yield return null;
+                }
+                startAzureSession.Received().invoke();
             }
-            startAzureSession.Received().invoke();
-        }
 
-        [UnityTest]
-        public IEnumerator startsLocatingAzureAnchors()
-        {
-            while (!subject.isStarted)
+            [UnityTest]
+            public IEnumerator startsLocatingAzureAnchors()
             {
-                yield return null;
+                while (!subject.isStarted)
+                {
+                    yield return null;
+                }
+                anchorLocator.Received().startLocatingAzureAnchors(Arg.Any<string[]>());
             }
-            anchorLocator.Received().startLocatingAzureAnchors(Arg.Any<string[]>());
         }
 
         [TestFixture]

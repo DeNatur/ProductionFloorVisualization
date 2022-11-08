@@ -76,7 +76,7 @@ public class AddAnchorUseCaseTest
         }
 
         [TestFixture]
-        public class CreateCloudAnchorSuccess : AddAnchorUseCaseTest
+        public class CreateCloudAnchorSuccess : NewAnchor
         {
 
             private const string newIdentifier = "new";
@@ -164,7 +164,7 @@ public class AddAnchorUseCaseTest
         }
 
         [TestFixture]
-        public class CreateCloudAnchorFailure : AddAnchorUseCaseTest
+        public class CreateCloudAnchorFailure : NewAnchor
         {
 
             private const string newIdentifier = "new";
@@ -220,7 +220,5 @@ public class AddAnchorUseCaseTest
                 }).GetAwaiter().GetResult();
             }
         }
-
     }
-
 }

@@ -6,14 +6,14 @@ using UniRx;
 public class MachinePresenterTest
 {
 
-    IAddAnchorUseCase addAnchorUseCase = Substitute.For<IAddAnchorUseCase>();
-    IRemoveAnchorUseCase removeAnchorUseCase = Substitute.For<IRemoveAnchorUseCase>();
-    IBoundsControlVisibilityProvider boundsControlVisibilityProvider = Substitute.For<IBoundsControlVisibilityProvider>();
+    static IAddAnchorUseCase addAnchorUseCase = Substitute.For<IAddAnchorUseCase>();
+    static IRemoveAnchorUseCase removeAnchorUseCase = Substitute.For<IRemoveAnchorUseCase>();
+    static IBoundsControlVisibilityProvider boundsControlVisibilityProvider = Substitute.For<IBoundsControlVisibilityProvider>();
 
 
-    MachinePresenter subject;
+    static MachinePresenter subject;
 
-    MachinePresenter.State latestState = null;
+    static MachinePresenter.State latestState = null;
 
     int machineIndex = 0;
 
@@ -24,34 +24,39 @@ public class MachinePresenterTest
         subject.state.Subscribe((state) => latestState = state);
     }
 
-    [Test]
-    public void initiallyAddAnchorIsVisible()
+    [TestFixture]
+    public class InitialState : MachinePresenterTest
     {
-        Assert.True(latestState.isAddAnchorVisible);
-    }
+        [Test]
+        public void initiallyAddAnchorIsVisible()
+        {
+            Assert.True(latestState.isAddAnchorVisible);
+        }
 
-    [Test]
-    public void initiallyTapToPlaceIsVisible()
-    {
-        Assert.True(latestState.isTapToPlaceVisible);
-    }
+        [Test]
+        public void initiallyTapToPlaceIsVisible()
+        {
+            Assert.True(latestState.isTapToPlaceVisible);
+        }
 
-    [Test]
-    public void initiallyDeleteMachineIsVisible()
-    {
-        Assert.True(latestState.isDeleteMachineVisible);
-    }
+        [Test]
+        public void initiallyDeleteMachineIsVisible()
+        {
+            Assert.True(latestState.isDeleteMachineVisible);
+        }
 
-    [Test]
-    public void initiallyRemoveAnchorIsNotVisible()
-    {
-        Assert.False(latestState.isRemoveAnchorVisible);
-    }
+        [Test]
+        public void initiallyRemoveAnchorIsNotVisible()
+        {
+            Assert.False(latestState.isRemoveAnchorVisible);
+        }
 
 
-    [Test]
-    public void initiallyBoundControlsAreNotVisible()
-    {
-        Assert.False(latestState.isRemoveAnchorVisible);
+        [Test]
+        public void initiallyBoundControlsAreNotVisible()
+        {
+            Assert.False(latestState.isRemoveAnchorVisible);
+        }
     }
 }
+
