@@ -1,9 +1,9 @@
 public class UserMenuPresenter
 {
     private readonly IObjectsCreator _objectCreator;
-    private readonly IBoundsControlEditor _boundsControlEditor;
+    private readonly IBoundsControlVisibilityEditor _boundsControlEditor;
 
-    public UserMenuPresenter(IObjectsCreator objectCreator, IBoundsControlEditor boundsControlEditor)
+    public UserMenuPresenter(IObjectsCreator objectCreator, IBoundsControlVisibilityEditor boundsControlEditor)
     {
         _objectCreator = objectCreator;
         _boundsControlEditor = boundsControlEditor;
@@ -11,12 +11,12 @@ public class UserMenuPresenter
 
     public void enableBoundsControl()
     {
-        _boundsControlEditor.enableBoundsControl();
+        _boundsControlEditor.enableBoundsControlVisibility();
     }
 
     public void disableBoundControls()
     {
-        _boundsControlEditor.disableBoundsControl();
+        _boundsControlEditor.disableBoundsControlVisibility();
     }
 
     public void createNewMachine(int index)

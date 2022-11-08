@@ -7,16 +7,16 @@ public class MachinePresenter
 {
     public IReadOnlyReactiveProperty<State> state => _state;
 
-    private readonly ReactiveProperty<State> _state = new ReactiveProperty<State>();
+    private readonly ReactiveProperty<State> _state = new ReactiveProperty<State>(new State());
 
-    public MachinePresenter(int index, IAddAnchorUseCase addAnchorUseCase, IRemoveAnchorUseCase removeAnchorUseCase, IBoundsControlProvider boundsControlProvider)
+    public MachinePresenter(int index, IAddAnchorUseCase addAnchorUseCase, IRemoveAnchorUseCase removeAnchorUseCase, IBoundsControlVisibilityProvider boundsControlProvider)
     {
         _machineIndex = index;
         _addAnchorUseCase = addAnchorUseCase;
         _removeAnchorUseCase = removeAnchorUseCase;
         _boundsControlProvider = boundsControlProvider;
 
-        _boundsControlProvider.areBoundsEnabled.Subscribe((areBoundsEnabled) =>
+        _boundsControlProvider.isBoundsVisibilityEnabled.Subscribe((areBoundsEnabled) =>
         {
             State newState = new State(_state.Value);
             newState.areBoundControlsVisible = areBoundsEnabled;
@@ -30,7 +30,7 @@ public class MachinePresenter
 
     private IRemoveAnchorUseCase _removeAnchorUseCase;
 
-    private IBoundsControlProvider _boundsControlProvider;
+    private IBoundsControlVisibilityProvider _boundsControlProvider;
 
     private bool isAnchorCreated = false;
 
@@ -105,6 +105,7 @@ public class MachinePresenter
         public bool isRemoveAnchorVisible = false;
         public bool areBoundControlsVisible = false;
 
+        public State() { }
         public State(State state)
         {
             isAddAnchorVisible = state.isAddAnchorVisible;

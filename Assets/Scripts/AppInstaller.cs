@@ -60,12 +60,12 @@ public class AppInstaller : MonoInstaller
             .To<AzureAnchorLocator>()
             .AsSingle();
 
-        Container.Bind<IBoundsControlEditor>()
-            .To<BoundsControlRepository>()
+        Container.Bind<IBoundsControlVisibilityEditor>()
+            .To<BoundsControlVisibilityRepository>()
             .AsCached();
 
-        Container.Bind<IBoundsControlProvider>()
-            .To<BoundsControlRepository>()
+        Container.Bind<IBoundsControlVisibilityProvider>()
+            .To<BoundsControlVisibilityRepository>()
             .AsCached();
 
         Container.Bind<UserMenuPresenter>()
