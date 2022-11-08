@@ -1,6 +1,6 @@
 @startuml
 class UserMenuPresenter {
-    + UserMenuPresenter(objectCreator:IObjectsCreator, boundsControlEditor:IBoundsControlEditor)
+    + UserMenuPresenter(objectCreator:IObjectsCreator, boundsControlEditor:IBoundsControlVisibilityEditor)
     + enableBoundsControl() : void
     + disableBoundControls() : void
     + createNewMachine(index:int) : void

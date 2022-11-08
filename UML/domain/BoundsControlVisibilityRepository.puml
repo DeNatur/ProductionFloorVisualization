@@ -1,0 +1,18 @@
+@startuml
+interface IBoundsControlVisibilityEditor {
+    + {abstract} enableBoundsControlVisibility() : void
+    + {abstract} disableBoundsControlVisibility() : void
+}
+interface IBoundsControlVisibilityProvider {
+}
+class BoundsControlVisibilityRepository {
+    + enableBoundsControlVisibility() : void
+    + disableBoundsControlVisibility() : void
+}
+class "IReadOnlyReactiveProperty`1"<T> {
+}
+IBoundsControlVisibilityProvider --> "isBoundsVisibilityEnabled<bool>" "IReadOnlyReactiveProperty`1"
+IBoundsControlVisibilityEditor <|-- BoundsControlVisibilityRepository
+IBoundsControlVisibilityProvider <|-- BoundsControlVisibilityRepository
+BoundsControlVisibilityRepository --> "isBoundsVisibilityEnabled<bool>" "IReadOnlyReactiveProperty`1"
+@enduml

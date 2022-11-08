@@ -1,6 +1,6 @@
 @startuml
 class MachinePresenter {
-    + MachinePresenter(index:int, addAnchorUseCase:IAddAnchorUseCase, removeAnchorUseCase:IRemoveAnchorUseCase, boundsControlProvider:IBoundsControlProvider)
+    + MachinePresenter(index:int, addAnchorUseCase:IAddAnchorUseCase, removeAnchorUseCase:IRemoveAnchorUseCase, boundsControlProvider:IBoundsControlVisibilityProvider)
     +  <<event>> disableTapToPlace : Action 
     +  <<event>> deleteCurrentMachine : Action 
     + setAnchorCreatedState() : void
@@ -20,6 +20,7 @@ class State {
     + isDeleteMachineVisible : bool = true
     + isRemoveAnchorVisible : bool = false
     + areBoundControlsVisible : bool = false
+    + State()
     + State(state:State)
 }
 class "PlaceholderFactory`2"<T1,T2> {
