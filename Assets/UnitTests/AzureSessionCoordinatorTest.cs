@@ -7,11 +7,11 @@ using UnityEngine.TestTools;
 
 public class AzureSessionCoordinatorTest
 {
-    AnchorsRepository anchorsRepository = Substitute.For<AnchorsRepository>();
-    ObjectCreator objectsCreator = Substitute.For<ObjectCreator>();
-    AnchorLocator anchorLocator = Substitute.For<AnchorLocator>();
-    StartAzureSession startAzureSession = Substitute.For<StartAzureSession>();
-    AnchorCreator saveAnchor = Substitute.For<AnchorCreator>();
+    IAnchorsRepository anchorsRepository = Substitute.For<IAnchorsRepository>();
+    IObjectsCreator objectsCreator = Substitute.For<IObjectsCreator>();
+    IAnchorLocator anchorLocator = Substitute.For<IAnchorLocator>();
+    IStartAzureSession startAzureSession = Substitute.For<IStartAzureSession>();
+    IAnchorCreator saveAnchor = Substitute.For<IAnchorCreator>();
     GameObjectEditor gameObjectEditor = Substitute.For<GameObjectEditor>();
 
 
@@ -106,7 +106,7 @@ public class AzureSessionCoordinatorTest
         {
             GameObject mockedAnchorGO = new GameObject();
             GameObject prefabAnchor = new GameObject();
-            AnchorLocator.CloudAnchorLocatedArgs mockedArgs = new AnchorLocator.CloudAnchorLocatedArgs(
+            IAnchorLocator.CloudAnchorLocatedArgs mockedArgs = new IAnchorLocator.CloudAnchorLocatedArgs(
                         new Pose(Vector3.right, Quaternion.identity),
                         0,
                         anchorId1
@@ -143,7 +143,7 @@ public class AzureSessionCoordinatorTest
             public void savesAnchorIdentifier()
             {
                 anchorsRepository.Received().addAnchor(
-                    Arg.Is<AnchorsRepository.AnchorGameObject>(
+                    Arg.Is<IAnchorsRepository.AnchorGameObject>(
                         x => x.identifier == mockedArgs.identifier
                         )
                     );
@@ -153,7 +153,7 @@ public class AzureSessionCoordinatorTest
             public void savesAnchorGamoObject()
             {
                 anchorsRepository.Received().addAnchor(
-                    Arg.Is<AnchorsRepository.AnchorGameObject>(
+                    Arg.Is<IAnchorsRepository.AnchorGameObject>(
                             x => x.gameObject == mockedAnchorGO
                         )
                     );

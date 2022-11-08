@@ -11,13 +11,13 @@ public class MachineView : MonoBehaviour
     public Interactable tapToPlaceButton;
     public Interactable deleteButton;
     private TapToPlace tapToPlaceScript;
-    private AnchorPresenter _anchorPresenter;
+    private MachinePresenter _anchorPresenter;
 
     public void Start()
     {
         tapToPlaceScript = GetComponent<TapToPlace>();
     }
-    public void Initialize(AnchorPresenter anchorPresenter)
+    public void Initialize(MachinePresenter anchorPresenter)
     {
         _anchorPresenter = anchorPresenter;
         _anchorPresenter.state.Subscribe((state) => { bindState(state); }).AddTo(this);
@@ -29,7 +29,7 @@ public class MachineView : MonoBehaviour
         deleteButton.OnClick.AddListener(() => _anchorPresenter.delete());
     }
 
-    private void bindState(AnchorPresenter.State state)
+    private void bindState(MachinePresenter.State state)
     {
         addAnchorButton.gameObject.SetActive(state.isAddAnchorVisible);
         removeAnchorButton.gameObject.SetActive(state.isRemoveAnchorVisible);
@@ -48,12 +48,12 @@ public class MachineView : MonoBehaviour
         tapToPlaceScript.AutoStart = false;
     }
 
-    public class Factory : PlaceholderFactory<UnityEngine.Object, AnchorPresenter, MachineView>
+    public class Factory : PlaceholderFactory<UnityEngine.Object, MachinePresenter, MachineView>
     {
     }
 }
 
-public class MachineViewFactory : IFactory<UnityEngine.Object, AnchorPresenter, MachineView>
+public class MachineViewFactory : IFactory<UnityEngine.Object, MachinePresenter, MachineView>
 {
     readonly DiContainer _container;
 
@@ -62,12 +62,12 @@ public class MachineViewFactory : IFactory<UnityEngine.Object, AnchorPresenter, 
         _container = container;
     }
 
-    public AnchorPresenter Create(Object prefab)
+    public MachinePresenter Create(Object prefab)
     {
-        return _container.InstantiatePrefabForComponent<AnchorPresenter>(prefab);
+        return _container.InstantiatePrefabForComponent<MachinePresenter>(prefab);
     }
 
-    public MachineView Create(Object prefab, AnchorPresenter presenter)
+    public MachineView Create(Object prefab, MachinePresenter presenter)
     {
         MachineView view = _container.InstantiatePrefabForComponent<MachineView>(prefab);
         view.Initialize(presenter);

@@ -6,11 +6,11 @@ using UnityEngine;
 using Zenject;
 
 
-public interface AwarnessValidator
+public interface IAwarnessValidator
 {
     public Task validateSceneReadiness();
 }
-public class SceneAwarnessValidator : MonoBehaviour, AwarnessValidator
+public class SceneAwarnessValidator : MonoBehaviour, IAwarnessValidator
 {
     private SpatialAnchorManager _cloudManager;
 

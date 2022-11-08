@@ -1,16 +1,22 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class RemoveAnchorUseCase
+public interface IRemoveAnchorUseCase
 {
-    private readonly AnchorsRepository _anchorsRepository;
-    private readonly AnchorRemover _anchorRemover;
+    public Task removeAzureAnchor(GameObject theObject);
+}
+
+
+public class RemoveAnchorUseCase : IRemoveAnchorUseCase
+{
+    private readonly IAnchorsRepository _anchorsRepository;
+    private readonly IAnchorRemover _anchorRemover;
     private readonly GameObjectEditor _gameObjectEditor;
 
 
     public RemoveAnchorUseCase(
-        AnchorsRepository anchorsRepository,
-        AnchorRemover anchorRemover,
+        IAnchorsRepository anchorsRepository,
+        IAnchorRemover anchorRemover,
         GameObjectEditor gameObjectEditor
         )
     {
@@ -22,7 +28,7 @@ public class RemoveAnchorUseCase
     public async Task removeAzureAnchor(GameObject theObject)
     {
         string id = _gameObjectEditor.getName(theObject);
-        AnchorsRepository.AnchorGameObject? data = _anchorsRepository.getAnchor(id);
+        IAnchorsRepository.AnchorGameObject? data = _anchorsRepository.getAnchor(id);
         if (data == null)
         {
             Debug.Log("\nNo Anchor");

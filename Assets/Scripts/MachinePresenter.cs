@@ -3,13 +3,13 @@ using UniRx;
 using UnityEngine;
 using Zenject;
 
-public class AnchorPresenter
+public class MachinePresenter
 {
     public IReadOnlyReactiveProperty<State> state => _state;
 
     private readonly ReactiveProperty<State> _state = new ReactiveProperty<State>();
 
-    public AnchorPresenter(int index, AddAnchorUseCase addAnchorUseCase, RemoveAnchorUseCase removeAnchorUseCase, IBoundsControlProvider boundsControlProvider)
+    public MachinePresenter(int index, IAddAnchorUseCase addAnchorUseCase, IRemoveAnchorUseCase removeAnchorUseCase, IBoundsControlProvider boundsControlProvider)
     {
         _machineIndex = index;
         _addAnchorUseCase = addAnchorUseCase;
@@ -26,9 +26,9 @@ public class AnchorPresenter
 
     private int _machineIndex;
 
-    private AddAnchorUseCase _addAnchorUseCase;
+    private IAddAnchorUseCase _addAnchorUseCase;
 
-    private RemoveAnchorUseCase _removeAnchorUseCase;
+    private IRemoveAnchorUseCase _removeAnchorUseCase;
 
     private IBoundsControlProvider _boundsControlProvider;
 
@@ -93,7 +93,7 @@ public class AnchorPresenter
         disableTapToPlace.Invoke();
     }
 
-    public class Factory : PlaceholderFactory<int, AnchorPresenter>
+    public class Factory : PlaceholderFactory<int, MachinePresenter>
     {
     }
 

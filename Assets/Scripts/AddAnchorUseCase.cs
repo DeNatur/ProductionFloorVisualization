@@ -1,17 +1,22 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class AddAnchorUseCase
+public interface IAddAnchorUseCase
 {
-    readonly AnchorsRepository _anchorsRepository;
-    readonly AnchorCreator _saveAnchor;
-    readonly AwarnessValidator _sceneAwarnessValidator;
+    public Task<bool> createAzureAnchor(GameObject theObject, int index);
+}
+
+public class AddAnchorUseCase : IAddAnchorUseCase
+{
+    readonly IAnchorsRepository _anchorsRepository;
+    readonly IAnchorCreator _saveAnchor;
+    readonly IAwarnessValidator _sceneAwarnessValidator;
     readonly GameObjectEditor _gameObjectEditor;
 
     public AddAnchorUseCase(
-        AnchorsRepository anchorsRepository,
-        AnchorCreator saveAnchor,
-        AwarnessValidator sceneAwarnessValidator,
+        IAnchorsRepository anchorsRepository,
+        IAnchorCreator saveAnchor,
+        IAwarnessValidator sceneAwarnessValidator,
         GameObjectEditor gameObjectEditor
     )
     {
@@ -40,26 +45,26 @@ public class AddAnchorUseCase
 
         await _sceneAwarnessValidator.validateSceneReadiness();
 
-        AnchorCreator.Result result = await _saveAnchor.createCloudAnchor(theObject, index);
-        if (result is AnchorCreator.Result.Success)
+        IAnchorCreator.Result result = await _saveAnchor.createCloudAnchor(theObject, index);
+        if (result is IAnchorCreator.Result.Success)
         {
-            saveNewAnchor(theObject, result as AnchorCreator.Result.Success);
+            saveNewAnchor(theObject, result as IAnchorCreator.Result.Success);
             return true;
         }
         else
         {
-            if ((result as AnchorCreator.Result.Failure).exception != null)
+            if ((result as IAnchorCreator.Result.Failure).exception != null)
             {
-                Debug.Log((result as AnchorCreator.Result.Failure).exception);
+                Debug.Log((result as IAnchorCreator.Result.Failure).exception);
             }
             return false;
         }
     }
 
-    private void saveNewAnchor(GameObject theObject, AnchorCreator.Result.Success result)
+    private void saveNewAnchor(GameObject theObject, IAnchorCreator.Result.Success result)
     {
         _gameObjectEditor.setName(theObject, result.anchorIdentifier);
-        AnchorsRepository.AnchorGameObject anchorToSave = new AnchorsRepository.AnchorGameObject
+        IAnchorsRepository.AnchorGameObject anchorToSave = new IAnchorsRepository.AnchorGameObject
         {
             identifier = result.anchorIdentifier,
             gameObject = theObject,
@@ -69,7 +74,7 @@ public class AddAnchorUseCase
 
     private bool checkAnchorAlreadyCreated(string anchorName)
     {
-        AnchorsRepository.AnchorGameObject? data = _anchorsRepository.getAnchor(anchorName);
+        IAnchorsRepository.AnchorGameObject? data = _anchorsRepository.getAnchor(anchorName);
 
         if (data != null)
         {

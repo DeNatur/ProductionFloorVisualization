@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 public class RemoveAnchorUseCaseTest
 {
-    AnchorsRepository anchorsRepository = Substitute.For<AnchorsRepository>();
-    AnchorRemover anchorRemover = Substitute.For<AnchorRemover>();
+    IAnchorsRepository anchorsRepository = Substitute.For<IAnchorsRepository>();
+    IAnchorRemover anchorRemover = Substitute.For<IAnchorRemover>();
     GameObjectEditor gameObjectEditor = Substitute.For<GameObjectEditor>();
     RemoveAnchorUseCase subject;
 
     static private UnityEngine.GameObject mockedGO;
     static private string mockedIdentifier = "test";
-    private AnchorsRepository.AnchorGameObject mockedAnchorGO = new AnchorsRepository.AnchorGameObject
+    private IAnchorsRepository.AnchorGameObject mockedAnchorGO = new IAnchorsRepository.AnchorGameObject
     {
         identifier = mockedIdentifier,
         gameObject = mockedGO

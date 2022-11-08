@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using static AnchorsRepository;
+using static IAnchorsRepository;
 
 
 #if WINDOWS_UWP
 using Windows.Storage;
 #endif
-public class AzureAnchorsReporitory : AnchorsRepository
+public class AzureAnchorsReporitory : IAnchorsRepository
 {
 
     private Dictionary<string, GameObject> createdAnchors = new Dictionary<string, GameObject>();

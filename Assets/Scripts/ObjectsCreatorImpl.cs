@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public interface ObjectCreator
+public interface IObjectsCreator
 {
     public GameObject[] allMachines { get; set; }
 
@@ -10,18 +10,18 @@ public interface ObjectCreator
     public abstract GameObject createNewMachineWithGO(int machineIndex);
 }
 
-public class ObjectsCreatorImpl : MonoBehaviour, ObjectCreator
+public class ObjectsCreatorImpl : MonoBehaviour, IObjectsCreator
 {
     // Start is called before the first frame update
     public GameObject[] allMachines;
 
-    private AnchorPresenter.Factory _anchorPresenterFactory;
+    private MachinePresenter.Factory _anchorPresenterFactory;
     private MachineView.Factory _machineViewFactory;
 
-    GameObject[] ObjectCreator.allMachines { get => allMachines; set => allMachines = value; }
+    GameObject[] IObjectsCreator.allMachines { get => allMachines; set => allMachines = value; }
 
     [Inject]
-    public void Construct(MachineView.Factory machineViewFactory, AnchorPresenter.Factory anchorPresenterFactory)
+    public void Construct(MachineView.Factory machineViewFactory, MachinePresenter.Factory anchorPresenterFactory)
     {
         _anchorPresenterFactory = anchorPresenterFactory;
         _machineViewFactory = machineViewFactory;
@@ -29,13 +29,13 @@ public class ObjectsCreatorImpl : MonoBehaviour, ObjectCreator
 
     public void createNewMachine(int machineIndex)
     {
-        AnchorPresenter anchorPresenter = _anchorPresenterFactory.Create(machineIndex);
+        MachinePresenter anchorPresenter = _anchorPresenterFactory.Create(machineIndex);
         _machineViewFactory.Create(allMachines[machineIndex], anchorPresenter);
     }
 
     public GameObject createNewMachineWithGO(int machineIndex)
     {
-        AnchorPresenter anchorPresenter = _anchorPresenterFactory.Create(machineIndex);
+        MachinePresenter anchorPresenter = _anchorPresenterFactory.Create(machineIndex);
         MachineView machineView = _machineViewFactory.Create(allMachines[machineIndex], anchorPresenter);
 
         anchorPresenter.setTapToPlaceNotStarted();

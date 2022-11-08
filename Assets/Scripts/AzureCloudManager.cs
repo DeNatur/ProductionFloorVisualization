@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 
-public interface StartAzureSession
+public interface IStartAzureSession
 {
     Task invoke();
 }
 
-public interface AnchorRemover
+public interface IAnchorRemover
 {
 
     public void deleteNativeAnchor(GameObject anchorGameObject);
@@ -18,7 +18,7 @@ public interface AnchorRemover
     public Task deleteCloudAnchor(GameObject anchorGameObject);
 }
 
-public class AzureCloudManager : AnchorCreator, AnchorRemover, StartAzureSession
+public class AzureCloudManager : IAnchorCreator, IAnchorRemover, IStartAzureSession
 {
     static string ANCHOR_TYPE_PROP = "ANCHOR_TYPE";
 
@@ -29,7 +29,7 @@ public class AzureCloudManager : AnchorCreator, AnchorRemover, StartAzureSession
         _cloudManager = cloudManager;
     }
 
-    public async Task<AnchorCreator.Result> createCloudAnchor(GameObject gameObject, int propIndex)
+    public async Task<IAnchorCreator.Result> createCloudAnchor(GameObject gameObject, int propIndex)
     {
         CloudSpatialAnchor localCloudAnchor = await getLocalAnchorWithObjectProperties(gameObject, propIndex);
 
@@ -38,16 +38,16 @@ public class AzureCloudManager : AnchorCreator, AnchorRemover, StartAzureSession
             await _cloudManager.CreateAnchorAsync(localCloudAnchor);
             if (localCloudAnchor != null)
             {
-                return new AnchorCreator.Result.Success(localCloudAnchor.Identifier);
+                return new IAnchorCreator.Result.Success(localCloudAnchor.Identifier);
             }
             else
             {
-                return new AnchorCreator.Result.Failure();
+                return new IAnchorCreator.Result.Failure();
             }
         }
         catch (Exception ex)
         {
-            return new AnchorCreator.Result.Failure(ex);
+            return new IAnchorCreator.Result.Failure(ex);
         }
     }
 

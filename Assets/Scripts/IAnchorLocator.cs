@@ -4,8 +4,8 @@ using System;
 using UnityEngine;
 
 
-public delegate void CloudAnchorLocated(object sender, AnchorLocator.CloudAnchorLocatedArgs args);
-public interface AnchorLocator
+public delegate void CloudAnchorLocated(object sender, IAnchorLocator.CloudAnchorLocatedArgs args);
+public interface IAnchorLocator
 {
     public event CloudAnchorLocated CloudAnchorLocated;
 
@@ -25,7 +25,7 @@ public interface AnchorLocator
 
     public void startLocatingAzureAnchors(string[] idsToFind);
 }
-public class AzureAnchorLocator : AnchorLocator
+public class AzureAnchorLocator : IAnchorLocator
 {
     static string ANCHOR_TYPE_PROP = "ANCHOR_TYPE";
 
@@ -52,8 +52,8 @@ public class AzureAnchorLocator : AnchorLocator
         if (args.Status == LocateAnchorStatus.Located && args.Anchor != null)
         {
             Debug.Log($"Azure anchor located successfully");
-            AnchorLocator.CloudAnchorLocatedArgs anchorLocatedArgs =
-                new AnchorLocator.CloudAnchorLocatedArgs(
+            IAnchorLocator.CloudAnchorLocatedArgs anchorLocatedArgs =
+                new IAnchorLocator.CloudAnchorLocatedArgs(
                     pose: args.Anchor.GetPose(),
                     type: int.Parse(args.Anchor.AppProperties[ANCHOR_TYPE_PROP]),
                     identifier: args.Identifier

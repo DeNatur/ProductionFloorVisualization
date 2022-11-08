@@ -12,14 +12,16 @@ public class AppInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
-        Container.Bind<AnchorsRepository>()
+        Container.Bind<IAnchorsRepository>()
             .To<AzureAnchorsReporitory>()
             .AsSingle();
 
-        Container.Bind<AddAnchorUseCase>()
+        Container.Bind<IAddAnchorUseCase>()
+            .To<AddAnchorUseCase>()
             .AsSingle();
 
-        Container.Bind<RemoveAnchorUseCase>()
+        Container.Bind<IRemoveAnchorUseCase>()
+            .To<RemoveAnchorUseCase>()
             .AsSingle();
 
         Container.Bind<AzureSessionCoordinator>()
@@ -30,23 +32,23 @@ public class AppInstaller : MonoInstaller
             .FromInstance(cloudManager)
             .AsSingle();
 
-        Container.Bind<ObjectCreator>()
+        Container.Bind<IObjectsCreator>()
             .FromInstance(objectsCreator)
             .AsSingle();
 
-        Container.Bind<AwarnessValidator>()
+        Container.Bind<IAwarnessValidator>()
             .FromInstance(sceneAwarnessValidator)
             .AsSingle();
 
-        Container.Bind<AnchorCreator>()
+        Container.Bind<IAnchorCreator>()
             .To<AzureCloudManager>()
             .AsCached();
 
-        Container.Bind<AnchorRemover>()
+        Container.Bind<IAnchorRemover>()
             .To<AzureCloudManager>()
             .AsCached();
 
-        Container.Bind<StartAzureSession>()
+        Container.Bind<IStartAzureSession>()
             .To<AzureCloudManager>()
             .AsCached();
 
@@ -54,7 +56,7 @@ public class AppInstaller : MonoInstaller
             .To<GameObjectEditorImpl>()
             .AsSingle();
 
-        Container.Bind<AnchorLocator>()
+        Container.Bind<IAnchorLocator>()
             .To<AzureAnchorLocator>()
             .AsSingle();
 
@@ -72,9 +74,9 @@ public class AppInstaller : MonoInstaller
         Container.Bind<UserMenuView>()
             .AsSingle();
 
-        Container.BindFactory<int, AnchorPresenter, AnchorPresenter.Factory>();
+        Container.BindFactory<int, MachinePresenter, MachinePresenter.Factory>();
 
-        Container.BindFactory<UnityEngine.Object, AnchorPresenter, MachineView, MachineView.Factory>()
+        Container.BindFactory<UnityEngine.Object, MachinePresenter, MachineView, MachineView.Factory>()
             .FromFactory<MachineViewFactory>();
 
     }

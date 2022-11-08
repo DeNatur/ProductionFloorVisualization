@@ -8,22 +8,22 @@ using Zenject;
 public class AzureSessionCoordinator : MonoBehaviour
 {
 
-    private ObjectCreator _objectsCreator;
-    private AnchorsRepository _anchorsRepository;
-    private AnchorLocator _anchorLocator;
-    private StartAzureSession _startAzureSession;
-    private AnchorCreator _saveAnchor;
+    private IObjectsCreator _objectsCreator;
+    private IAnchorsRepository _anchorsRepository;
+    private IAnchorLocator _anchorLocator;
+    private IStartAzureSession _startAzureSession;
+    private IAnchorCreator _saveAnchor;
     private GameObjectEditor _gameObjectEditor;
 
     public bool isStarted = false;
 
     [Inject]
     public void Construct(
-        AnchorsRepository anchorsRepository,
-        AnchorLocator anchorLocator,
-        ObjectCreator objectsCreator,
-        StartAzureSession startAzureSession,
-        AnchorCreator saveAnchor,
+        IAnchorsRepository anchorsRepository,
+        IAnchorLocator anchorLocator,
+        IObjectsCreator objectsCreator,
+        IStartAzureSession startAzureSession,
+        IAnchorCreator saveAnchor,
         GameObjectEditor gameObjectEditor
     )
     {
@@ -60,7 +60,7 @@ public class AzureSessionCoordinator : MonoBehaviour
         _anchorLocator.startLocatingAzureAnchors(anchorsToFind.ToArray());
     }
 
-    private void AnchorLocator_CloudAnchorLocated(object sender, AnchorLocator.CloudAnchorLocatedArgs args)
+    private void AnchorLocator_CloudAnchorLocated(object sender, IAnchorLocator.CloudAnchorLocatedArgs args)
     {
         GameObject newAnchor = _objectsCreator.createNewMachineWithGO(args.type);
 
@@ -72,7 +72,7 @@ public class AzureSessionCoordinator : MonoBehaviour
         _saveAnchor.createNativeAnchor(newAnchor);
 
         _anchorsRepository.addAnchor(
-            new AnchorsRepository.AnchorGameObject
+            new IAnchorsRepository.AnchorGameObject
             {
                 identifier = args.identifier,
                 gameObject = newAnchor,

@@ -1,9 +1,9 @@
 public class UserMenuPresenter
 {
-    private readonly ObjectCreator _objectCreator;
+    private readonly IObjectsCreator _objectCreator;
     private readonly IBoundsControlEditor _boundsControlEditor;
 
-    public UserMenuPresenter(ObjectCreator objectCreator, IBoundsControlEditor boundsControlEditor)
+    public UserMenuPresenter(IObjectsCreator objectCreator, IBoundsControlEditor boundsControlEditor)
     {
         _objectCreator = objectCreator;
         _boundsControlEditor = boundsControlEditor;

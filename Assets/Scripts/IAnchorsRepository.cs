@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-public interface AnchorsRepository
+public interface IAnchorsRepository
 {
 
     public void addAnchor(AnchorGameObject anchor);

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 public class AddAnchorUseCaseTest
 {
 
-    AnchorsRepository anchorsRepository = Substitute.For<AnchorsRepository>();
-    AnchorCreator saveAnchor = Substitute.For<AnchorCreator>();
-    AwarnessValidator validator = Substitute.For<AwarnessValidator>();
+    IAnchorsRepository anchorsRepository = Substitute.For<IAnchorsRepository>();
+    IAnchorCreator saveAnchor = Substitute.For<IAnchorCreator>();
+    IAwarnessValidator validator = Substitute.For<IAwarnessValidator>();
     GameObjectEditor gameObjectEditor = Substitute.For<GameObjectEditor>();
     AddAnchorUseCase subject;
 
@@ -34,8 +34,8 @@ public class AddAnchorUseCaseTest
     {
 
         private Task<bool> resultTask;
-        private AnchorsRepository.AnchorGameObject mockedAnchorGO
-            = new AnchorsRepository.AnchorGameObject
+        private IAnchorsRepository.AnchorGameObject mockedAnchorGO
+            = new IAnchorsRepository.AnchorGameObject
             {
                 identifier = mockedIdentifier,
                 gameObject = mockedGO
@@ -61,8 +61,8 @@ public class AddAnchorUseCaseTest
     public class NewAnchor : AddAnchorUseCaseTest
     {
 
-        private static AnchorsRepository.AnchorGameObject mockedAnchorGO
-            = new AnchorsRepository.AnchorGameObject
+        private static IAnchorsRepository.AnchorGameObject mockedAnchorGO
+            = new IAnchorsRepository.AnchorGameObject
             {
                 identifier = mockedIdentifier,
                 gameObject = mockedGO
@@ -80,7 +80,7 @@ public class AddAnchorUseCaseTest
         {
 
             private const string newIdentifier = "new";
-            private AnchorCreator.Result anchorResult = new AnchorCreator.Result.Success(newIdentifier);
+            private IAnchorCreator.Result anchorResult = new IAnchorCreator.Result.Success(newIdentifier);
             private Task<bool> resultTask;
 
             [SetUp]
@@ -141,7 +141,7 @@ public class AddAnchorUseCaseTest
                 {
                     await resultTask;
                     anchorsRepository.Received().addAnchor(
-                        Arg.Is<AnchorsRepository.AnchorGameObject>(
+                        Arg.Is<IAnchorsRepository.AnchorGameObject>(
                             x => x.gameObject == mockedGO
                             )
                         );
@@ -155,7 +155,7 @@ public class AddAnchorUseCaseTest
                 {
                     await resultTask;
                     anchorsRepository.Received().addAnchor(
-                        Arg.Is<AnchorsRepository.AnchorGameObject>(
+                        Arg.Is<IAnchorsRepository.AnchorGameObject>(
                             x => x.identifier == newIdentifier
                             )
                         );
@@ -168,7 +168,7 @@ public class AddAnchorUseCaseTest
         {
 
             private const string newIdentifier = "new";
-            private AnchorCreator.Result anchorResult = new AnchorCreator.Result.Failure();
+            private IAnchorCreator.Result anchorResult = new IAnchorCreator.Result.Failure();
             private Task<bool> resultTask;
 
             [SetUp]
@@ -199,7 +199,7 @@ public class AddAnchorUseCaseTest
                 {
                     await resultTask;
                     anchorsRepository.DidNotReceive().addAnchor(
-                        Arg.Is<AnchorsRepository.AnchorGameObject>(
+                        Arg.Is<IAnchorsRepository.AnchorGameObject>(
                             x => x.gameObject == mockedGO
                             )
                         );
@@ -213,7 +213,7 @@ public class AddAnchorUseCaseTest
                 {
                     await resultTask;
                     anchorsRepository.DidNotReceive().addAnchor(
-                        Arg.Is<AnchorsRepository.AnchorGameObject>(
+                        Arg.Is<IAnchorsRepository.AnchorGameObject>(
                             x => x.identifier == newIdentifier
                             )
                         );
