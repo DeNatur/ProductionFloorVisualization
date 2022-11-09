@@ -4,9 +4,9 @@ using UniRx;
 public class BoundsControlVisibilityRepositoryTest
 {
 
-    static BoundsControlVisibilityRepository subject;
+    BoundsControlVisibilityRepository subject;
 
-    static bool? currentResultValue = null;
+    bool? currentResultValue = null;
 
     [SetUp]
     public void setUp()

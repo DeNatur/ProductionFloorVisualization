@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -61,20 +62,17 @@ public class MachinePresenter
         isAnchorCreated = false;
     }
 
-    public async void setAnchor(GameObject gameObject)
+    public async Task setAnchor(GameObject gameObject)
     {
-        if (_addAnchorUseCase == null)
-        {
-            Debug.Log("NULLL _addAnchorUseCase");
-        }
         bool result = await _addAnchorUseCase.createAzureAnchor(gameObject, _machineIndex);
+
         if (result)
         {
             setAnchorCreatedState();
         }
     }
 
-    public async void removeAnchor(GameObject gameObject)
+    public async Task removeAnchor(GameObject gameObject)
     {
         await _removeAnchorUseCase.removeAzureAnchor(gameObject);
         setAnchorNotCreatedState();
