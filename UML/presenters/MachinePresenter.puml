@@ -1,18 +1,15 @@
 @startuml
 class MachinePresenter {
-    + MachinePresenter(index:int, addAnchorUseCase:IAddAnchorUseCase, removeAnchorUseCase:IRemoveAnchorUseCase, boundsControlProvider:IBoundsControlVisibilityProvider)
     +  <<event>> disableTapToPlace : Action 
     +  <<event>> deleteCurrentMachine : Action 
+    <<readonly>> _machineIndex : int
+    + MachinePresenter(index:int, addAnchorUseCase:IAddAnchorUseCase, removeAnchorUseCase:IRemoveAnchorUseCase, boundsControlProvider:IBoundsControlVisibilityProvider, machineInfoRepository:IMachineInfoRepository)
     + setAnchorCreatedState() : void
     + setAnchorNotCreatedState() : void
-    + <<async>> setAnchor(gameObject:GameObject) : void
-    + <<async>> removeAnchor(gameObject:GameObject) : void
+    + <<async>> setAnchor(gameObject:GameObject) : Task
+    + <<async>> removeAnchor(gameObject:GameObject) : Task
     + delete() : void
     + setTapToPlaceNotStarted() : void
-}
-class "IReadOnlyReactiveProperty`1"<T> {
-}
-class Factory {
 }
 class State {
     + isAddAnchorVisible : bool = true
@@ -20,13 +17,31 @@ class State {
     + isDeleteMachineVisible : bool = true
     + isRemoveAnchorVisible : bool = false
     + areBoundControlsVisible : bool = false
+    + machineInfo : MachineInfo? = null
     + State()
     + State(state:State)
+}
+class "IReadOnlyReactiveProperty`1"<T> {
+}
+class Factory {
+}
+class MachineInfo <<struct>> {
+    + hallId : int
+    + name : string
+    + efficiency : int
+    + status : string
+    + symbol : string
 }
 class "PlaceholderFactory`2"<T1,T2> {
 }
 MachinePresenter --> "state<State>" "IReadOnlyReactiveProperty`1"
+MachinePresenter --> "_addAnchorUseCase" IAddAnchorUseCase
+MachinePresenter --> "_removeAnchorUseCase" IRemoveAnchorUseCase
+MachinePresenter --> "_boundsControlProvider" IBoundsControlVisibilityProvider
+MachinePresenter --> "_machineInfoRepository" IMachineInfoRepository
+MachinePresenter +-- State
 MachinePresenter +-- Factory
 "PlaceholderFactory`2" "<int,MachinePresenter>" <|-- Factory
-MachinePresenter +-- State
+State +-- MachineInfo
+MachineInfo --> "technicalExaminationDate" DateTime
 @enduml

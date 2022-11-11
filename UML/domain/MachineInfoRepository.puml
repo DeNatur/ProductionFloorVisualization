@@ -1,0 +1,19 @@
+@startuml
+interface IMachineInfoRepository {
+    + getMachineInfo(index:int) : IReadOnlyReactiveProperty<MachineInfo?>
+}
+class MachineInfoRepository {
+    + MachineInfoRepository()
+    + getMachineInfo(index:int) : IReadOnlyReactiveProperty<IMachineInfoRepository.MachineInfo?>
+}
+class MachineInfo <<struct>> {
+    + hallId : int
+    + name : string
+    + efficiency : int
+    + status : string
+    + symbol : string
+}
+IMachineInfoRepository <|-- MachineInfoRepository
+IMachineInfoRepository +-- MachineInfo
+MachineInfo --> "technicalExaminationDate" DateTime
+@enduml
