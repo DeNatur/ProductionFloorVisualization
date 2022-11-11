@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 6069825300225491479}
   - component: {fileID: 871024374707323476}
   m_Layer: 5
-  m_Name: TechnialExaminationDate
+  m_Name: TechnicalExaminationDate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -312,7 +312,7 @@ GameObject:
   - component: {fileID: 7264486355074241555}
   - component: {fileID: 2792353136462274357}
   m_Layer: 5
-  m_Name: Text
+  m_Name: TechnicalExaminationDateText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -391,7 +391,7 @@ GameObject:
   - component: {fileID: 4141832086903871682}
   - component: {fileID: 2624321714556252238}
   m_Layer: 5
-  m_Name: Text
+  m_Name: HallIdText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -470,7 +470,7 @@ GameObject:
   - component: {fileID: 3370150275477091176}
   - component: {fileID: 414808724653992970}
   m_Layer: 5
-  m_Name: Text
+  m_Name: StatusText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -685,7 +685,7 @@ GameObject:
   - component: {fileID: 7673624376604359031}
   - component: {fileID: 7565907754129609859}
   m_Layer: 5
-  m_Name: Text
+  m_Name: SymbolText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -964,7 +964,7 @@ GameObject:
   - component: {fileID: 8305284037705042056}
   - component: {fileID: 8197671065978316156}
   m_Layer: 5
-  m_Name: Text
+  m_Name: NameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1043,7 +1043,7 @@ GameObject:
   - component: {fileID: 6643050616987878845}
   - component: {fileID: 1533299628218032536}
   m_Layer: 5
-  m_Name: Text
+  m_Name: EfficiencyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

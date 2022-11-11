@@ -10,22 +10,33 @@ public class MachineView : MonoBehaviour
     public Interactable addAnchorButton;
     public Interactable removeAnchorButton;
     public Interactable tapToPlaceButton;
-    public Text nameText;
-    public Text symbolText;
-    public Text statusText;
-    public Text hallIdText;
-    public Text efficiencyText;
-    public Text technicalExaminationDateText;
+    private Text nameText;
+    private Text symbolText;
+    private Text statusText;
+    private Text hallIdText;
+    private Text efficiencyText;
+    private Text technicalExaminationDateText;
     public Interactable deleteButton;
     private TapToPlace tapToPlaceScript;
     private MachinePresenter _anchorPresenter;
 
-    public void Start()
+    public void initViews()
     {
         tapToPlaceScript = GetComponent<TapToPlace>();
+        nameText = transform.Find("MachineInfo/Name/NameText").GetComponent<Text>();
+        symbolText = transform.Find("MachineInfo/Symbol/SymbolText").GetComponent<Text>();
+        statusText = transform.Find("MachineInfo/Status/StatusText").GetComponent<Text>();
+        hallIdText = transform.Find("MachineInfo/HallId/HallIdText").GetComponent<Text>();
+        efficiencyText = transform.Find("MachineInfo/Efficiency/EfficiencyText").GetComponent<Text>();
+        technicalExaminationDateText = transform.Find("MachineInfo/TechnicalExaminationDate/TechnicalExaminationDateText").GetComponent<Text>();
+        addAnchorButton = transform.Find("Buttons/AddAnchor").GetComponent<Interactable>();
+        removeAnchorButton = transform.Find("Buttons/RemoveAnchor").GetComponent<Interactable>();
+        tapToPlaceButton = transform.Find("Buttons/TapToPlace").GetComponent<Interactable>();
+        deleteButton = transform.Find("Buttons/Delete").GetComponent<Interactable>();
     }
     public void Initialize(MachinePresenter anchorPresenter)
     {
+        initViews();
         _anchorPresenter = anchorPresenter;
         _anchorPresenter.state.Subscribe((state) => { bindState(state); }).AddTo(this);
         _anchorPresenter.deleteCurrentMachine += AnchorPresenter_DeleteObject;
@@ -46,28 +57,28 @@ public class MachineView : MonoBehaviour
         if (state.machineInfo != null)
         {
             nameText.text = string.Format(
-                "Machine Name: %s",
+                "Machine Name: {0}",
                 state.machineInfo.Value.name
                 );
             symbolText.text = string.Format(
-                "Symbol: %s",
+                "Symbol: {0}",
                 state.machineInfo.Value.symbol
                 );
             statusText.text = string.Format(
-                "Status: %s",
+                "Status: {0}",
                 state.machineInfo.Value.status
                 );
             hallIdText.text = string.Format(
-                "Status: %d",
+                "Hall ID: {0}",
                 state.machineInfo.Value.hallId
                 );
             efficiencyText.text = string.Format(
-                "Efficiency: %d",
+                "Efficiency: {0}",
                 state.machineInfo.Value.efficiency
                 );
             technicalExaminationDateText.text = string.Format(
-                "Technical Examination Date: %s",
-                state.machineInfo.Value.technicalExaminationDate.ToString("MM/dd/yyyy HH:mm:ss")
+                "Technical Examination Date: {0}",
+                state.machineInfo.Value.technicalExaminationDate.ToString("yyyy//MM/dd HH:mm:ss")
                 );
         }
     }

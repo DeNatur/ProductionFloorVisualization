@@ -22,7 +22,8 @@ public class UserMenuView : MonoBehaviour
         disableBoundsButton.OnClick.AddListener(() => _presenter.disableBoundControls());
         for (int i = 0; i < machinesButtons.Length; i++)
         {
-            machinesButtons[i].OnClick.AddListener(() => _presenter.createNewMachine(i));
+            int currentIndex = i;
+            machinesButtons[i].OnClick.AddListener(() => _presenter.createNewMachine(currentIndex));
         }
     }
 }

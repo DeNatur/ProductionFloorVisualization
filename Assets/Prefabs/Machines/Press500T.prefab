@@ -7139,6 +7139,63 @@ Transform:
   m_Father: {fileID: 6339386575939378158}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &4841283555052016786
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6113260949285853275}
+    m_Modifications:
+    - target: {fileID: 5815700100331232399, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_Name
+      value: MachineInfo
+      objectReference: {fileID: 0}
+    - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.769
+      objectReference: {fileID: 0}
+    - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.168
+      objectReference: {fileID: 0}
+    - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
 --- !u!1001 &6006696948953661360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7330,6 +7387,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 0
   IsBoundsHandles: 0
+--- !u!114 &3814542297523471048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6889798095622832865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9979fea92d72f7f40a7608c1ef3559be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  addAnchorButton: {fileID: 3510852837782827948}
+  removeAnchorButton: {fileID: 970704631556864177}
+  tapToPlaceButton: {fileID: 6344912809165152355}
+  deleteButton: {fileID: 7382606592619965493}
 --- !u!114 &7738806621076513284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7480,19 +7553,3 @@ MonoBehaviour:
   pivotDistance: 1.442
   toolTipText: "Prasa 500T z t\u0142okiem g\xF3rnym"
   anchor: {fileID: 0}
---- !u!114 &3814542297523471048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6889798095622832865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9979fea92d72f7f40a7608c1ef3559be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  addAnchorButton: {fileID: 6339386575418760463}
-  removeAnchorButton: {fileID: 2104690430274544765}
-  tapToPlaceButton: {fileID: 2639467233964067502}
-  deleteButton: {fileID: 7382606592619965493}
