@@ -1,5 +1,6 @@
 using NSubstitute;
 using NUnit.Framework;
+using System;
 using System.Threading.Tasks;
 using UniRx;
 
@@ -10,7 +11,10 @@ public class MachinePresenterTest
     IAddAnchorUseCase addAnchorUseCase = Substitute.For<IAddAnchorUseCase>();
     IRemoveAnchorUseCase removeAnchorUseCase = Substitute.For<IRemoveAnchorUseCase>();
     IBoundsControlVisibilityProvider boundsControlVisibilityProvider = Substitute.For<IBoundsControlVisibilityProvider>();
-
+    IMachineInfoRepository machineInfoRepository = Substitute.For<IMachineInfoRepository>();
+    private readonly ReactiveProperty<bool> areBoundsEnabled = new ReactiveProperty<bool>(false);
+    private readonly ReactiveProperty<IMachineInfoRepository.MachineInfo?> machineInfoFlow =
+            new ReactiveProperty<IMachineInfoRepository.MachineInfo?>(null);
 
     MachinePresenter subject;
 
@@ -21,13 +25,22 @@ public class MachinePresenterTest
     [SetUp]
     public void setUp()
     {
-        subject = new MachinePresenter(machineIndex, addAnchorUseCase, removeAnchorUseCase, boundsControlVisibilityProvider);
+        machineInfoRepository.getMachineInfo(machineIndex).Returns(machineInfoFlow);
+        boundsControlVisibilityProvider.isBoundsVisibilityEnabled.Returns(areBoundsEnabled);
+        subject = new MachinePresenter(
+            machineIndex,
+            addAnchorUseCase,
+            removeAnchorUseCase,
+            boundsControlVisibilityProvider,
+            machineInfoRepository
+        );
         subject.state.Subscribe((state) => latestState = state);
     }
 
     [TestFixture]
     public class InitialState : MachinePresenterTest
     {
+
         [Test]
         public void initiallyAddAnchorIsVisible()
         {
@@ -372,6 +385,115 @@ public class MachinePresenterTest
         public void invokesDisableTapToPlace()
         {
             Assert.True(hasBeenRaised);
+        }
+    }
+
+    [TestFixture]
+    public class BoundsControlAreEnabled : MachinePresenterTest
+    {
+
+        [SetUp]
+        public new void setUp()
+        {
+            areBoundsEnabled.Value = true;
+        }
+
+        [Test]
+        public void boundsAreEnabled()
+        {
+            Assert.True(latestState.areBoundControlsVisible);
+        }
+    }
+
+    [TestFixture]
+    public class BoundsControlAreEnabledAndDisabled : MachinePresenterTest
+    {
+
+        [SetUp]
+        public new void setUp()
+        {
+            areBoundsEnabled.Value = true;
+            areBoundsEnabled.Value = false;
+        }
+
+        [Test]
+        public void boundsAreEnabled()
+        {
+            Assert.False(latestState.areBoundControlsVisible);
+        }
+    }
+
+    [TestFixture]
+    public class MachineInfoIsEmmited : MachinePresenterTest
+    {
+        IMachineInfoRepository.MachineInfo mockedMachine = new IMachineInfoRepository.MachineInfo
+        {
+            hallId = 0,
+            name = "ASP kolumna robocza",
+            efficiency = 100,
+            status = "Off",
+            symbol = "10000-2",
+            technicalExaminationDate = DateTime.Parse("2021-12-31T12:00:00.000+00:00")
+        };
+
+        [SetUp]
+        public new void setUp()
+        {
+            machineInfoFlow.Value = mockedMachine;
+        }
+
+        [Test]
+        public void hallIdIsMapped()
+        {
+            Assert.AreEqual(
+                latestState.machineInfo.Value.hallId,
+                mockedMachine.hallId
+            );
+        }
+
+        [Test]
+        public void machineNameIsMapped()
+        {
+            Assert.AreEqual(
+                latestState.machineInfo.Value.name,
+                mockedMachine.name
+            );
+        }
+
+        [Test]
+        public void machineEfficiencyIsMapped()
+        {
+            Assert.AreEqual(
+                latestState.machineInfo.Value.efficiency,
+                mockedMachine.efficiency
+            );
+        }
+
+        [Test]
+        public void statusIsMapped()
+        {
+            Assert.AreEqual(
+                latestState.machineInfo.Value.status,
+                mockedMachine.status
+            );
+        }
+
+        [Test]
+        public void symbolIsMapped()
+        {
+            Assert.AreEqual(
+                latestState.machineInfo.Value.symbol,
+                mockedMachine.symbol
+            );
+        }
+
+        [Test]
+        public void technicalExaminationDateIsMapped()
+        {
+            Assert.AreEqual(
+                latestState.machineInfo.Value.technicalExaminationDate,
+                mockedMachine.technicalExaminationDate
+            );
         }
     }
 }

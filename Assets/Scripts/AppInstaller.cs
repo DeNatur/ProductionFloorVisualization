@@ -74,6 +74,10 @@ public class AppInstaller : MonoInstaller
         Container.Bind<UserMenuView>()
             .AsSingle();
 
+        Container.Bind<IMachineInfoRepository>()
+            .To<MachineInfoRepository>()
+            .AsSingle();
+
         Container.BindFactory<int, MachinePresenter, MachinePresenter.Factory>();
 
         Container.BindFactory<UnityEngine.Object, MachinePresenter, MachineView, MachineView.Factory>()

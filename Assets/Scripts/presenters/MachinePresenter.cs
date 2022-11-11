@@ -6,37 +6,72 @@ using Zenject;
 
 public class MachinePresenter
 {
+
+    public class State
+    {
+        public bool isAddAnchorVisible = true;
+        public bool isTapToPlaceVisible = true;
+        public bool isDeleteMachineVisible = true;
+        public bool isRemoveAnchorVisible = false;
+        public bool areBoundControlsVisible = false;
+        public MachineInfo? machineInfo = null;
+
+        public State() { }
+        public State(State state)
+        {
+            isAddAnchorVisible = state.isAddAnchorVisible;
+            isTapToPlaceVisible = state.isTapToPlaceVisible;
+            isDeleteMachineVisible = state.isDeleteMachineVisible;
+            isRemoveAnchorVisible = state.isRemoveAnchorVisible;
+            areBoundControlsVisible = state.areBoundControlsVisible;
+            machineInfo = state.machineInfo;
+        }
+
+        public struct MachineInfo
+        {
+            public int hallId;
+            public string name;
+            public int efficiency;
+            public string status;
+            public string symbol;
+            public DateTime technicalExaminationDate;
+        }
+    }
+    public event Action disableTapToPlace;
+    public event Action deleteCurrentMachine;
+
     public IReadOnlyReactiveProperty<State> state => _state;
 
     private readonly ReactiveProperty<State> _state = new ReactiveProperty<State>(new State());
 
-    public MachinePresenter(int index, IAddAnchorUseCase addAnchorUseCase, IRemoveAnchorUseCase removeAnchorUseCase, IBoundsControlVisibilityProvider boundsControlProvider)
+    private bool isAnchorCreated = false;
+
+    readonly int _machineIndex;
+
+    readonly IAddAnchorUseCase _addAnchorUseCase;
+
+    readonly IRemoveAnchorUseCase _removeAnchorUseCase;
+
+    readonly IBoundsControlVisibilityProvider _boundsControlProvider;
+
+    readonly IMachineInfoRepository _machineInfoRepository;
+
+    public MachinePresenter(
+        int index,
+        IAddAnchorUseCase addAnchorUseCase,
+        IRemoveAnchorUseCase removeAnchorUseCase,
+        IBoundsControlVisibilityProvider boundsControlProvider,
+        IMachineInfoRepository machineInfoRepository
+        )
     {
         _machineIndex = index;
         _addAnchorUseCase = addAnchorUseCase;
         _removeAnchorUseCase = removeAnchorUseCase;
         _boundsControlProvider = boundsControlProvider;
+        _machineInfoRepository = machineInfoRepository;
 
-        _boundsControlProvider.isBoundsVisibilityEnabled.Subscribe((areBoundsEnabled) =>
-        {
-            State newState = new State(_state.Value);
-            newState.areBoundControlsVisible = areBoundsEnabled;
-            _state.Value = newState;
-        });
+        initializeReactiveProperties(index);
     }
-
-    private int _machineIndex;
-
-    private IAddAnchorUseCase _addAnchorUseCase;
-
-    private IRemoveAnchorUseCase _removeAnchorUseCase;
-
-    private IBoundsControlVisibilityProvider _boundsControlProvider;
-
-    private bool isAnchorCreated = false;
-
-    public event Action disableTapToPlace;
-    public event Action deleteCurrentMachine;
 
     public void setAnchorCreatedState()
     {
@@ -95,22 +130,30 @@ public class MachinePresenter
     {
     }
 
-    public class State
+    private void initializeReactiveProperties(int index)
     {
-        public bool isAddAnchorVisible = true;
-        public bool isTapToPlaceVisible = true;
-        public bool isDeleteMachineVisible = true;
-        public bool isRemoveAnchorVisible = false;
-        public bool areBoundControlsVisible = false;
-
-        public State() { }
-        public State(State state)
+        _boundsControlProvider.isBoundsVisibilityEnabled.Subscribe((areBoundsEnabled) =>
         {
-            isAddAnchorVisible = state.isAddAnchorVisible;
-            isTapToPlaceVisible = state.isTapToPlaceVisible;
-            isDeleteMachineVisible = state.isDeleteMachineVisible;
-            isRemoveAnchorVisible = state.isRemoveAnchorVisible;
-            areBoundControlsVisible = state.areBoundControlsVisible;
-        }
+            State newState = new State(_state.Value);
+            newState.areBoundControlsVisible = areBoundsEnabled;
+            _state.Value = newState;
+        });
+        _machineInfoRepository.getMachineInfo(index).Subscribe((machineInfo) =>
+        {
+            if (machineInfo != null)
+            {
+                State newState = new State(_state.Value);
+                newState.machineInfo = new State.MachineInfo
+                {
+                    hallId = machineInfo.Value.hallId,
+                    name = machineInfo.Value.name,
+                    efficiency = machineInfo.Value.efficiency,
+                    status = machineInfo.Value.status,
+                    symbol = machineInfo.Value.symbol,
+                    technicalExaminationDate = machineInfo.Value.technicalExaminationDate
+                };
+                _state.Value = newState;
+            };
+        });
     }
 }
