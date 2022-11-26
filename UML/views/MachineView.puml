@@ -1,6 +1,6 @@
 @startuml
 class MachineView {
-    + Start() : void
+    + initViews() : void
     + Initialize(anchorPresenter:MachinePresenter) : void
 }
 class MachineViewFactory {
@@ -18,12 +18,6 @@ MonoBehaviour <|-- MachineView
 MachineView --> "addAnchorButton" Interactable
 MachineView --> "removeAnchorButton" Interactable
 MachineView --> "tapToPlaceButton" Interactable
-MachineView --> "nameText" Text
-MachineView --> "symbolText" Text
-MachineView --> "statusText" Text
-MachineView --> "hallIdText" Text
-MachineView --> "efficiencyText" Text
-MachineView --> "technicalExaminationDateText" Text
 MachineView --> "deleteButton" Interactable
 "IFactory`3" "<UnityEngine.Object,MachinePresenter,MachineView>" <|-- MachineViewFactory
 MachineViewFactory --> "_container" DiContainer
