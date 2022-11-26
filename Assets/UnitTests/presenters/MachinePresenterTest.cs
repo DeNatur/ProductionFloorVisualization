@@ -80,6 +80,7 @@ public class MachinePresenterTest
         [SetUp]
         public new void setUp()
         {
+            areBoundsEnabled.Value = true;
             subject.setAnchorCreatedState();
         }
 
@@ -106,6 +107,12 @@ public class MachinePresenterTest
         {
             Assert.True(latestState.isRemoveAnchorVisible);
         }
+
+        [Test]
+        public void boundsControlAreNotVisible()
+        {
+            Assert.False(latestState.areBoundControlsVisible);
+        }
     }
 
     [TestFixture]
@@ -115,6 +122,7 @@ public class MachinePresenterTest
         [SetUp]
         public new void setUp()
         {
+            areBoundsEnabled.Value = true;
             subject.setAnchorNotCreatedState();
         }
 
@@ -140,6 +148,12 @@ public class MachinePresenterTest
         public void removeAnchorIsNotVisible()
         {
             Assert.False(latestState.isRemoveAnchorVisible);
+        }
+
+        [Test]
+        public void boundsControlAreNotVisible()
+        {
+            Assert.True(latestState.areBoundControlsVisible);
         }
     }
 
@@ -399,9 +413,27 @@ public class MachinePresenterTest
         }
 
         [Test]
-        public void boundsAreEnabled()
+        public void boundsAreVisible()
         {
             Assert.True(latestState.areBoundControlsVisible);
+        }
+    }
+
+    [TestFixture]
+    public class AnchorsCreatedAndBoundsControlAreEnabled : MachinePresenterTest
+    {
+
+        [SetUp]
+        public new void setUp()
+        {
+            areBoundsEnabled.Value = true;
+            subject.setAnchorCreatedState();
+        }
+
+        [Test]
+        public void boundsAreNotVisible()
+        {
+            Assert.False(latestState.areBoundControlsVisible);
         }
     }
 
@@ -417,7 +449,7 @@ public class MachinePresenterTest
         }
 
         [Test]
-        public void boundsAreEnabled()
+        public void boundsAreNotVisible()
         {
             Assert.False(latestState.areBoundControlsVisible);
         }

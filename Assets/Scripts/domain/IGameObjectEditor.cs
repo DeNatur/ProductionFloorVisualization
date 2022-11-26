@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface GameObjectEditor
+public interface IGameObjectEditor
 {
     void setName(GameObject gameObject, string name);
     string getName(GameObject gameObject);
@@ -8,7 +8,7 @@ public interface GameObjectEditor
 }
 
 
-public class GameObjectEditorImpl : GameObjectEditor
+public class GameObjectEditorImpl : IGameObjectEditor
 {
     public string getName(GameObject gameObject)
     {

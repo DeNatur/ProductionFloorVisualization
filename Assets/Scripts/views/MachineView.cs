@@ -1,4 +1,5 @@
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.UI.BoundsControl;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using UniRx;
 using UnityEngine;
@@ -19,10 +20,12 @@ public class MachineView : MonoBehaviour
     public Interactable deleteButton;
     private TapToPlace tapToPlaceScript;
     private MachinePresenter _anchorPresenter;
+    private BoundsControl _boundsControl;
 
     public void initViews()
     {
         tapToPlaceScript = GetComponent<TapToPlace>();
+        _boundsControl = GetComponent<BoundsControl>();
         nameText = transform.Find("MachineInfo/Name/NameText").GetComponent<Text>();
         symbolText = transform.Find("MachineInfo/Symbol/SymbolText").GetComponent<Text>();
         statusText = transform.Find("MachineInfo/Status/StatusText").GetComponent<Text>();
@@ -53,7 +56,7 @@ public class MachineView : MonoBehaviour
         removeAnchorButton.gameObject.SetActive(state.isRemoveAnchorVisible);
         tapToPlaceButton.gameObject.SetActive(state.isTapToPlaceVisible);
         deleteButton.gameObject.SetActive(state.isDeleteMachineVisible);
-
+        _boundsControl.enabled = state.areBoundControlsVisible;
         if (state.machineInfo != null)
         {
             nameText.text = string.Format(
@@ -81,6 +84,12 @@ public class MachineView : MonoBehaviour
                 state.machineInfo.Value.technicalExaminationDate.ToString("yyyy//MM/dd HH:mm:ss")
                 );
         }
+
+    }
+
+    public void OnDestroy()
+    {
+        _anchorPresenter.onDestroy();
     }
 
     private void AnchorPresenter_DeleteObject()

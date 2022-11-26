@@ -11,13 +11,13 @@ public class RemoveAnchorUseCase : IRemoveAnchorUseCase
 {
     private readonly IAnchorsRepository _anchorsRepository;
     private readonly IAnchorRemover _anchorRemover;
-    private readonly GameObjectEditor _gameObjectEditor;
+    private readonly IGameObjectEditor _gameObjectEditor;
 
 
     public RemoveAnchorUseCase(
         IAnchorsRepository anchorsRepository,
         IAnchorRemover anchorRemover,
-        GameObjectEditor gameObjectEditor
+        IGameObjectEditor gameObjectEditor
         )
     {
         _anchorsRepository = anchorsRepository;
@@ -35,10 +35,8 @@ public class RemoveAnchorUseCase : IRemoveAnchorUseCase
             return;
         }
 
-        Debug.Log("\nRemoveAnchorUseCase.RemoveAzureAnchor()");
+        await _anchorRemover.deleteCloudAnchor(id);
         _anchorRemover.deleteNativeAnchor(theObject);
-        await _anchorRemover.deleteCloudAnchor(theObject);
         _anchorsRepository.removeAnchor(id);
-        Debug.Log("\nSuccessfully removed anchor");
     }
 }

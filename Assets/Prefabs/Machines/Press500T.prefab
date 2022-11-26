@@ -7150,6 +7150,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MachineInfo
       objectReference: {fileID: 0}
+    - target: {fileID: 5815700100331232399, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
       propertyPath: m_RootOrder
       value: 3

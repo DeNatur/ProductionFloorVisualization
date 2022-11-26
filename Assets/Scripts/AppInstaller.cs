@@ -40,19 +40,10 @@ public class AppInstaller : MonoInstaller
             .FromInstance(sceneAwarnessValidator)
             .AsSingle();
 
-        Container.Bind<IAnchorCreator>()
-            .To<AzureCloudManager>()
-            .AsCached();
+        Container.BindInterfacesTo<AzureCloudManager>()
+            .AsSingle();
 
-        Container.Bind<IAnchorRemover>()
-            .To<AzureCloudManager>()
-            .AsCached();
-
-        Container.Bind<IStartAzureSession>()
-            .To<AzureCloudManager>()
-            .AsCached();
-
-        Container.Bind<GameObjectEditor>()
+        Container.Bind<IGameObjectEditor>()
             .To<GameObjectEditorImpl>()
             .AsSingle();
 
@@ -60,13 +51,8 @@ public class AppInstaller : MonoInstaller
             .To<AzureAnchorLocator>()
             .AsSingle();
 
-        Container.Bind<IBoundsControlVisibilityEditor>()
-            .To<BoundsControlVisibilityRepository>()
-            .AsCached();
-
-        Container.Bind<IBoundsControlVisibilityProvider>()
-            .To<BoundsControlVisibilityRepository>()
-            .AsCached();
+        Container.BindInterfacesTo<BoundsControlVisibilityRepository>()
+            .AsSingle();
 
         Container.Bind<UserMenuPresenter>()
             .AsSingle();

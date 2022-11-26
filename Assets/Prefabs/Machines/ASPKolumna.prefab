@@ -6797,7 +6797,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8723578461874876255}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.897, y: 2.142, z: 0.437}
+  m_LocalPosition: {x: -1.003, y: 2.029, z: 0.437}
   m_LocalScale: {x: 2.33, y: 2.33, z: 2.33}
   m_Children:
   - {fileID: 8519622182946960471}
@@ -7570,9 +7570,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3527328813548704633}
     m_Modifications:
+    - target: {fileID: 414808724653992970, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_Text
+      value: 'Status: Working'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1533299628218032536, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_Text
+      value: 'Efficiency: 100'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2624321714556252238, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_Text
+      value: 'HallId: 0'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2792353136462274357, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_Text
+      value: 'Technical Examination Date: 2021-12-31T12:00:00.000+00:00'
+      objectReference: {fileID: 0}
     - target: {fileID: 5815700100331232399, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
       propertyPath: m_Name
       value: MachineInfo
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815700100331232399, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815700100331232399, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565907754129609859, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_Text
+      value: 'Symbol: 10000-2'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8197671065978316156, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
+      propertyPath: m_Text
+      value: 'Name: ASP kolumna robocza'
       objectReference: {fileID: 0}
     - target: {fileID: 8998694639353044133, guid: d72b0a5b0fd7044448b365fb5f3850a2, type: 3}
       propertyPath: m_RootOrder

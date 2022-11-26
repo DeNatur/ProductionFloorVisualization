@@ -11,13 +11,13 @@ public class AddAnchorUseCase : IAddAnchorUseCase
     readonly IAnchorsRepository _anchorsRepository;
     readonly IAnchorCreator _saveAnchor;
     readonly IAwarnessValidator _sceneAwarnessValidator;
-    readonly GameObjectEditor _gameObjectEditor;
+    readonly IGameObjectEditor _gameObjectEditor;
 
     public AddAnchorUseCase(
         IAnchorsRepository anchorsRepository,
         IAnchorCreator saveAnchor,
         IAwarnessValidator sceneAwarnessValidator,
-        GameObjectEditor gameObjectEditor
+        IGameObjectEditor gameObjectEditor
     )
     {
         _anchorsRepository = anchorsRepository;
@@ -28,7 +28,6 @@ public class AddAnchorUseCase : IAddAnchorUseCase
 
     public async Task<bool> createAzureAnchor(GameObject theObject, int index)
     {
-
         if (checkAnchorAlreadyCreated(_gameObjectEditor.getName(theObject)))
         {
             return false;

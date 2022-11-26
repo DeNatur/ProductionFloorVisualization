@@ -40,11 +40,14 @@ public class MachinePresenter
     public event Action disableTapToPlace;
     public event Action deleteCurrentMachine;
 
+
     public IReadOnlyReactiveProperty<State> state => _state;
 
     private readonly ReactiveProperty<State> _state = new ReactiveProperty<State>(new State());
 
     private bool isAnchorCreated = false;
+
+    private CompositeDisposable disposables = new CompositeDisposable();
 
     readonly int _machineIndex;
 
@@ -80,6 +83,7 @@ public class MachinePresenter
         newState.isTapToPlaceVisible = false;
         newState.isDeleteMachineVisible = false;
         newState.isRemoveAnchorVisible = true;
+        newState.areBoundControlsVisible = false;
         _state.Value = newState;
 
         isAnchorCreated = true;
@@ -92,6 +96,8 @@ public class MachinePresenter
         newState.isTapToPlaceVisible = true;
         newState.isDeleteMachineVisible = true;
         newState.isRemoveAnchorVisible = false;
+        newState.areBoundControlsVisible = _boundsControlProvider.isBoundsVisibilityEnabled.Value;
+
         _state.Value = newState;
 
         isAnchorCreated = false;
@@ -126,18 +132,25 @@ public class MachinePresenter
         disableTapToPlace.Invoke();
     }
 
+    public void onDestroy()
+    {
+        disposables.Clear();
+    }
+
     public class Factory : PlaceholderFactory<int, MachinePresenter>
     {
     }
 
     private void initializeReactiveProperties(int index)
     {
-        _boundsControlProvider.isBoundsVisibilityEnabled.Subscribe((areBoundsEnabled) =>
+
+        _boundsControlProvider.isBoundsVisibilityEnabled.Subscribe((areBoundsVisible) =>
         {
             State newState = new State(_state.Value);
-            newState.areBoundControlsVisible = areBoundsEnabled;
+            newState.areBoundControlsVisible = areBoundsVisible && !isAnchorCreated;
             _state.Value = newState;
-        });
+        }).AddTo(disposables);
+
         _machineInfoRepository.getMachineInfo(index).Subscribe((machineInfo) =>
         {
             if (machineInfo != null)
@@ -154,6 +167,7 @@ public class MachinePresenter
                 };
                 _state.Value = newState;
             };
-        });
+        }).AddTo(disposables);
     }
+
 }

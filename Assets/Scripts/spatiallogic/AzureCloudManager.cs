@@ -15,7 +15,7 @@ public interface IAnchorRemover
 
     public void deleteNativeAnchor(GameObject anchorGameObject);
 
-    public Task deleteCloudAnchor(GameObject anchorGameObject);
+    public Task deleteCloudAnchor(string indetifier);
 }
 
 public class AzureCloudManager : IAnchorCreator, IAnchorRemover, IStartAzureSession
@@ -58,12 +58,12 @@ public class AzureCloudManager : IAnchorCreator, IAnchorRemover, IStartAzureSess
 
     private static async Task<CloudSpatialAnchor> getLocalAnchorWithObjectProperties(GameObject theObject, int index)
     {
-        CloudSpatialAnchor localCloudAnchor = await getLocalAnchorFromGamObject(theObject);
+        CloudSpatialAnchor localCloudAnchor = await getLocalAnchorFromGameObject(theObject);
         localCloudAnchor.AppProperties[ANCHOR_TYPE_PROP] = index.ToString();
         return localCloudAnchor;
     }
 
-    private static async Task<CloudSpatialAnchor> getLocalAnchorFromGamObject(GameObject gameObject)
+    private static async Task<CloudSpatialAnchor> getLocalAnchorFromGameObject(GameObject gameObject)
     {
         CloudSpatialAnchor localCloudAnchor = new CloudSpatialAnchor();
         localCloudAnchor.LocalAnchor = await gameObject.FindNativeAnchor().GetPointer();
@@ -86,9 +86,10 @@ public class AzureCloudManager : IAnchorCreator, IAnchorRemover, IStartAzureSess
         anchorGameObject.DeleteNativeAnchor();
     }
 
-    public async Task deleteCloudAnchor(GameObject anchorGameObject)
+    public async Task deleteCloudAnchor(string indetifier)
     {
-        CloudSpatialAnchor localCloudAnchor = await getLocalAnchorFromGamObject(anchorGameObject);
+        CloudSpatialAnchor localCloudAnchor = await _cloudManager.Session.GetAnchorPropertiesAsync(indetifier);
         await _cloudManager.DeleteAnchorAsync(localCloudAnchor);
+
     }
 }

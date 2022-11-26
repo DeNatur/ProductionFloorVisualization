@@ -39,6 +39,7 @@ public class ObjectsCreatorImpl : MonoBehaviour, IObjectsCreator
         MachineView machineView = _machineViewFactory.Create(allMachines[machineIndex], anchorPresenter);
 
         anchorPresenter.setTapToPlaceNotStarted();
+        anchorPresenter.setAnchorCreatedState();
 
         return machineView.gameObject;
     }

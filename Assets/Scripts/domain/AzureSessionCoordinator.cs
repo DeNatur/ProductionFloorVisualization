@@ -13,7 +13,7 @@ public class AzureSessionCoordinator : MonoBehaviour
     private IAnchorLocator _anchorLocator;
     private IStartAzureSession _startAzureSession;
     private IAnchorCreator _saveAnchor;
-    private GameObjectEditor _gameObjectEditor;
+    private IGameObjectEditor _gameObjectEditor;
 
     public bool isStarted = false;
 
@@ -24,7 +24,7 @@ public class AzureSessionCoordinator : MonoBehaviour
         IObjectsCreator objectsCreator,
         IStartAzureSession startAzureSession,
         IAnchorCreator saveAnchor,
-        GameObjectEditor gameObjectEditor
+        IGameObjectEditor gameObjectEditor
     )
     {
         _anchorsRepository = anchorsRepository;

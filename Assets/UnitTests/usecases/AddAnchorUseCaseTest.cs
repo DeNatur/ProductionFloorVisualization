@@ -9,7 +9,7 @@ public class AddAnchorUseCaseTest
     IAnchorsRepository anchorsRepository = Substitute.For<IAnchorsRepository>();
     IAnchorCreator saveAnchor = Substitute.For<IAnchorCreator>();
     IAwarnessValidator validator = Substitute.For<IAwarnessValidator>();
-    GameObjectEditor gameObjectEditor = Substitute.For<GameObjectEditor>();
+    IGameObjectEditor gameObjectEditor = Substitute.For<IGameObjectEditor>();
     AddAnchorUseCase subject;
 
     static private UnityEngine.GameObject mockedGO;

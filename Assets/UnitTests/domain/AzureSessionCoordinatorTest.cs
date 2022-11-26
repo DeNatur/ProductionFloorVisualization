@@ -12,7 +12,7 @@ public class AzureSessionCoordinatorTest
     IAnchorLocator anchorLocator = Substitute.For<IAnchorLocator>();
     IStartAzureSession startAzureSession = Substitute.For<IStartAzureSession>();
     IAnchorCreator saveAnchor = Substitute.For<IAnchorCreator>();
-    GameObjectEditor gameObjectEditor = Substitute.For<GameObjectEditor>();
+    IGameObjectEditor gameObjectEditor = Substitute.For<IGameObjectEditor>();
 
 
     AzureSessionCoordinator subject;

@@ -7,7 +7,7 @@ public class RemoveAnchorUseCaseTest
 {
     IAnchorsRepository anchorsRepository = Substitute.For<IAnchorsRepository>();
     IAnchorRemover anchorRemover = Substitute.For<IAnchorRemover>();
-    GameObjectEditor gameObjectEditor = Substitute.For<GameObjectEditor>();
+    IGameObjectEditor gameObjectEditor = Substitute.For<IGameObjectEditor>();
     RemoveAnchorUseCase subject;
 
     static private UnityEngine.GameObject mockedGO;
@@ -54,7 +54,7 @@ public class RemoveAnchorUseCaseTest
             Task.Run(async () =>
             {
                 await resultTask;
-                await anchorRemover.DidNotReceive().deleteCloudAnchor(mockedGO);
+                await anchorRemover.DidNotReceive().deleteCloudAnchor(mockedIdentifier);
             }).GetAwaiter().GetResult();
         }
 
@@ -99,7 +99,7 @@ public class RemoveAnchorUseCaseTest
             Task.Run(async () =>
             {
                 await resultTask;
-                await anchorRemover.Received().deleteCloudAnchor(mockedGO);
+                await anchorRemover.Received().deleteCloudAnchor(mockedIdentifier);
             }).GetAwaiter().GetResult();
         }
 
