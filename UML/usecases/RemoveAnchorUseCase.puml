@@ -3,7 +3,7 @@ interface IRemoveAnchorUseCase {
     + removeAzureAnchor(theObject:GameObject) : Task
 }
 class RemoveAnchorUseCase {
-    + RemoveAnchorUseCase(anchorsRepository:IAnchorsRepository, anchorRemover:IAnchorRemover, gameObjectEditor:GameObjectEditor)
+    + RemoveAnchorUseCase(anchorsRepository:IAnchorsRepository, anchorRemover:IAnchorRemover, gameObjectEditor:IGameObjectEditor)
     + <<async>> removeAzureAnchor(theObject:GameObject) : Task
 }
 IRemoveAnchorUseCase <|-- RemoveAnchorUseCase

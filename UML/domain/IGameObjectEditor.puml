@@ -1,5 +1,5 @@
 @startuml
-interface GameObjectEditor {
+interface IGameObjectEditor {
     setName(gameObject:GameObject, name:string) : void
     getName(gameObject:GameObject) : string
     setPose(gameObject:GameObject, pose:Pose) : void
@@ -9,5 +9,5 @@ class GameObjectEditorImpl {
     + setName(gameObject:GameObject, name:string) : void
     + setPose(gameObject:GameObject, pose:Pose) : void
 }
-GameObjectEditor <|-- GameObjectEditorImpl
+IGameObjectEditor <|-- GameObjectEditorImpl
 @enduml

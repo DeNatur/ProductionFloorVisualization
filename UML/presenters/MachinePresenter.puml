@@ -10,6 +10,7 @@ class MachinePresenter {
     + <<async>> removeAnchor(gameObject:GameObject) : Task
     + delete() : void
     + setTapToPlaceNotStarted() : void
+    + onDestroy() : void
 }
 class State {
     + isAddAnchorVisible : bool = true

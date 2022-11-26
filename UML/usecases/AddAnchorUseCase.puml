@@ -3,12 +3,12 @@ interface IAddAnchorUseCase {
     + createAzureAnchor(theObject:GameObject, index:int) : Task<bool>
 }
 class AddAnchorUseCase {
-    + AddAnchorUseCase(anchorsRepository:IAnchorsRepository, saveAnchor:IAnchorCreator, sceneAwarnessValidator:IAwarnessValidator, gameObjectEditor:GameObjectEditor)
+    + AddAnchorUseCase(anchorsRepository:IAnchorsRepository, saveAnchor:IAnchorCreator, sceneAwarnessValidator:IAwarnessValidator, gameObjectEditor:IGameObjectEditor)
     + <<async>> createAzureAnchor(theObject:GameObject, index:int) : Task<bool>
 }
 IAddAnchorUseCase <|-- AddAnchorUseCase
 AddAnchorUseCase --> "_anchorsRepository" IAnchorsRepository
 AddAnchorUseCase --> "_saveAnchor" IAnchorCreator
 AddAnchorUseCase --> "_sceneAwarnessValidator" IAwarnessValidator
-AddAnchorUseCase --> "_gameObjectEditor" GameObjectEditor
+AddAnchorUseCase --> "_gameObjectEditor" IGameObjectEditor
 @enduml

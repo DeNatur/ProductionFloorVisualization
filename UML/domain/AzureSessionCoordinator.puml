@@ -1,7 +1,7 @@
 @startuml
 class AzureSessionCoordinator {
     + isStarted : bool = false
-    + Construct(anchorsRepository:IAnchorsRepository, anchorLocator:IAnchorLocator, objectsCreator:IObjectsCreator, startAzureSession:IStartAzureSession, saveAnchor:IAnchorCreator, gameObjectEditor:GameObjectEditor) : void
+    + Construct(anchorsRepository:IAnchorsRepository, anchorLocator:IAnchorLocator, objectsCreator:IObjectsCreator, startAzureSession:IStartAzureSession, saveAnchor:IAnchorCreator, gameObjectEditor:IGameObjectEditor) : void
     + Start() : void
 }
 MonoBehaviour <|-- AzureSessionCoordinator

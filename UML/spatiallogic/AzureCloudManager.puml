@@ -4,7 +4,7 @@ interface IStartAzureSession {
 }
 interface IAnchorRemover {
     + deleteNativeAnchor(anchorGameObject:GameObject) : void
-    + deleteCloudAnchor(anchorGameObject:GameObject) : Task
+    + deleteCloudAnchor(indetifier:string) : Task
 }
 class AzureCloudManager {
     {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
@@ -13,7 +13,7 @@ class AzureCloudManager {
     + createNativeAnchor(gameObject:GameObject) : void
     + <<async>> invoke() : Task
     + deleteNativeAnchor(anchorGameObject:GameObject) : void
-    + <<async>> deleteCloudAnchor(anchorGameObject:GameObject) : Task
+    + <<async>> deleteCloudAnchor(indetifier:string) : Task
 }
 IAnchorCreator <|-- AzureCloudManager
 IAnchorRemover <|-- AzureCloudManager

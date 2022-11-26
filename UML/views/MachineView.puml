@@ -2,6 +2,7 @@
 class MachineView {
     + initViews() : void
     + Initialize(anchorPresenter:MachinePresenter) : void
+    + OnDestroy() : void
 }
 class MachineViewFactory {
     + MachineViewFactory(container:DiContainer)
