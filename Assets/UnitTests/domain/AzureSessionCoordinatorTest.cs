@@ -109,10 +109,12 @@ public class AzureSessionCoordinatorTest
         {
             GameObject mockedAnchorGO = new GameObject();
             GameObject prefabAnchor = new GameObject();
+            static Vector3 mockedVector3 = Vector3.one;
             IAnchorLocator.CloudAnchorLocatedArgs mockedArgs = new IAnchorLocator.CloudAnchorLocatedArgs(
                         new Pose(Vector3.right, Quaternion.identity),
                         0,
-                        anchorId1
+                        anchorId1,
+                        mockedVector3
                     );
             [SetUp]
             public new void setUp()
@@ -127,7 +129,7 @@ public class AzureSessionCoordinatorTest
             [Test]
             public void setsNewGameObjectPose()
             {
-                gameObjectEditor.Received().setPose(mockedAnchorGO, mockedArgs.pose);
+                gameObjectEditor.Received().setPose(mockedAnchorGO, mockedArgs.pose, mockedVector3);
             }
 
             [Test]

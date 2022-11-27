@@ -21,6 +21,9 @@ public interface IAnchorRemover
 public class AzureCloudManager : IAnchorCreator, IAnchorRemover, IStartAzureSession
 {
     static string ANCHOR_TYPE_PROP = "ANCHOR_TYPE";
+    static string ANCHOR_SCALE_X = "ANCHOR_SCALE_X";
+    static string ANCHOR_SCALE_Y = "ANCHOR_SCALE_Y";
+    static string ANCHOR_SCALE_Z = "ANCHOR_SCALE_Z";
 
     readonly SpatialAnchorManager _cloudManager;
 
@@ -60,6 +63,9 @@ public class AzureCloudManager : IAnchorCreator, IAnchorRemover, IStartAzureSess
     {
         CloudSpatialAnchor localCloudAnchor = await getLocalAnchorFromGameObject(theObject);
         localCloudAnchor.AppProperties[ANCHOR_TYPE_PROP] = index.ToString();
+        localCloudAnchor.AppProperties[ANCHOR_SCALE_X] = theObject.transform.localScale.x.ToString();
+        localCloudAnchor.AppProperties[ANCHOR_SCALE_Y] = theObject.transform.localScale.y.ToString();
+        localCloudAnchor.AppProperties[ANCHOR_SCALE_Z] = theObject.transform.localScale.z.ToString();
         return localCloudAnchor;
     }
 

@@ -15,11 +15,14 @@ public interface IAnchorLocator
         public int type { get; }
         public string identifier { get; }
 
-        public CloudAnchorLocatedArgs(Pose pose, int type, string identifier)
+        public Vector3 scale { get; }
+
+        public CloudAnchorLocatedArgs(Pose pose, int type, string identifier, Vector3 scale)
         {
             this.pose = pose;
             this.type = type;
             this.identifier = identifier;
+            this.scale = scale;
         }
     }
 
@@ -28,6 +31,9 @@ public interface IAnchorLocator
 public class AzureAnchorLocator : IAnchorLocator
 {
     static string ANCHOR_TYPE_PROP = "ANCHOR_TYPE";
+    static string ANCHOR_SCALE_X = "ANCHOR_SCALE_X";
+    static string ANCHOR_SCALE_Y = "ANCHOR_SCALE_Y";
+    static string ANCHOR_SCALE_Z = "ANCHOR_SCALE_Z";
 
     readonly SpatialAnchorManager _cloudManager;
 
@@ -56,7 +62,12 @@ public class AzureAnchorLocator : IAnchorLocator
                 new IAnchorLocator.CloudAnchorLocatedArgs(
                     pose: args.Anchor.GetPose(),
                     type: int.Parse(args.Anchor.AppProperties[ANCHOR_TYPE_PROP]),
-                    identifier: args.Identifier
+                    identifier: args.Identifier,
+                    scale: new Vector3(
+                        float.Parse(args.Anchor.AppProperties[ANCHOR_SCALE_X]),
+                        float.Parse(args.Anchor.AppProperties[ANCHOR_SCALE_Y]),
+                        float.Parse(args.Anchor.AppProperties[ANCHOR_SCALE_Z])
+                    )
                 );
             this.CloudAnchorLocated?.Invoke(this, anchorLocatedArgs);
         }

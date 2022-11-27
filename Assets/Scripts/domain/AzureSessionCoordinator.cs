@@ -17,6 +17,7 @@ public class AzureSessionCoordinator : MonoBehaviour
 
     public bool isStarted = false;
 
+    private DateTime timeOfStart;
     [Inject]
     public void Construct(
         IAnchorsRepository anchorsRepository,
@@ -58,6 +59,8 @@ public class AzureSessionCoordinator : MonoBehaviour
             return;
         }
         _anchorLocator.startLocatingAzureAnchors(anchorsToFind.ToArray());
+        timeOfStart = DateTime.Now;
+        Debug.Log("Starting locating at time: " + DateTime.Now.ToString());
     }
 
     private void AnchorLocator_CloudAnchorLocated(object sender, IAnchorLocator.CloudAnchorLocatedArgs args)
@@ -67,7 +70,7 @@ public class AzureSessionCoordinator : MonoBehaviour
         _gameObjectEditor.setName(newAnchor, args.identifier);
 
         Debug.Log($"Setting object to anchor pose with position '{args.pose.position}' and rotation '{args.pose.rotation}' and name '{newAnchor.name}'");
-        _gameObjectEditor.setPose(newAnchor, args.pose);
+        _gameObjectEditor.setPose(newAnchor, args.pose, args.scale);
 
         _saveAnchor.createNativeAnchor(newAnchor);
 
@@ -78,6 +81,8 @@ public class AzureSessionCoordinator : MonoBehaviour
                 gameObject = newAnchor,
             }
         );
+        Debug.Log("Added anchor at time: " + DateTime.Now.ToString());
+        Debug.Log("Time to locate: " + (DateTime.Now - timeOfStart).ToString());
     }
 
     private IEnumerator runAfterFrame(Action actionToInvoke)
