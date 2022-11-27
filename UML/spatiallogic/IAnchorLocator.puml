@@ -5,6 +5,9 @@ interface IAnchorLocator {
 }
 class AzureAnchorLocator {
     {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
+    {static} ANCHOR_SCALE_X : string = "ANCHOR_SCALE_X"
+    {static} ANCHOR_SCALE_Y : string = "ANCHOR_SCALE_Y"
+    {static} ANCHOR_SCALE_Z : string = "ANCHOR_SCALE_Z"
     + AzureAnchorLocator(cloudManager:SpatialAnchorManager)
     +  <<event>> CloudAnchorLocated : CloudAnchorLocated 
     + startLocatingAzureAnchors(idsToFind:string[]) : void
@@ -12,11 +15,12 @@ class AzureAnchorLocator {
 class CloudAnchorLocatedArgs {
     + type : int <<get>>
     + identifier : string <<get>>
-    + CloudAnchorLocatedArgs(pose:Pose, type:int, identifier:string)
+    + CloudAnchorLocatedArgs(pose:Pose, type:int, identifier:string, scale:Vector3)
 }
 IAnchorLocator <|-- AzureAnchorLocator
 AzureAnchorLocator --> "_cloudManager" SpatialAnchorManager
 IAnchorLocator +-- CloudAnchorLocatedArgs
 EventArgs <|-- CloudAnchorLocatedArgs
 CloudAnchorLocatedArgs --> "pose" Pose
+CloudAnchorLocatedArgs --> "scale" Vector3
 @enduml

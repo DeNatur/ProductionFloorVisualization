@@ -27,6 +27,9 @@ interface IAnchorRemover {
 }
 class AzureCloudManager {
     {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
+    {static} ANCHOR_SCALE_X : string = "ANCHOR_SCALE_X"
+    {static} ANCHOR_SCALE_Y : string = "ANCHOR_SCALE_Y"
+    {static} ANCHOR_SCALE_Z : string = "ANCHOR_SCALE_Z"
     + AzureCloudManager(cloudManager:SpatialAnchorManager)
     + <<async>> createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<IAnchorCreator.Result>
     + createNativeAnchor(gameObject:GameObject) : void
@@ -63,6 +66,9 @@ interface IAnchorLocator {
 }
 class AzureAnchorLocator {
     {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
+    {static} ANCHOR_SCALE_X : string = "ANCHOR_SCALE_X"
+    {static} ANCHOR_SCALE_Y : string = "ANCHOR_SCALE_Y"
+    {static} ANCHOR_SCALE_Z : string = "ANCHOR_SCALE_Z"
     + AzureAnchorLocator(cloudManager:SpatialAnchorManager)
     +  <<event>> CloudAnchorLocated : CloudAnchorLocated 
     + startLocatingAzureAnchors(idsToFind:string[]) : void
@@ -70,13 +76,14 @@ class AzureAnchorLocator {
 class CloudAnchorLocatedArgs {
     + type : int <<get>>
     + identifier : string <<get>>
-    + CloudAnchorLocatedArgs(pose:Pose, type:int, identifier:string)
+    + CloudAnchorLocatedArgs(pose:Pose, type:int, identifier:string, scale:Vector3)
 }
 IAnchorLocator <|-- AzureAnchorLocator
 AzureAnchorLocator --> "_cloudManager" SpatialAnchorManager
 IAnchorLocator +-- CloudAnchorLocatedArgs
 EventArgs <|-- CloudAnchorLocatedArgs
 CloudAnchorLocatedArgs --> "pose" Pose
+CloudAnchorLocatedArgs --> "scale" Vector3
 interface IAddAnchorUseCase {
     + createAzureAnchor(theObject:GameObject, index:int) : Task<bool>
 }
@@ -139,12 +146,12 @@ MonoBehaviour <|-- AzureSessionCoordinator
 interface IGameObjectEditor {
     setName(gameObject:GameObject, name:string) : void
     getName(gameObject:GameObject) : string
-    setPose(gameObject:GameObject, pose:Pose) : void
+    setPose(gameObject:GameObject, pose:Pose, scale:Vector3) : void
 }
 class GameObjectEditorImpl {
     + getName(gameObject:GameObject) : string
     + setName(gameObject:GameObject, name:string) : void
-    + setPose(gameObject:GameObject, pose:Pose) : void
+    + setPose(gameObject:GameObject, pose:Pose, scale:Vector3) : void
 }
 IGameObjectEditor <|-- GameObjectEditorImpl
 interface IObjectsCreator {
