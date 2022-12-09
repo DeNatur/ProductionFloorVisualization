@@ -66,7 +66,7 @@ class MachinePresenter {
     +  <<event>> disableTapToPlace : Action 
     +  <<event>> deleteCurrentMachine : Action 
     <<readonly>> _machineIndex : int
-    + MachinePresenter(index:int, addAnchorUseCase:IAddAnchorUseCase, removeAnchorUseCase:IRemoveAnchorUseCase, boundsControlProvider:IBoundsControlVisibilityProvider, machineInfoRepository:IMachineInfoRepository)
+    + MachinePresenter(index:int, addAnchorUseCase:IAddAnchorUseCase, removeAnchorUseCase:IRemoveAnchorUseCase, boundsControlProvider:IBoundsControlVisibilityProvider, machineInfoRepository:IMachineInfoRepository, anchorCreator:IAnchorCreator, anchorRemover:IAnchorRemover)
     + setAnchorCreatedState() : void
     + setAnchorNotCreatedState() : void
     + <<async>> setAnchor(gameObject:GameObject) : Task
@@ -74,6 +74,8 @@ class MachinePresenter {
     + delete() : void
     + setTapToPlaceNotStarted() : void
     + onDestroy() : void
+    + removeLocalAnchor(gameObject:GameObject) : void
+    + addLocalAnchor(gameObject:GameObject) : void
 }
 class State {
     + isAddAnchorVisible : bool = true
@@ -100,6 +102,8 @@ class "PlaceholderFactory`2"<T1,T2> {
 }
 MachinePresenter --> "state<State>" "IReadOnlyReactiveProperty`1"
 MachinePresenter --> "_addAnchorUseCase" IAddAnchorUseCase
+MachinePresenter --> "_anchorCreator" IAnchorCreator
+MachinePresenter --> "_anchorRemover" IAnchorRemover
 MachinePresenter --> "_removeAnchorUseCase" IRemoveAnchorUseCase
 MachinePresenter --> "_boundsControlProvider" IBoundsControlVisibilityProvider
 MachinePresenter --> "_machineInfoRepository" IMachineInfoRepository
