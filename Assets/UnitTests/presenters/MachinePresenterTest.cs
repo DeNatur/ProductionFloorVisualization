@@ -12,6 +12,8 @@ public class MachinePresenterTest
     IRemoveAnchorUseCase removeAnchorUseCase = Substitute.For<IRemoveAnchorUseCase>();
     IBoundsControlVisibilityProvider boundsControlVisibilityProvider = Substitute.For<IBoundsControlVisibilityProvider>();
     IMachineInfoRepository machineInfoRepository = Substitute.For<IMachineInfoRepository>();
+    IAnchorCreator anchorCreator = Substitute.For<IAnchorCreator>();
+    IAnchorRemover anchorRemover = Substitute.For<IAnchorRemover>();
     private readonly ReactiveProperty<bool> areBoundsEnabled = new ReactiveProperty<bool>(false);
     private readonly ReactiveProperty<IMachineInfoRepository.MachineInfo?> machineInfoFlow =
             new ReactiveProperty<IMachineInfoRepository.MachineInfo?>(null);
@@ -32,7 +34,9 @@ public class MachinePresenterTest
             addAnchorUseCase,
             removeAnchorUseCase,
             boundsControlVisibilityProvider,
-            machineInfoRepository
+            machineInfoRepository,
+            anchorCreator,
+            anchorRemover
         );
         subject.state.Subscribe((state) => latestState = state);
     }

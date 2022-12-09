@@ -53,6 +53,10 @@ public class MachinePresenter
 
     readonly IAddAnchorUseCase _addAnchorUseCase;
 
+    readonly IAnchorCreator _anchorCreator;
+
+    readonly IAnchorRemover _anchorRemover;
+
     readonly IRemoveAnchorUseCase _removeAnchorUseCase;
 
     readonly IBoundsControlVisibilityProvider _boundsControlProvider;
@@ -64,7 +68,9 @@ public class MachinePresenter
         IAddAnchorUseCase addAnchorUseCase,
         IRemoveAnchorUseCase removeAnchorUseCase,
         IBoundsControlVisibilityProvider boundsControlProvider,
-        IMachineInfoRepository machineInfoRepository
+        IMachineInfoRepository machineInfoRepository,
+        IAnchorCreator anchorCreator,
+        IAnchorRemover anchorRemover
         )
     {
         _machineIndex = index;
@@ -72,6 +78,8 @@ public class MachinePresenter
         _removeAnchorUseCase = removeAnchorUseCase;
         _boundsControlProvider = boundsControlProvider;
         _machineInfoRepository = machineInfoRepository;
+        _anchorCreator = anchorCreator;
+        _anchorRemover = anchorRemover;
 
         initializeReactiveProperties(index);
     }
@@ -135,6 +143,16 @@ public class MachinePresenter
     public void onDestroy()
     {
         disposables.Clear();
+    }
+
+    public void removeLocalAnchor(GameObject gameObject)
+    {
+        _anchorRemover.deleteNativeAnchor(gameObject);
+    }
+
+    public void addLocalAnchor(GameObject gameObject)
+    {
+        _anchorCreator.createNativeAnchor(gameObject);
     }
 
     public class Factory : PlaceholderFactory<int, MachinePresenter>

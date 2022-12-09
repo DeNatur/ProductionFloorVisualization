@@ -48,6 +48,20 @@ public class MachineView : MonoBehaviour
         addAnchorButton.OnClick.AddListener(() => _anchorPresenter.setAnchor(gameObject: gameObject));
         removeAnchorButton.OnClick.AddListener(() => _anchorPresenter.removeAnchor(gameObject: gameObject));
         deleteButton.OnClick.AddListener(() => _anchorPresenter.delete());
+        tapToPlaceButton.OnClick.AddListener(() =>
+        {
+            tapToPlaceScript.enabled = true;
+            tapToPlaceScript.StartPlacement();
+        });
+
+        tapToPlaceScript.OnPlacingStopped.AddListener(() =>
+        {
+            _anchorPresenter.addLocalAnchor(gameObject);
+        });
+        tapToPlaceScript.OnPlacingStarted.AddListener(() =>
+        {
+            _anchorPresenter.removeLocalAnchor(gameObject);
+        });
     }
 
     private void bindState(MachinePresenter.State state)
@@ -57,6 +71,14 @@ public class MachineView : MonoBehaviour
         tapToPlaceButton.gameObject.SetActive(state.isTapToPlaceVisible);
         deleteButton.gameObject.SetActive(state.isDeleteMachineVisible);
         _boundsControl.enabled = state.areBoundControlsVisible;
+        if (state.areBoundControlsVisible)
+        {
+            _anchorPresenter.removeLocalAnchor(gameObject);
+        }
+        else
+        {
+            _anchorPresenter.addLocalAnchor(gameObject);
+        }
         if (state.machineInfo != null)
         {
             nameText.text = string.Format(
