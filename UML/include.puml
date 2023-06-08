@@ -8,6 +8,73 @@ AppInstaller --> "addAnchorUseCase" AddAnchorUseCase
 AppInstaller --> "cloudManager" SpatialAnchorManager
 AppInstaller --> "objectsCreator" ObjectsCreatorImpl
 AppInstaller --> "sceneAwarnessValidator" SceneAwarnessValidator
+interface IGameObjectEditor {
+    setName(gameObject:GameObject, name:string) : void
+    getName(gameObject:GameObject) : string
+    setPose(gameObject:GameObject, pose:Pose, scale:Vector3) : void
+}
+class GameObjectEditorImpl {
+    + getName(gameObject:GameObject) : string
+    + setName(gameObject:GameObject, name:string) : void
+    + setPose(gameObject:GameObject, pose:Pose, scale:Vector3) : void
+}
+IGameObjectEditor <|-- GameObjectEditorImpl
+class AzureSessionCoordinator {
+    + isStarted : bool = false
+    + Construct(anchorsRepository:IAnchorsRepository, anchorLocator:IAnchorLocator, objectsCreator:IObjectsCreator, startAzureSession:IStartAzureSession, saveAnchor:IAnchorCreator, gameObjectEditor:IGameObjectEditor) : void
+    + Start() : void
+}
+MonoBehaviour <|-- AzureSessionCoordinator
+interface IBoundsControlVisibilityEditor {
+    + {abstract} enableBoundsControlVisibility() : void
+    + {abstract} disableBoundsControlVisibility() : void
+}
+interface IBoundsControlVisibilityProvider {
+}
+class BoundsControlVisibilityRepository {
+    + enableBoundsControlVisibility() : void
+    + disableBoundsControlVisibility() : void
+}
+class "IReadOnlyReactiveProperty`1"<T> {
+}
+IBoundsControlVisibilityProvider --> "isBoundsVisibilityEnabled<bool>" "IReadOnlyReactiveProperty`1"
+IBoundsControlVisibilityEditor <|-- BoundsControlVisibilityRepository
+IBoundsControlVisibilityProvider <|-- BoundsControlVisibilityRepository
+BoundsControlVisibilityRepository --> "isBoundsVisibilityEnabled<bool>" "IReadOnlyReactiveProperty`1"
+interface IObjectsCreator {
+    + {abstract} createNewMachine(machineIndex:int) : void
+    + {abstract} createNewMachineWithGO(machineIndex:int) : GameObject
+}
+class ObjectsCreatorImpl {
+    + Construct(machineViewFactory:MachineView.Factory, anchorPresenterFactory:MachinePresenter.Factory) : void
+    + createNewMachine(machineIndex:int) : void
+    + createNewMachineWithGO(machineIndex:int) : GameObject
+}
+MonoBehaviour <|-- ObjectsCreatorImpl
+IObjectsCreator <|-- ObjectsCreatorImpl
+interface IMachineInfoRepository {
+    + getMachineInfo(index:int) : IReadOnlyReactiveProperty<MachineInfo?>
+}
+class MachineInfoRepository {
+    + MachineInfoRepository()
+    + getMachineInfo(index:int) : IReadOnlyReactiveProperty<IMachineInfoRepository.MachineInfo?>
+}
+class MachineInfo <<struct>> {
+    + hallId : int
+    + name : string
+    + efficiency : int
+    + status : string
+    + symbol : string
+}
+IMachineInfoRepository <|-- MachineInfoRepository
+IMachineInfoRepository +-- MachineInfo
+MachineInfo --> "technicalExaminationDate" DateTime
+class UserMenuView {
+    + Construct(presenter:UserMenuPresenter) : void
+}
+MonoBehaviour <|-- UserMenuView
+UserMenuView --> "enableBoundsButton" Interactable
+UserMenuView --> "disableBoundsButton" Interactable
 class MachineView {
     + initViews() : void
     + Initialize(anchorPresenter:MachinePresenter) : void
@@ -33,35 +100,91 @@ MachineView --> "deleteButton" Interactable
 MachineViewFactory --> "_container" DiContainer
 MachineView +-- Factory
 "PlaceholderFactory`3" "<UnityEngine.Object,MachinePresenter,MachineView>" <|-- Factory
-class UserMenuView {
-    + Construct(presenter:UserMenuPresenter) : void
-}
-MonoBehaviour <|-- UserMenuView
-UserMenuView --> "enableBoundsButton" Interactable
-UserMenuView --> "disableBoundsButton" Interactable
 class DebugWindow {
 }
 MonoBehaviour <|-- DebugWindow
-interface IRemoveAnchorUseCase {
-    + removeAzureAnchor(theObject:GameObject) : Task
+interface IStartAzureSession {
+    invoke() : Task
 }
-class RemoveAnchorUseCase {
-    + RemoveAnchorUseCase(anchorsRepository:IAnchorsRepository, anchorRemover:IAnchorRemover, gameObjectEditor:IGameObjectEditor)
-    + <<async>> removeAzureAnchor(theObject:GameObject) : Task
+interface IAnchorRemover {
+    + deleteNativeAnchor(anchorGameObject:GameObject) : void
+    + deleteCloudAnchor(indetifier:string) : Task
 }
-IRemoveAnchorUseCase <|-- RemoveAnchorUseCase
-interface IAddAnchorUseCase {
-    + createAzureAnchor(theObject:GameObject, index:int) : Task<bool>
+class AzureCloudManager {
+    {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
+    {static} ANCHOR_SCALE_X : string = "ANCHOR_SCALE_X"
+    {static} ANCHOR_SCALE_Y : string = "ANCHOR_SCALE_Y"
+    {static} ANCHOR_SCALE_Z : string = "ANCHOR_SCALE_Z"
+    + AzureCloudManager(cloudManager:SpatialAnchorManager)
+    + <<async>> createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<IAnchorCreator.Result>
+    + createNativeAnchor(gameObject:GameObject) : void
+    + <<async>> invoke() : Task
+    + deleteNativeAnchor(anchorGameObject:GameObject) : void
+    + <<async>> deleteCloudAnchor(indetifier:string) : Task
 }
-class AddAnchorUseCase {
-    + AddAnchorUseCase(anchorsRepository:IAnchorsRepository, saveAnchor:IAnchorCreator, sceneAwarnessValidator:IAwarnessValidator, gameObjectEditor:IGameObjectEditor)
-    + <<async>> createAzureAnchor(theObject:GameObject, index:int) : Task<bool>
+IAnchorCreator <|-- AzureCloudManager
+IAnchorRemover <|-- AzureCloudManager
+IStartAzureSession <|-- AzureCloudManager
+AzureCloudManager --> "_cloudManager" SpatialAnchorManager
+interface IAwarnessValidator {
+    + validateSceneReadiness() : Task
 }
-IAddAnchorUseCase <|-- AddAnchorUseCase
-AddAnchorUseCase --> "_anchorsRepository" IAnchorsRepository
-AddAnchorUseCase --> "_saveAnchor" IAnchorCreator
-AddAnchorUseCase --> "_sceneAwarnessValidator" IAwarnessValidator
-AddAnchorUseCase --> "_gameObjectEditor" IGameObjectEditor
+class SceneAwarnessValidator {
+    + Construct(cloudManager:SpatialAnchorManager) : void
+    + <<async>> validateSceneReadiness() : Task
+    Update() : void
+}
+MonoBehaviour <|-- SceneAwarnessValidator
+IAwarnessValidator <|-- SceneAwarnessValidator
+interface IAnchorLocator {
+    +  <<event>> CloudAnchorLocated : CloudAnchorLocated 
+    + startLocatingAzureAnchors(idsToFind:string[]) : void
+}
+class AzureAnchorLocator {
+    {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
+    {static} ANCHOR_SCALE_X : string = "ANCHOR_SCALE_X"
+    {static} ANCHOR_SCALE_Y : string = "ANCHOR_SCALE_Y"
+    {static} ANCHOR_SCALE_Z : string = "ANCHOR_SCALE_Z"
+    + AzureAnchorLocator(cloudManager:SpatialAnchorManager)
+    +  <<event>> CloudAnchorLocated : CloudAnchorLocated 
+    + startLocatingAzureAnchors(idsToFind:string[]) : void
+}
+class CloudAnchorLocatedArgs {
+    + type : int <<get>>
+    + identifier : string <<get>>
+    + CloudAnchorLocatedArgs(pose:Pose, type:int, identifier:string, scale:Vector3)
+}
+IAnchorLocator <|-- AzureAnchorLocator
+AzureAnchorLocator --> "_cloudManager" SpatialAnchorManager
+IAnchorLocator +-- CloudAnchorLocatedArgs
+EventArgs <|-- CloudAnchorLocatedArgs
+CloudAnchorLocatedArgs --> "pose" Pose
+CloudAnchorLocatedArgs --> "scale" Vector3
+interface IAnchorCreator {
+    + createNativeAnchor(gameObject:GameObject) : void
+    + createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<Result>
+}
+class Result {
+}
+class Success {
+    + anchorIdentifier : string <<get>>
+    + Success(anchorIdentifier:string)
+}
+class Failure {
+    + exception : Exception? <<get>>
+    + Failure(exception:Exception?)
+}
+IAnchorCreator +-- Result
+Result +-- Success
+Result <|-- Success
+Result +-- Failure
+Result <|-- Failure
+class UserMenuPresenter {
+    + UserMenuPresenter(objectCreator:IObjectsCreator, boundsControlEditor:IBoundsControlVisibilityEditor)
+    + enableBoundsControl() : void
+    + disableBoundControls() : void
+    + createNewMachine(index:int) : void
+}
 class MachinePresenter {
     +  <<event>> disableTapToPlace : Action 
     +  <<event>> deleteCurrentMachine : Action 
@@ -112,19 +235,26 @@ MachinePresenter +-- Factory
 "PlaceholderFactory`2" "<int,MachinePresenter>" <|-- Factory
 State +-- MachineInfo
 MachineInfo --> "technicalExaminationDate" DateTime
-class UserMenuPresenter {
-    + UserMenuPresenter(objectCreator:IObjectsCreator, boundsControlEditor:IBoundsControlVisibilityEditor)
-    + enableBoundsControl() : void
-    + disableBoundControls() : void
-    + createNewMachine(index:int) : void
+interface IRemoveAnchorUseCase {
+    + removeAzureAnchor(theObject:GameObject) : Task
 }
-class AzureAnchorsReporitory {
-    + addAnchor(anchorGameObject:AnchorGameObject) : void
-    + removeAnchor(id:String) : void
-    + getAnchor(id:String) : AnchorGameObject?
-    + getAnchorsIds() : List<string>
+class RemoveAnchorUseCase {
+    + RemoveAnchorUseCase(anchorsRepository:IAnchorsRepository, anchorRemover:IAnchorRemover, gameObjectEditor:IGameObjectEditor)
+    + <<async>> removeAzureAnchor(theObject:GameObject) : Task
 }
-IAnchorsRepository <|-- AzureAnchorsReporitory
+IRemoveAnchorUseCase <|-- RemoveAnchorUseCase
+interface IAddAnchorUseCase {
+    + createAzureAnchor(theObject:GameObject, index:int) : Task<bool>
+}
+class AddAnchorUseCase {
+    + AddAnchorUseCase(anchorsRepository:IAnchorsRepository, saveAnchor:IAnchorCreator, sceneAwarnessValidator:IAwarnessValidator, gameObjectEditor:IGameObjectEditor)
+    + <<async>> createAzureAnchor(theObject:GameObject, index:int) : Task<bool>
+}
+IAddAnchorUseCase <|-- AddAnchorUseCase
+AddAnchorUseCase --> "_anchorsRepository" IAnchorsRepository
+AddAnchorUseCase --> "_saveAnchor" IAnchorCreator
+AddAnchorUseCase --> "_sceneAwarnessValidator" IAwarnessValidator
+AddAnchorUseCase --> "_gameObjectEditor" IGameObjectEditor
 interface IAnchorsRepository {
     + addAnchor(anchor:AnchorGameObject) : void
     + removeAnchor(id:string) : void
@@ -136,141 +266,11 @@ class AnchorGameObject <<struct>> {
 }
 IAnchorsRepository +-- AnchorGameObject
 AnchorGameObject --> "gameObject" GameObject
-class AzureSessionCoordinator {
-    + isStarted : bool = false
-    + Construct(anchorsRepository:IAnchorsRepository, anchorLocator:IAnchorLocator, objectsCreator:IObjectsCreator, startAzureSession:IStartAzureSession, saveAnchor:IAnchorCreator, gameObjectEditor:IGameObjectEditor) : void
-    + Start() : void
+class AzureAnchorsReporitory {
+    + addAnchor(anchorGameObject:AnchorGameObject) : void
+    + removeAnchor(id:String) : void
+    + getAnchor(id:String) : AnchorGameObject?
+    + getAnchorsIds() : List<string>
 }
-MonoBehaviour <|-- AzureSessionCoordinator
-interface IGameObjectEditor {
-    setName(gameObject:GameObject, name:string) : void
-    getName(gameObject:GameObject) : string
-    setPose(gameObject:GameObject, pose:Pose, scale:Vector3) : void
-}
-class GameObjectEditorImpl {
-    + getName(gameObject:GameObject) : string
-    + setName(gameObject:GameObject, name:string) : void
-    + setPose(gameObject:GameObject, pose:Pose, scale:Vector3) : void
-}
-IGameObjectEditor <|-- GameObjectEditorImpl
-interface IMachineInfoRepository {
-    + getMachineInfo(index:int) : IReadOnlyReactiveProperty<MachineInfo?>
-}
-class MachineInfoRepository {
-    + MachineInfoRepository()
-    + getMachineInfo(index:int) : IReadOnlyReactiveProperty<IMachineInfoRepository.MachineInfo?>
-}
-class MachineInfo <<struct>> {
-    + hallId : int
-    + name : string
-    + efficiency : int
-    + status : string
-    + symbol : string
-}
-IMachineInfoRepository <|-- MachineInfoRepository
-IMachineInfoRepository +-- MachineInfo
-MachineInfo --> "technicalExaminationDate" DateTime
-interface IObjectsCreator {
-    + {abstract} createNewMachine(machineIndex:int) : void
-    + {abstract} createNewMachineWithGO(machineIndex:int) : GameObject
-}
-class ObjectsCreatorImpl {
-    + Construct(machineViewFactory:MachineView.Factory, anchorPresenterFactory:MachinePresenter.Factory) : void
-    + createNewMachine(machineIndex:int) : void
-    + createNewMachineWithGO(machineIndex:int) : GameObject
-}
-MonoBehaviour <|-- ObjectsCreatorImpl
-IObjectsCreator <|-- ObjectsCreatorImpl
-interface IBoundsControlVisibilityEditor {
-    + {abstract} enableBoundsControlVisibility() : void
-    + {abstract} disableBoundsControlVisibility() : void
-}
-interface IBoundsControlVisibilityProvider {
-}
-class BoundsControlVisibilityRepository {
-    + enableBoundsControlVisibility() : void
-    + disableBoundsControlVisibility() : void
-}
-class "IReadOnlyReactiveProperty`1"<T> {
-}
-IBoundsControlVisibilityProvider --> "isBoundsVisibilityEnabled<bool>" "IReadOnlyReactiveProperty`1"
-IBoundsControlVisibilityEditor <|-- BoundsControlVisibilityRepository
-IBoundsControlVisibilityProvider <|-- BoundsControlVisibilityRepository
-BoundsControlVisibilityRepository --> "isBoundsVisibilityEnabled<bool>" "IReadOnlyReactiveProperty`1"
-interface IAwarnessValidator {
-    + validateSceneReadiness() : Task
-}
-class SceneAwarnessValidator {
-    + Construct(cloudManager:SpatialAnchorManager) : void
-    + <<async>> validateSceneReadiness() : Task
-    Update() : void
-}
-MonoBehaviour <|-- SceneAwarnessValidator
-IAwarnessValidator <|-- SceneAwarnessValidator
-interface IAnchorLocator {
-    +  <<event>> CloudAnchorLocated : CloudAnchorLocated 
-    + startLocatingAzureAnchors(idsToFind:string[]) : void
-}
-class AzureAnchorLocator {
-    {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
-    {static} ANCHOR_SCALE_X : string = "ANCHOR_SCALE_X"
-    {static} ANCHOR_SCALE_Y : string = "ANCHOR_SCALE_Y"
-    {static} ANCHOR_SCALE_Z : string = "ANCHOR_SCALE_Z"
-    + AzureAnchorLocator(cloudManager:SpatialAnchorManager)
-    +  <<event>> CloudAnchorLocated : CloudAnchorLocated 
-    + startLocatingAzureAnchors(idsToFind:string[]) : void
-}
-class CloudAnchorLocatedArgs {
-    + type : int <<get>>
-    + identifier : string <<get>>
-    + CloudAnchorLocatedArgs(pose:Pose, type:int, identifier:string, scale:Vector3)
-}
-IAnchorLocator <|-- AzureAnchorLocator
-AzureAnchorLocator --> "_cloudManager" SpatialAnchorManager
-IAnchorLocator +-- CloudAnchorLocatedArgs
-EventArgs <|-- CloudAnchorLocatedArgs
-CloudAnchorLocatedArgs --> "pose" Pose
-CloudAnchorLocatedArgs --> "scale" Vector3
-interface IStartAzureSession {
-    invoke() : Task
-}
-interface IAnchorRemover {
-    + deleteNativeAnchor(anchorGameObject:GameObject) : void
-    + deleteCloudAnchor(indetifier:string) : Task
-}
-class AzureCloudManager {
-    {static} ANCHOR_TYPE_PROP : string = "ANCHOR_TYPE"
-    {static} ANCHOR_SCALE_X : string = "ANCHOR_SCALE_X"
-    {static} ANCHOR_SCALE_Y : string = "ANCHOR_SCALE_Y"
-    {static} ANCHOR_SCALE_Z : string = "ANCHOR_SCALE_Z"
-    + AzureCloudManager(cloudManager:SpatialAnchorManager)
-    + <<async>> createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<IAnchorCreator.Result>
-    + createNativeAnchor(gameObject:GameObject) : void
-    + <<async>> invoke() : Task
-    + deleteNativeAnchor(anchorGameObject:GameObject) : void
-    + <<async>> deleteCloudAnchor(indetifier:string) : Task
-}
-IAnchorCreator <|-- AzureCloudManager
-IAnchorRemover <|-- AzureCloudManager
-IStartAzureSession <|-- AzureCloudManager
-AzureCloudManager --> "_cloudManager" SpatialAnchorManager
-interface IAnchorCreator {
-    + createNativeAnchor(gameObject:GameObject) : void
-    + createCloudAnchor(gameObject:GameObject, propIndex:int) : Task<Result>
-}
-class Result {
-}
-class Success {
-    + anchorIdentifier : string <<get>>
-    + Success(anchorIdentifier:string)
-}
-class Failure {
-    + exception : Exception? <<get>>
-    + Failure(exception:Exception?)
-}
-IAnchorCreator +-- Result
-Result +-- Success
-Result <|-- Success
-Result +-- Failure
-Result <|-- Failure
+IAnchorsRepository <|-- AzureAnchorsReporitory
 @enduml
